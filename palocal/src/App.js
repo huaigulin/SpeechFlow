@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 import Table from './Table';
 import VideoPlayer from './VideoPlayer';
 
@@ -45,10 +46,15 @@ class App extends Component {
       }
     ];
     return (
-      <div className="container">
-        <Table peopleData={people} />
-        <p className="App-intro">{this.state.data}</p>
-        <VideoPlayer />
+      <div>
+        <BrowserRouter>
+          <div />
+        </BrowserRouter>
+        <div className="container">
+          <Table peopleData={people} />
+          <p className="App-intro">{this.state.data}</p>
+          <VideoPlayer />
+        </div>
       </div>
     );
   }
