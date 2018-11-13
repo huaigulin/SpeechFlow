@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
-import Table from './Table';
-import VideoPlayer from './VideoPlayer';
+import { BrowserRouter, Route } from 'react-router-dom';
+import PageHome from './PageHome';
+import PageLogin from './PageLogin';
+import PageMobile from './PageMobile';
+import PageNonsense from './PageNonsense';
 
 class App extends Component {
   state = {
@@ -27,34 +29,26 @@ class App extends Component {
   };
 
   render() {
-    const people = [
-      {
-        name: 'Sam Ruditsky',
-        role: 'Super Smart Student'
-      },
-      {
-        name: 'Joseph Kim',
-        role: 'Super Smart Student'
-      },
-      {
-        name: 'Huaigu Lin',
-        role: 'Super Smart Student'
-      },
-      {
-        name: 'Tim Hickey',
-        role: 'BestProfessor'
-      }
-    ];
     return (
       <div>
         <BrowserRouter>
-          <div />
+          <div>
+            <Route
+              exact
+              path="/"
+              render={props => <PageHome {...props} data={this.state.data} />}
+            />
+            <Route
+              path="/login"
+              render={props => <PageLogin {...props} data={this.state.data} />}
+            />
+            <Route
+              path="/mobile"
+              render={props => <PageMobile {...props} data={this.state.data} />}
+            />
+          </div>
         </BrowserRouter>
-        <div className="container">
-          <Table peopleData={people} />
-          <p className="App-intro">{this.state.data}</p>
-          <VideoPlayer />
-        </div>
+        {/* <PageNonsense data={this.state.data} /> */}
       </div>
     );
   }
