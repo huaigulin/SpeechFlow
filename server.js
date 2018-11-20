@@ -4,13 +4,15 @@ const socketServer = require('http').Server(app);
 const io = require('socket.io')(socketServer);
 
 // create a GET route
-var msg = '';
 app.get('/express_backend', (req, res) => {
-  res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT', msg: msg });
+  res.send({
+    express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT',
+    msg: req.body.msg
+  });
 });
 
 app.post('/pdfCommands', function(req, res) {
-  msg = req.body.msg;
+  console.log(req.body.msg);
 });
 
 app.post('');
