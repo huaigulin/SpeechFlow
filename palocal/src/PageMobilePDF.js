@@ -2,21 +2,16 @@ import React, { Component } from 'react';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+
+const expressAppUrl = 'https://paexpress.herokuapp.com/';
 class PageMobilePDF extends Component {
-  constructor() {
-    super();
-    this.state = {
-      username: ''
-    };
-    this.handleClick = this.handleClick.bind(this);
-  }
   handleClick() {
     axios
-      .post('http://129.64.146.120:8081/get', {
-        msg: 'send'
+      .post(expressAppUrl + '/pdfCommands', {
+        msg: 'up'
       })
       .then(response => {
-        console.log('hello');
+        console.log('pdf UP command');
       })
       .catch(error => {
         if (error.repsonse) {
@@ -25,10 +20,7 @@ class PageMobilePDF extends Component {
         console.log(error.config);
       });
   }
-  //    handleClick () {
-  //        axios.get('https://api.github.com/users/maecapozzi')
-  //          .then(response => this.setState({username: response.data.name}))
-  //      }
+
   render() {
     return (
       <div>
@@ -44,7 +36,6 @@ class PageMobilePDF extends Component {
         <button>down</button>
         <button>right</button>
         <button>left</button>
-        <p>{this.state.username}</p>
       </div>
     );
   }
