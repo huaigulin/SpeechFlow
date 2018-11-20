@@ -7,12 +7,13 @@ const io = require('socket.io')(socketServer);
 app.get('/express_backend', (req, res) => {
   res.send({
     express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT',
-    msg: req.body.msg
+    msg: res.locals.msg
   });
 });
 
 app.post('/pdfCommands', function(req, res) {
   console.log(req.body.msg);
+  res.locals.msg = req.body.msg;
 });
 
 app.post('');
