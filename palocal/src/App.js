@@ -3,6 +3,8 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import PageHome from './PageHome';
 import PageLogin from './PageLogin';
 import PageMobile from './PageMobile';
+import PageMobilePDF from './PageMobilePDF';
+import PageMobileVideo from './PageMobileVideo';
 import PageNonsense from './PageNonsense';
 
 class App extends Component {
@@ -45,6 +47,18 @@ class App extends Component {
             <Route
               path="/mobile"
               render={props => <PageMobile {...props} data={this.state.data} />}
+            />
+            <Route
+              path="/PageMobilePDF"
+              render={props => (
+                <PageMobilePDF {...props} data={this.state.data} />
+              )}
+            />
+            <Route
+              path="/PageMobileVideo"
+              render={props => (
+                <PageMobileVideo {...props} data={this.state.data} />
+              )}
             />
           </div>
         </BrowserRouter>

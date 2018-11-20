@@ -8,6 +8,10 @@ app.get('/express_backend', (req, res) => {
   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 });
 
+app.post('/get', function(req, res) {
+  console.log(req.body);
+});
+
 app.post('');
 
 io.on('connection', function(socket) {});
