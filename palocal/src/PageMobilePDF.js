@@ -3,19 +3,19 @@ import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const expressAppUrl = 'https://paexpress.herokuapp.com/';
+const expressAppUrl = 'https://paexpress.herokuapp.com';
 class PageMobilePDF extends Component {
-  handleClick() {
+  handleUpClick() {
     axios
       .post(expressAppUrl + '/pdfCommands', {
-        msg: 'up'
+        msg: 'pdfUp'
       })
       .then(response => {
         console.log('pdf UP command');
       })
       .catch(error => {
         if (error.repsonse) {
-          console.log('error', error.message);
+          console.log('UP click error', error.message);
         }
         console.log(error.config);
       });
@@ -30,7 +30,7 @@ class PageMobilePDF extends Component {
           <Link to="/PageMobileVideo/">Speech Flow Mobile Video Player</Link>
         </li>
         <h2>This is the controller for PDF</h2>
-        <button className="upButton" onClick={this.handleClick}>
+        <button className="upButton" onClick={this.handleUpClick}>
           up
         </button>
         <button>down</button>

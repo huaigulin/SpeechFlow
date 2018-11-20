@@ -9,13 +9,14 @@ import PageNonsense from './PageNonsense';
 
 class App extends Component {
   state = {
-    data: null
+    data: null,
+    msg: null
   };
 
   componentDidMount() {
     // Call our fetch function below once the component mounts
     this.callBackendAPI()
-      .then(res => this.setState({ data: res.express }))
+      .then(res => this.setState({ data: res.express, msg: res.msg }))
       .catch(err => console.log(err));
   }
 
@@ -38,7 +39,13 @@ class App extends Component {
             <Route
               exact
               path="/"
-              render={props => <PageHome {...props} data={this.state.data} />}
+              render={props => (
+                <PageHome
+                  {...props}
+                  data={this.state.data}
+                  msg={this.state.msg}
+                />
+              )}
             />
             <Route
               path="/login"
