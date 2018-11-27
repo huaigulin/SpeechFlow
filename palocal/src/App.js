@@ -52,6 +52,10 @@ class App extends Component {
               render={props => <PageLogin {...props} data={this.state.data} />}
             />
             <Route
+              path="/PageVideo"
+              render={props => <PageVideo {...props} data={this.state.data} />}
+            />
+            <Route
               path="/mobile"
               render={props => <PageMobile {...props} data={this.state.data} />}
             />
