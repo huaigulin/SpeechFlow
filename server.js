@@ -5,7 +5,6 @@ const port = process.env.PORT || 8081;
 const app = express();
 const socketServer = http.createServer(app);
 const io = socketIo(socketServer);
-const cors = require('cors');
 
 // create a GET route
 app.get('/express_backend', (req, res) => {
