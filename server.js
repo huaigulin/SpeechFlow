@@ -7,14 +7,6 @@ const socketServer = http.createServer(app);
 const io = socketIo(socketServer);
 const cors = require('cors');
 
-app.use(cors());
-
-app.get('/products/:id', function(req, res, next) {
-  res.json({ msg: 'This is CORS-enabled for all origins!' });
-});
-
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
-
 // create a GET route
 app.get('/express_backend', (req, res) => {
   res.send({
