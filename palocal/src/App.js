@@ -7,17 +7,27 @@ import PageMobilePDF from './PageMobilePDF';
 import PageMobileVideo from './PageMobileVideo';
 import PageNonsense from './PageNonsense';
 
+import socketIOClient from 'socket.io-client';
+
 class App extends Component {
   state = {
     data: null,
-    msg: null
+    messageFromSocketServer: null,
+    endpoint: 'http://127.0.0.1:8081'
   };
 
   componentDidMount() {
     // Call our fetch function below once the component mounts
     this.callBackendAPI()
-      .then(res => this.setState({ data: res.express, msg: res.msg }))
+      .then(res => this.setState({ data: res.express }))
       .catch(err => console.log(err));
+
+    // Socket io client
+    const endpoint = this.state.endpoint;
+    const socket = socketIOClient(endpoint);
+    socket.on('Interval Event', msg =>
+      this.setState({ messageFromSocketServer: msg })
+    );
   }
 
   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
@@ -43,17 +53,13 @@ class App extends Component {
                 <PageHome
                   {...props}
                   data={this.state.data}
-                  msg={this.state.msg}
+                  messageFromSocketServer={this.state.messageFromSocketServer}
                 />
               )}
             />
             <Route
               path="/login"
               render={props => <PageLogin {...props} data={this.state.data} />}
-            />
-            <Route
-              path="/PageVideo"
-              render={props => <PageVideo {...props} data={this.state.data} />}
             />
             <Route
               path="/mobile"
