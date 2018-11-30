@@ -24,10 +24,15 @@ class App extends Component {
 
     // Socket io client
     const endpoint = this.state.endpoint;
-    const socket = socketIOClient(endpoint);
-    socket.on('Interval Event', msg =>
+    const socketClient = socketIOClient(endpoint);
+
+    // On interval event
+    socketClient.on('Interval Event', msg =>
       this.setState({ messageFromSocketServer: msg })
     );
+
+    // Emit user name
+    socketClient.emit('User Name', 'kevinlinhg');
   }
 
   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
