@@ -39,7 +39,7 @@ class App extends Component {
   //   //socketClient.emit('User Name', 'kevinlinhg');
   // }
 
-  componentDidMount(){
+  componentDidMount() {
     this.callBackendAPI()
       .then(res => this.setState({ data: res.express }))
       .catch(err => console.log(err));
@@ -49,29 +49,29 @@ class App extends Component {
       this.setState({ messageFromSocketServer: msg })
     );
 
-    this.state.socket.on('SOMEONE CLICKED THE DOWN BUTTON!!!!', function(){
-      console.log('down message recieived')
-    })
+    this.state.socket.on('SOMEONE CLICKED THE DOWN BUTTON!!!!', function() {
+      console.log('down message recieived');
+    });
 
-    this.state.socket.on('SOMEONE CLICKED THE UP BUTTON!!!!', function(){
-      console.log('up message recieived')
-    })
+    this.state.socket.on('SOMEONE CLICKED THE UP BUTTON!!!!', function() {
+      console.log('up message recieived');
+    });
 
-    this.state.socket.on('SOMEONE CLICKED THE LEFT BUTTON!!!!', function(){
-      console.log('left message recieived')
-    })
+    this.state.socket.on('SOMEONE CLICKED THE LEFT BUTTON!!!!', function() {
+      console.log('left message recieived');
+    });
 
-    this.state.socket.on('SOMEONE CLICKED THE RIGHT BUTTON!!!!', function(){
-      console.log('right message recieived')
-    })
+    this.state.socket.on('SOMEONE CLICKED THE RIGHT BUTTON!!!!', function() {
+      console.log('right message recieived');
+    });
 
-    this.state.socket.on('SOMEONE HIT NEXT', function(){
-      console.log('Moving to the next slide')
-    })
+    this.state.socket.on('SOMEONE HIT NEXT', function() {
+      console.log('Moving to the next slide');
+    });
 
-    this.state.socket.on('SOMEONE HIT BACK', function(){
-      console.log('Moving back a slide')
-    })
+    this.state.socket.on('SOMEONE HIT BACK', function() {
+      console.log('Moving back a slide');
+    });
   }
 
   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
@@ -96,6 +96,7 @@ class App extends Component {
               render={props => (
                 <PageHome
                   {...props}
+                  socket={this.state.socket}
                   data={this.state.data}
                   messageFromSocketServer={this.state.messageFromSocketServer}
                 />
@@ -112,7 +113,11 @@ class App extends Component {
             <Route
               path="/PageMobilePDF"
               render={props => (
-                <PageMobilePDF socket={this.state.socket} data={this.state.data} />
+                <PageMobilePDF
+                  {...props}
+                  socket={this.state.socket}
+                  data={this.state.data}
+                />
               )}
             />
             <Route
