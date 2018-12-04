@@ -1,9 +1,21 @@
 import React from 'react';
 import PDF from 'react-pdf-js';
-import ProblemSet5 from './ProblemSet5.pdf';
+import demo from './demo.pdf';
 
 class PdfViewer extends React.Component {
   state = {};
+
+  componentDidMount(){
+    this.props.socket.on('SOMEONE HIT NEXT', (pageNum) => {
+    console.log('Moving to the next slide')
+    this.setState({ page: pageNum });
+    });
+
+    this.props.socket.on('SOMEONE HIT BACK', (pageNum) => {
+    console.log('Moving back a slide')
+    this.setState({ page: pageNum });
+    });
+  }
 
   onDocumentComplete = (pages) => {
     this.setState({ page: 1, pages });
@@ -11,14 +23,12 @@ class PdfViewer extends React.Component {
 
   handlePrevious = (socket) => {
     console.log('sending previous')
-    socket.emit('back slide');
-    this.setState({ page: this.state.page - 1 });
+    socket.emit('back slide', this.state.page - 1);
   }
 
   handleNext = (socket) => {
     console.log('sending next')
-    socket.emit('next slide');
-    this.setState({ page: this.state.page + 1 });
+    socket.emit('next slide', this.state.page + 1);
   }
 
   renderPagination = (page, pages) => {
@@ -48,7 +58,7 @@ class PdfViewer extends React.Component {
     return (
       <div>
         <PDF
-          file={ProblemSet5}
+          file={demo}
           onDocumentComplete={this.onDocumentComplete}
           page={this.state.page}
         />

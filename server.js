@@ -38,6 +38,20 @@ io.on('connection', socket => {
     io.emit('SOMEONE CLICKED THE LEFT BUTTON!!!!');
   });
 
+
+  socket.on('right click', function(){
+    io.emit('SOMEONE CLICKED THE RIGHT BUTTON!!!!')
+  })
+
+  socket.on('next slide', pageNum => {
+    io.emit('SOMEONE HIT NEXT', pageNum);
+  })
+
+  socket.on('back slide', pageNum => {
+    io.emit('SOMEONE HIT BACK', pageNum);
+  })
+
+
   socket.on('right click', function() {
     io.emit('SOMEONE CLICKED THE RIGHT BUTTON!!!!');
   });
@@ -50,6 +64,7 @@ io.on('connection', socket => {
   socket.on('back slide', function() {
     io.emit('SOMEONE HIT BACK');
   });
+
   // Emit a message on an interval
   if (interval) {
     clearInterval(interval);
