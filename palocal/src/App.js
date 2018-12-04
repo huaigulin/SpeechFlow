@@ -25,17 +25,17 @@ class App extends Component {
       this.setState({ messageFromSocketServer: msg })
     );
 
-    this.state.socket.on('SOMEONE CLICKED THE DOWN BUTTON!!!!', function(){
-      console.log('down message recieived')
-    })
+    this.state.socket.on('SOMEONE CLICKED THE DOWN BUTTON!!!!', function() {
+      console.log('down message recieived');
+    });
 
-    this.state.socket.on('SOMEONE CLICKED THE UP BUTTON!!!!', function(){
-      console.log('up message recieived')
-    })
+    this.state.socket.on('SOMEONE CLICKED THE UP BUTTON!!!!', function() {
+      console.log('up message recieived');
+    });
 
-    this.state.socket.on('SOMEONE CLICKED THE LEFT BUTTON!!!!', function(){
-      console.log('left message recieived')
-    })
+    this.state.socket.on('SOMEONE CLICKED THE LEFT BUTTON!!!!', function() {
+      console.log('left message recieived');
+    });
 
     this.state.socket.on('SOMEONE CLICKED THE RIGHT BUTTON!!!!', function(){
       console.log('right message recieived')
@@ -64,6 +64,7 @@ class App extends Component {
               render={props => (
                 <PageHome
                   {...props}
+                  socket={this.state.socket}
                   data={this.state.data}
                   messageFromSocketServer={this.state.messageFromSocketServer}
                 />
@@ -80,7 +81,11 @@ class App extends Component {
             <Route
               path="/PageMobilePDF"
               render={props => (
-                <PageMobilePDF socket={this.state.socket} data={this.state.data} />
+                <PageMobilePDF
+                  {...props}
+                  socket={this.state.socket}
+                  data={this.state.data}
+                />
               )}
             />
             <Route
