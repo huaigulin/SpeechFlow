@@ -38,7 +38,7 @@ io.on('connection', socket => {
     io.emit('SOMEONE CLICKED THE LEFT BUTTON!!!!');
   });
 
-<<<<<<< HEAD
+
   socket.on('right click', function(){
     io.emit('SOMEONE CLICKED THE RIGHT BUTTON!!!!')
   })
@@ -51,7 +51,7 @@ io.on('connection', socket => {
     io.emit('SOMEONE HIT BACK', pageNum);
   })
 
-=======
+
   socket.on('right click', function() {
     io.emit('SOMEONE CLICKED THE RIGHT BUTTON!!!!');
   });
@@ -64,7 +64,7 @@ io.on('connection', socket => {
   socket.on('back slide', function() {
     io.emit('SOMEONE HIT BACK');
   });
->>>>>>> 8cfdf7f455c124ab3a3d7c2feb5f7870eca4ac19
+
   // Emit a message on an interval
   if (interval) {
     clearInterval(interval);
