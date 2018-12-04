@@ -5,8 +5,6 @@ const port = process.env.PORT || 8081;
 const app = express();
 const socketServer = http.createServer(app);
 const io = socketIo(socketServer);
-const redis = require('redis');
-const redisClient = redis.createClient();
 
 // create a GET route
 app.get('/express_backend', (req, res) => {
@@ -64,17 +62,6 @@ io.on('connection', socket => {
   // Save the socket id to Redis so that all processes can access it by asking for user name.
   socket.on('User Name', getSocketIDs, function(userName) {
     var socketIDs = null;
-    redisClient.get(userName, function(err, values) {
-      if (err) throw err;
-      socketIDs = values;
-    });
-
-    redisClient.set(userName, socket.id, function(err) {
-      if (err) throw err;
-      console.log(
-        'The user is: <' + userName + '>, ' + 'this dumb ass has socket ids: '
-      );
-    });
   });
 });
 
