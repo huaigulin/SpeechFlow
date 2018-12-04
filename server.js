@@ -61,9 +61,11 @@ io.on('connection', socket => {
 
   // Save the socket id to Redis so that all processes can access it by asking for user name.
   socket.on('User Name', getSocketIDs, function(userName) {
-    var socketIDs = null;
+    console.log('socket user name event call back');
   });
 });
 
-function getSocketIDs(req, res, next) {}
+function getSocketIDs(userName, req, res, next) {
+  console.log('This dumb ass has user name: ' + userName);
+}
 socketServer.listen(port, () => console.log(`Listening on port ${port}`));
