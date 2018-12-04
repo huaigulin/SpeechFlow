@@ -6,7 +6,7 @@ const app = express();
 const socketServer = http.createServer(app);
 const io = socketIo(socketServer);
 const redis = require('redis');
-const redisClient = redis.createClient();
+//const redisClient = redis.createClient();
 
 // create a GET route
 app.get('/express_backend', (req, res) => {
@@ -28,6 +28,30 @@ io.on('connection', socket => {
     console.log('Client disconnected');
   });
 
+  socket.on('down click', function(){
+    io.emit('SOMEONE CLICKED THE DOWN BUTTON!!!!')
+  })
+
+  socket.on('up click', function(){
+    io.emit('SOMEONE CLICKED THE UP BUTTON!!!!')
+  })
+
+  socket.on('left click', function(){
+    io.emit('SOMEONE CLICKED THE LEFT BUTTON!!!!')
+  })
+
+  socket.on('right click', function(){
+    io.emit('SOMEONE CLICKED THE RIGHT BUTTON!!!!')
+
+  socket.on('next slide', function(){
+    console.log('about to broadcast next request')
+    io.emit('SOMEONE HIT NEXT');
+  })
+
+  socket.on('back slide', function(){
+    io.emit('SOMEONE HIT BACK');
+  })
+  })
   // Emit a message on an interval
   if (interval) {
     clearInterval(interval);
@@ -37,7 +61,10 @@ io.on('connection', socket => {
     1000
   );
 
+
+
   // Save the socket id to Redis so that all processes can access it by asking for user name.
+
   socket.on('User Name', function(userName) {
     var socketIDs = null;
     redisClient.get(userName, function(err, values) {
@@ -53,5 +80,6 @@ io.on('connection', socket => {
     });
   });
 });
+
 
 socketServer.listen(port, () => console.log(`Listening on port ${port}`));

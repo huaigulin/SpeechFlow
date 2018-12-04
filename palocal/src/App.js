@@ -8,31 +8,70 @@ import PageMobileVideo from './PageMobileVideo';
 import PageNonsense from './PageNonsense';
 
 import socketIOClient from 'socket.io-client';
-
 class App extends Component {
   state = {
     data: null,
     messageFromSocketServer: null,
-    endpoint: 'http://127.0.0.1:8081'
+    socket: socketIOClient('http://127.0.0.1:8081')
   };
 
-  componentDidMount() {
-    // Call our fetch function below once the component mounts
+  // componentDidMount() {
+  //   // Call our fetch function below once the component mounts
+  //   this.callBackendAPI()
+  //     .then(res => this.setState({ data: res.express }))
+  //     .catch(err => console.log(err));
+  //
+  //   // Socket io client
+  //   const endpoint = this.state.endpoint;
+  //   const socketClient = socketIOClient(endpoint);
+  //   this.socket = socketClient;
+  //   // On interval event
+  //   socketClient.on('Interval Event', msg =>
+  //     this.setState({ messageFromSocketServer: msg })
+  //   );
+  //
+  //   socketClient.emit('down click')
+  //   socketClient.on('SOMEONE CLICKED THE DOWN BUTTON!!!!', function(){
+  //     console.log('down message recieived')
+  //   })
+  //
+  //   // Emit user name
+  //   //socketClient.emit('User Name', 'kevinlinhg');
+  // }
+
+  componentDidMount(){
     this.callBackendAPI()
       .then(res => this.setState({ data: res.express }))
       .catch(err => console.log(err));
 
-    // Socket io client
-    const endpoint = this.state.endpoint;
-    const socketClient = socketIOClient(endpoint);
-
     // On interval event
-    socketClient.on('Interval Event', msg =>
+    this.state.socket.on('Interval Event', msg =>
       this.setState({ messageFromSocketServer: msg })
     );
 
-    // Emit user name
-    socketClient.emit('User Name', 'kevinlinhg');
+    this.state.socket.on('SOMEONE CLICKED THE DOWN BUTTON!!!!', function(){
+      console.log('down message recieived')
+    })
+
+    this.state.socket.on('SOMEONE CLICKED THE UP BUTTON!!!!', function(){
+      console.log('up message recieived')
+    })
+
+    this.state.socket.on('SOMEONE CLICKED THE LEFT BUTTON!!!!', function(){
+      console.log('left message recieived')
+    })
+
+    this.state.socket.on('SOMEONE CLICKED THE RIGHT BUTTON!!!!', function(){
+      console.log('right message recieived')
+    })
+
+    this.state.socket.on('SOMEONE HIT NEXT', function(){
+      console.log('Moving to the next slide')
+    })
+
+    this.state.socket.on('SOMEONE HIT BACK', function(){
+      console.log('Moving back a slide')
+    })
   }
 
   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
@@ -73,7 +112,7 @@ class App extends Component {
             <Route
               path="/PageMobilePDF"
               render={props => (
-                <PageMobilePDF {...props} data={this.state.data} />
+                <PageMobilePDF socket={this.state.socket} data={this.state.data} />
               )}
             />
             <Route
