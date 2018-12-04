@@ -15,30 +15,6 @@ class App extends Component {
     socket: socketIOClient('http://127.0.0.1:8081')
   };
 
-  // componentDidMount() {
-  //   // Call our fetch function below once the component mounts
-  //   this.callBackendAPI()
-  //     .then(res => this.setState({ data: res.express }))
-  //     .catch(err => console.log(err));
-  //
-  //   // Socket io client
-  //   const endpoint = this.state.endpoint;
-  //   const socketClient = socketIOClient(endpoint);
-  //   this.socket = socketClient;
-  //   // On interval event
-  //   socketClient.on('Interval Event', msg =>
-  //     this.setState({ messageFromSocketServer: msg })
-  //   );
-  //
-  //   socketClient.emit('down click')
-  //   socketClient.on('SOMEONE CLICKED THE DOWN BUTTON!!!!', function(){
-  //     console.log('down message recieived')
-  //   })
-  //
-  //   // Emit user name
-  //   //socketClient.emit('User Name', 'kevinlinhg');
-  // }
-
   componentDidMount(){
     this.callBackendAPI()
       .then(res => this.setState({ data: res.express }))
@@ -63,14 +39,6 @@ class App extends Component {
 
     this.state.socket.on('SOMEONE CLICKED THE RIGHT BUTTON!!!!', function(){
       console.log('right message recieived')
-    })
-
-    this.state.socket.on('SOMEONE HIT NEXT', function(){
-      console.log('Moving to the next slide')
-    })
-
-    this.state.socket.on('SOMEONE HIT BACK', function(){
-      console.log('Moving back a slide')
     })
   }
 

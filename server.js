@@ -42,16 +42,16 @@ io.on('connection', socket => {
 
   socket.on('right click', function(){
     io.emit('SOMEONE CLICKED THE RIGHT BUTTON!!!!')
-
-  socket.on('next slide', function(){
-    console.log('about to broadcast next request')
-    io.emit('SOMEONE HIT NEXT');
   })
 
-  socket.on('back slide', function(){
-    io.emit('SOMEONE HIT BACK');
+  socket.on('next slide', pageNum => {
+    io.emit('SOMEONE HIT NEXT', pageNum);
   })
+
+  socket.on('back slide', pageNum => {
+    io.emit('SOMEONE HIT BACK', pageNum);
   })
+
   // Emit a message on an interval
   if (interval) {
     clearInterval(interval);

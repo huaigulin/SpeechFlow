@@ -6,27 +6,10 @@ import PdfViewer from './PdfViewer';
 const expressAppUrl = 'https://paexpress.herokuapp.com';
 class PageMobilePDF extends Component {
 
-  // handleUpClick() {
-  //   console.log('up click!')
-  //   axios
-  //     .post(expressAppUrl + '/pdfCommands', {
-  //       msg: 'pdfUp'
-  //     })
-  //     .then(response => {
-  //       console.log('pdf UP command');
-  //     })
-  //     .catch(error => {
-  //       if (error.repsonse) {
-  //         console.log('UP click error', error.message);
-  //       }
-  //       console.log(error.config);
-  //     });
-  // }
 
   handleUpClick(socket) {
     console.log('hit up');
-    //socket.emit('up click');
-    socket.emit('next slide');
+    socket.emit('up click');
   }
 
   handleDownClick(socket) {
