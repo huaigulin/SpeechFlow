@@ -6,15 +6,18 @@ class PdfViewer extends React.Component {
   state = {};
 
   componentDidMount(){
-    this.props.socket.on('SOMEONE HIT NEXT', (pageNum) => {
-    console.log('Moving to the next slide')
-    this.setState({ page: pageNum });
+    this.props.socket.on('SOMEONE HIT NEXT', pageNum => {
+      this.setState({ page: pageNum });
     });
 
-    this.props.socket.on('SOMEONE HIT BACK', (pageNum) => {
-    console.log('Moving back a slide')
-    this.setState({ page: pageNum });
+    this.props.socket.on('SOMEONE HIT BACK', pageNum => {
+      this.setState({ page: pageNum });
     });
+  }
+
+  componentWillUnmount() {
+    this.props.socket.removeListener('SOMEONE HIT NEXT');
+    this.props.socket.removeListener('SOMEONE HIT BACK');
   }
 
   onDocumentComplete = (pages) => {
@@ -23,16 +26,17 @@ class PdfViewer extends React.Component {
 
   handlePrevious = (socket) => {
     console.log('sending previous')
-    socket.emit('back slide', this.state.page - 1);
+    socket.emit('back slide', this.state.page);
   }
 
   handleNext = (socket) => {
     console.log('sending next')
-    socket.emit('next slide', this.state.page + 1);
+    console.log(this.state.page)
+    socket.emit('next slide', this.state.page);
   }
 
   renderPagination = (page, pages) => {
-    let previousButton = <li className="previous" onClick={() => {this.handlePrevious(this.props.socket)}}><a href="#"><i className="fa fa-arrow-left"></i> Previous</a></li>;
+    let previousButton = <li className="previous" onClick={() => {this.handlePrevious(this.props.socket)}}>Previous</li>;
     if (page === 1) {
       previousButton = <li className="previous disabled"><a href="#"><i className="fa fa-arrow-left"></i> Previous</a></li>;
     }

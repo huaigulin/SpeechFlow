@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 var connectionSchema = mongoose.Schema({
-  socketID: String[],
+  socketID: [String],
   username: String
 });
 
