@@ -19,6 +19,7 @@ class PageHome extends Component {
   handleSubmit(event) {
     this.state.socket.emit('login', this.state.userName);
     event.preventDefault();
+    this.props.history.push('/PageMobilePDF');
   }
 
   render() {
