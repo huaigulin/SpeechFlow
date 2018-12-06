@@ -23,9 +23,9 @@ class PageMobilePDF extends Component {
     socket.emit('left click');
   }
 
-  handleRightClick(socket) {
-    console.log('hit right');
-    socket.emit('right click');
+  handleRightClick(socket,username) {
+    console.log('hit login');
+    socket.emit('login',username);
   }
 
   render() {
@@ -47,8 +47,8 @@ class PageMobilePDF extends Component {
         <button onClick={() => {this.handleLeftClick(this.props.socket)}}>
           left
         </button>
-        <button onClick={() => {this.handleRightClick(this.props.socket)}}>
-          right
+        <button onClick={() => {this.handleRightClick(this.props.socket,"test username")}}>
+          login
         </button>
       </div>
 

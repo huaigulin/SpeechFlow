@@ -11,7 +11,11 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.16.4",
+<<<<<<< HEAD
     "react-pdf": "^4.0.0",
+=======
+    "mongoose": "^5.3.14",
+>>>>>>> 38bde9d0f61ea7e16ca33d000ca5809d19fb9392
     "redis": "^2.8.0",
     "socket.io": "^2.1.1"
   }
