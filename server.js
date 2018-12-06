@@ -6,13 +6,13 @@ const app = express();
 const socketServer = http.createServer(app);
 const io = socketIo(socketServer);
 
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/paexpress');
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('we are connected!');
-});
+// const mongoose = require('mongoose');
+// mongoose.connect('mongodb://localhost/paexpress');
+// const db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function() {
+//   console.log('we are connected!');
+// });
 
 // create a GET route
 app.get('/express_backend', (req, res) => {
@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
   res.send('Haha');
 });
 
-let interval;
+// let interval;
 io.on('connection', socket => {
   console.log('New client connected');
 
@@ -69,58 +69,52 @@ io.on('connection', socket => {
   })
 
   // Emit a message on an interval
-  if (interval) {
-    clearInterval(interval);
-  }
-  interval = setInterval(
-    () => socket.emit('Interval Event', 'No message right now'),
-    1000
-  );
+  // if (interval) {
+  //   clearInterval(interval);
+  // }
+  // interval = setInterval(
+  //   () => socket.emit('Interval Event', 'No message right now'),
+  //   1000
+  // );
 });
 
-const Connection = require('./palocal/models/connection');
-
-  // Save the socket id to Redis so that all processes can access it by asking for user name.
-
-function getSocketIDs (req,res,next){
-
-}
-
-function createUser(username,socket){
-  let newConnection = new Connection ({
-    socketID: [socket.id],
-    username: username
-  });
-  newConnection
-    .save()
-    .then(() => {
-      console.log('Connection saved')
-    })
-}
-
 //useless db code
-function addUser(username,connections,socket){
-  var newConnections = connections[0].socketID.push(socket.id);
-  Connections.update({ username: username }, { $set: { socketID: newConnections } })
-    .then(console.log('addUser promise complete'))
-    .error(console.log(error));
-}
+// const Connection = require('./palocal/models/connection');
+// function createUser(username,socket){
+//   let newConnection = new Connection ({
+//     socketID: [socket.id],
+//     username: username
+//   });
+//   newConnection
+//     .save()
+//     .then(() => {
+//       console.log('Connection saved')
+//     })
+// }
 
-function login(username, socket) {
-  Connection.find({username: username})
-    .exec()
-    .then(connections => {
-      console.dir(connections)
-      if (connections.length == 0){
-        createUser(username, socket);
-        console.log('created socket connection')
-      } else {
-        addUser(username,connections,socket);
-        console.log('added socket connection')
-      }
-    })
-    .catch(error => {
-      console.log(error.message);
-    });
-}
+
+// function addUser(username,connections,socket){
+//   var newConnections = connections[0].socketID.push(socket.id);
+//   Connections.update({ username: username }, { $set: { socketID: newConnections } })
+//     .then(console.log('addUser promise complete'))
+//     .error(console.log(error));
+// }
+//
+// function login(username, socket) {
+//   Connection.find({username: username})
+//     .exec()
+//     .then(connections => {
+//       console.dir(connections)
+//       if (connections.length == 0){
+//         createUser(username, socket);
+//         console.log('created socket connection')
+//       } else {
+//         addUser(username,connections,socket);
+//         console.log('added socket connection')
+//       }
+//     })
+//     .catch(error => {
+//       console.log(error.message);
+//     });
+// }
 socketServer.listen(port, () => console.log(`Listening on port ${port}`));
