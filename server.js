@@ -6,6 +6,14 @@ const app = express();
 const socketServer = http.createServer(app);
 const io = socketIo(socketServer);
 
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/paexpress');
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('we are connected!');
+});
+
 // create a GET route
 app.get('/express_backend', (req, res) => {
   res.send({
@@ -27,43 +35,43 @@ io.on('connection', socket => {
   });
 
   socket.on('down click', function() {
-    io.emit('SOMEONE CLICKED THE DOWN BUTTON!!!!');
+    console.log('sending down click to: '+ socket.room)
+    let rooms = Object.keys(socket.rooms);
+    console.log("Current rooms for this socket: "+rooms);
+    io.sockets.to(socket.room).emit('SOMEONE CLICKED THE DOWN BUTTON!!!!');
   });
 
   socket.on('up click', function() {
-    io.emit('SOMEONE CLICKED THE UP BUTTON!!!!');
+    io.sockets.to(socket.room).emit('SOMEONE CLICKED THE UP BUTTON!!!!');
   });
 
   socket.on('left click', function() {
-    io.emit('SOMEONE CLICKED THE LEFT BUTTON!!!!');
+    io.sockets.to(socket.room).emit('SOMEONE CLICKED THE LEFT BUTTON!!!!');
   });
 
 
   socket.on('right click', function(){
-    io.emit('SOMEONE CLICKED THE RIGHT BUTTON!!!!')
+    io.sockets.to(socket.room).emit('SOMEONE CLICKED THE RIGHT BUTTON!!!!')
   })
 
   socket.on('next slide', pageNum => {
-    io.emit('SOMEONE HIT NEXT', pageNum);
+    io.sockets.to(socket.room).emit('SOMEONE HIT NEXT', pageNum+1);
   })
 
   socket.on('back slide', pageNum => {
-    io.emit('SOMEONE HIT BACK', pageNum);
+    io.sockets.to(socket.room).emit('SOMEONE HIT BACK', pageNum-1);
   })
 
 
   socket.on('right click', function() {
-    io.emit('SOMEONE CLICKED THE RIGHT BUTTON!!!!');
-  });
+    io.sockets.to(socket.room).emit('SOMEONE CLICKED THE RIGHT BUTTON!!!!');
+  })
 
-  socket.on('next slide', function() {
-    console.log('about to broadcast next request');
-    io.emit('SOMEONE HIT NEXT');
-  });
-
-  socket.on('back slide', function() {
-    io.emit('SOMEONE HIT BACK');
-  });
+  socket.on('login', username => {
+    socket.leave(socket.id);
+    socket.join(username);
+    socket.room = username;
+  })
 
   // Emit a message on an interval
   if (interval) {
@@ -73,14 +81,51 @@ io.on('connection', socket => {
     () => socket.emit('Interval Event', 'No message right now'),
     1000
   );
-
-  // Save the socket id to Redis so that all processes can access it by asking for user name.
-  socket.on('User Name', getSocketIDs, function(userName) {
-    console.log('socket user name event call back');
-  });
 });
 
-function getSocketIDs(userName, req, res, next) {
-  console.log('This dumb ass has user name: ' + userName);
+const Connection = require('./palocal/models/connection');
+
+  // Save the socket id to Redis so that all processes can access it by asking for user name.
+
+function getSocketIDs (req,res,next){
+
+}
+
+function createUser(username,socket){
+  let newConnection = new Connection ({
+    socketID: [socket.id],
+    username: username
+  });
+  newConnection
+    .save()
+    .then(() => {
+      console.log('Connection saved')
+    })
+}
+
+//useless db code
+function addUser(username,connections,socket){
+  var newConnections = connections[0].socketID.push(socket.id);
+  Connections.update({ username: username }, { $set: { socketID: newConnections } })
+    .then(console.log('addUser promise complete'))
+    .error(console.log(error));
+}
+
+function login(username, socket) {
+  Connection.find({username: username})
+    .exec()
+    .then(connections => {
+      console.dir(connections)
+      if (connections.length == 0){
+        createUser(username, socket);
+        console.log('created socket connection')
+      } else {
+        addUser(username,connections,socket);
+        console.log('added socket connection')
+      }
+    })
+    .catch(error => {
+      console.log(error.message);
+    });
 }
 socketServer.listen(port, () => console.log(`Listening on port ${port}`));

@@ -17,7 +17,7 @@ class PageHome extends Component {
   }
 
   handleSubmit(event) {
-    this.state.socket.emit('User Name', this.state.userName);
+    this.state.socket.emit('login', this.state.userName);
     event.preventDefault();
   }
 
