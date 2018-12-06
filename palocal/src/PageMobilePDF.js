@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 import PdfViewer from './PdfViewer';
+//import viewer from './viewer';
 
 const expressAppUrl = 'https://paexpress.herokuapp.com';
 class PageMobilePDF extends Component {
