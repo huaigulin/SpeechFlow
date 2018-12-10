@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const http = require('http');
 const socketIo = require('socket.io');
 const port = process.env.PORT || 8081;
@@ -13,6 +14,14 @@ const io = socketIo(socketServer);
 // db.once('open', function() {
 //   console.log('we are connected!');
 // });
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'palocal/build')));
+
+// The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/palocal/build/index.html'));
+});
 
 // create a GET route
 app.get('/express_backend', (req, res) => {
