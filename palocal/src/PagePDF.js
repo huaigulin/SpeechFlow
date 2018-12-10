@@ -29,11 +29,10 @@ class PagePDF extends Component {
     return (
       <div>
         <Navbar />
-        <h1>This is the PDF Viewer</h1>
         <li>
           <Link to="/PageVideo/">Speech Flow Video Player</Link>
         </li>
-        <h2>This is the controller for PDF</h2>
+        <h1>This is the PDF Viewer</h1>
         <div>
           {' '}
           <PdfViewer socket={this.props.socket} />{' '}

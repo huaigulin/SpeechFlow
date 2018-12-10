@@ -63,17 +63,27 @@ io.on('connection', socket => {
   });
 
   socket.on('next slide', pageNum => {
+    console.log('get next slide event from react');
     io.sockets.to(socket.room).emit('SOMEONE HIT NEXT', pageNum + 1);
+    socket.pageNum = pageNum;
   });
 
   socket.on('back slide', pageNum => {
     io.sockets.to(socket.room).emit('SOMEONE HIT BACK', pageNum - 1);
+    socket.pageNum = pageNum;
   });
 
   socket.on('login', username => {
     socket.leave(socket.id);
     socket.join(username);
     socket.room = username;
+  });
+
+  socket.on('what is my page?', msg => {
+    console.log('your page is: ' + socket.pageNum);
+    io.sockets
+      .to(socket.room)
+      .emit('update page for new socket', socket.pageNum);
   });
 
   // Emit a message on an interval
