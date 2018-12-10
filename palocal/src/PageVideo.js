@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
-class PageMobileVideo extends Component {
+class PageVideo extends Component {
   render() {
     return (
       <div>
         <Navbar />
-        <h1>This is the Mobile Video Player</h1>
+        <h1>This is the Video Player</h1>
         <li>
-          <Link to="/PageMobilePDF/">Speech Flow Mobile PDF Viewer</Link>
+          <Link to="/PagePDF/">Speech Flow PDF Viewer</Link>
         </li>
         <h2>This is the controller for Video Player</h2>
         <button>PLAY</button>
@@ -19,4 +19,4 @@ class PageMobileVideo extends Component {
     );
   }
 }
-export default PageMobileVideo;
+export default PageVideo;

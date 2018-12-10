@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import PdfViewer from './PdfViewer';
 //import viewer from './viewer';
 
-class PageMobilePDF extends Component {
+class PagePDF extends Component {
   handleUpClick(socket) {
     console.log('hit up');
     socket.emit('up click');
@@ -29,9 +29,9 @@ class PageMobilePDF extends Component {
     return (
       <div>
         <Navbar />
-        <h1>This is the Mobile PDF Viewer</h1>
+        <h1>This is the PDF Viewer</h1>
         <li>
-          <Link to="/PageMobileVideo/">Speech Flow Mobile Video Player</Link>
+          <Link to="/PageVideo/">Speech Flow Video Player</Link>
         </li>
         <h2>This is the controller for PDF</h2>
         <div>
@@ -70,4 +70,4 @@ class PageMobilePDF extends Component {
     );
   }
 }
-export default PageMobilePDF;
+export default PagePDF;

@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import PageHome from './PageHome';
 import PageLogin from './PageLogin';
-import PageMobile from './PageMobile';
-import PageMobilePDF from './PageMobilePDF';
-import PageMobileVideo from './PageMobileVideo';
+import PagePDF from './PagePDF';
+import PageVideo from './PageVideo';
 import PageNonsense from './PageNonsense';
 
 import socketIOClient from 'socket.io-client';
@@ -75,13 +74,9 @@ class App extends Component {
               render={props => <PageLogin {...props} data={this.state.data} />}
             />
             <Route
-              path="/mobile"
-              render={props => <PageMobile {...props} data={this.state.data} />}
-            />
-            <Route
-              path="/PageMobilePDF"
+              path="/PagePDF"
               render={props => (
-                <PageMobilePDF
+                <PagePDF
                   {...props}
                   socket={this.state.socket}
                   data={this.state.data}
@@ -89,10 +84,8 @@ class App extends Component {
               )}
             />
             <Route
-              path="/PageMobileVideo"
-              render={props => (
-                <PageMobileVideo {...props} data={this.state.data} />
-              )}
+              path="/PageVideo"
+              render={props => <PageVideo {...props} data={this.state.data} />}
             />
           </div>
         </BrowserRouter>
