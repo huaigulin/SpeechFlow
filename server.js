@@ -34,6 +34,14 @@ io.on('connection', socket => {
     console.log('Client disconnected');
   });
 
+  socket.on('video', () => {
+    io.sockets.to(socket.room).emit('video');
+  })
+
+  socket.on('pdf', () => {
+    io.sockets.to(socket.room).emit('pdf');
+  })
+
   socket.on('play', time => {
     io.sockets.to(socket.room).emit('play',time);
   });

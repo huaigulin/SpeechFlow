@@ -7,6 +7,12 @@ import PdfViewer from './PdfViewer';
 const expressAppUrl = 'https://paexpress.herokuapp.com';
 class PageMobilePDF extends Component {
 
+  componentDidMount(){
+    this.props.socket.on('video', () => {
+      this.props.history.push('/PageMobileVideo');
+    })
+  }
+
 
   handleUpClick(socket) {
     console.log('hit up');
@@ -28,12 +34,17 @@ class PageMobilePDF extends Component {
     socket.emit('login',username);
   }
 
+  video(socket){
+    console.log('hit video');
+    socket.emit('video');
+  }
+
   render() {
     return (
       <div>
         <Navbar />
         <h1>This is the Mobile PDF Viewer</h1>
-        <li>
+        <li onClick={() => {this.video(this.props.socket)}}>
           <Link to="/PageMobileVideo/">Speech Flow Mobile Video Player</Link>
         </li>
         <h2>This is the controller for PDF</h2>
