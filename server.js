@@ -34,12 +34,16 @@ io.on('connection', socket => {
     console.log('Client disconnected');
   });
 
-  socket.on('play', function(){
-    io.sockets.to(socket.room).emit('play');
+  socket.on('play', time => {
+    io.sockets.to(socket.room).emit('play',time);
   });
 
-  socket.on('pause', function(){
-    io.sockets.to(socket.room).emit('pause');
+  socket.on('pause', time => {
+    io.sockets.to(socket.room).emit('pause',time);
+  });
+
+  socket.on('forward', time => {
+    io.sockets.to(socket.room).emit('forward',time);
   });
 
   socket.on('down click', function() {
