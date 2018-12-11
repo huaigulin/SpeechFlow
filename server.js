@@ -34,10 +34,15 @@ io.on('connection', socket => {
     console.log('Client disconnected');
   });
 
+  socket.on('play', function(){
+    io.sockets.to(socket.room).emit('play');
+  });
+
+  socket.on('pause', function(){
+    io.sockets.to(socket.room).emit('pause');
+  });
+
   socket.on('down click', function() {
-    console.log('sending down click to: '+ socket.room)
-    let rooms = Object.keys(socket.rooms);
-    console.log("Current rooms for this socket: "+rooms);
     io.sockets.to(socket.room).emit('SOMEONE CLICKED THE DOWN BUTTON!!!!');
   });
 

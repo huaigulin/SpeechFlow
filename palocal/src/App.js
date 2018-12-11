@@ -91,7 +91,11 @@ class App extends Component {
             <Route
               path="/PageMobileVideo"
               render={props => (
-                <PageMobileVideo {...props} data={this.state.data} />
+                <PageMobileVideo
+                  {...props}
+                  data={this.state.data}
+                  socket={this.state.socket}
+                />
               )}
             />
           </div>

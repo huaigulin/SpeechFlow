@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
+import VideoPlayer from './VideoPlayer';
 class PageMobileVideo extends Component {
+
+
   render() {
     return (
       <div>
@@ -10,11 +13,7 @@ class PageMobileVideo extends Component {
         <li>
           <Link to="/PageMobilePDF/">Speech Flow Mobile PDF Viewer</Link>
         </li>
-        <h2>This is the controller for Video Player</h2>
-        <button>PLAY</button>
-        <button>PAUSE</button>
-        <button>FORWARD</button>
-        <button>BACKWARD</button>
+        <VideoPlayer socket={this.props.socket}></VideoPlayer>
       </div>
     );
   }
