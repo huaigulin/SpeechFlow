@@ -11,10 +11,10 @@ class App extends Component {
   state = {
     data: null,
     messageFromSocketServer: null,
-    socket: socketIOClient('https://paexpress.herokuapp.com')
+    socket: socketIOClient('http://127.0.0.1:8081')
   };
 
-  componentDidMount() {
+  componentDidMount(){
     this.callBackendAPI()
       .then(res => this.setState({ data: res.express }))
       .catch(err => console.log(err));
@@ -36,9 +36,9 @@ class App extends Component {
       console.log('left message recieived');
     });
 
-    this.state.socket.on('SOMEONE CLICKED THE RIGHT BUTTON!!!!', function() {
-      console.log('right message recieived');
-    });
+    this.state.socket.on('SOMEONE CLICKED THE RIGHT BUTTON!!!!', function(){
+      console.log('right message recieived')
+    })
   }
 
   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
@@ -85,7 +85,13 @@ class App extends Component {
             />
             <Route
               path="/PageVideo"
-              render={props => <PageVideo {...props} data={this.state.data} />}
+              render={props => (
+                <PageVideo
+                  {...props}
+                  data={this.state.data}
+                  socket={this.state.socket}
+                />
+              )}
             />
           </div>
         </BrowserRouter>

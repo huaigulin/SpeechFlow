@@ -43,6 +43,27 @@ io.on('connection', socket => {
     console.log('Client disconnected');
   });
 
+  socket.on('video', () => {
+    io.sockets.to(socket.room).emit('video');
+  });
+
+  socket.on('pdf', () => {
+    io.sockets.to(socket.room).emit('pdf');
+  });
+
+  socket.on('play', time => {
+    io.sockets.to(socket.room).emit('play',time);
+  });
+
+  socket.on('pause', time => {
+    io.sockets.to(socket.room).emit('pause',time);
+  });
+
+  socket.on('forward', time => {
+    io.sockets.to(socket.room).emit('forward',time);
+  });
+
+
   socket.on('down click', function() {
     console.log('sending down click to: ' + socket.room);
     let rooms = Object.keys(socket.rooms);
