@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const http = require('http');
 const socketIo = require('socket.io');
 const port = process.env.PORT || 8081;
@@ -13,6 +14,14 @@ const io = socketIo(socketServer);
 // db.once('open', function() {
 //   console.log('we are connected!');
 // });
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'palocal/build')));
+
+// The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/palocal/build/index.html'));
+});
 
 // create a GET route
 app.get('/express_backend', (req, res) => {
@@ -36,22 +45,22 @@ io.on('connection', socket => {
 
   socket.on('video', () => {
     io.sockets.to(socket.room).emit('video');
-  })
+  });
 
   socket.on('pdf', () => {
     io.sockets.to(socket.room).emit('pdf');
-  })
+  });
 
   socket.on('play', time => {
-    io.sockets.to(socket.room).emit('play',time);
+    io.sockets.to(socket.room).emit('play', time);
   });
 
   socket.on('pause', time => {
-    io.sockets.to(socket.room).emit('pause',time);
+    io.sockets.to(socket.room).emit('pause', time);
   });
 
   socket.on('forward', time => {
-    io.sockets.to(socket.room).emit('forward',time);
+    io.sockets.to(socket.room).emit('forward', time);
   });
 
   socket.on('down click', function() {
@@ -66,24 +75,33 @@ io.on('connection', socket => {
     io.sockets.to(socket.room).emit('SOMEONE CLICKED THE LEFT BUTTON!!!!');
   });
 
-
-  socket.on('right click', function(){
-    io.sockets.to(socket.room).emit('SOMEONE CLICKED THE RIGHT BUTTON!!!!')
-  })
+  socket.on('right click', function() {
+    io.sockets.to(socket.room).emit('SOMEONE CLICKED THE RIGHT BUTTON!!!!');
+  });
 
   socket.on('next slide', pageNum => {
-    io.sockets.to(socket.room).emit('SOMEONE HIT NEXT', pageNum+1);
-  })
+    console.log('get next slide event from react');
+    io.sockets.to(socket.room).emit('SOMEONE HIT NEXT', pageNum + 1);
+    socket.pageNum = pageNum;
+  });
 
   socket.on('back slide', pageNum => {
-    io.sockets.to(socket.room).emit('SOMEONE HIT BACK', pageNum-1);
-  })
+    io.sockets.to(socket.room).emit('SOMEONE HIT BACK', pageNum - 1);
+    socket.pageNum = pageNum;
+  });
 
   socket.on('login', username => {
     socket.leave(socket.id);
     socket.join(username);
     socket.room = username;
-  })
+  });
+
+  socket.on('what is my page?', msg => {
+    console.log('your page is: ' + socket.pageNum);
+    io.sockets
+      .to(socket.room)
+      .emit('update page for new socket', socket.pageNum);
+  });
 
   // Emit a message on an interval
   // if (interval) {
@@ -108,7 +126,6 @@ io.on('connection', socket => {
 //       console.log('Connection saved')
 //     })
 // }
-
 
 // function addUser(username,connections,socket){
 //   var newConnections = connections[0].socketID.push(socket.id);

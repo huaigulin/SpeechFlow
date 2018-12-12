@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import PageHome from './PageHome';
 import PageLogin from './PageLogin';
-import PageMobile from './PageMobile';
-import PageMobilePDF from './PageMobilePDF';
-import PageMobileVideo from './PageMobileVideo';
+import PagePDF from './PagePDF';
+import PageVideo from './PageVideo';
 import PageNonsense from './PageNonsense';
 
 import socketIOClient from 'socket.io-client';
@@ -12,10 +11,10 @@ class App extends Component {
   state = {
     data: null,
     messageFromSocketServer: null,
-    socket: socketIOClient('http://127.0.0.1:8081')
+    socket: socketIOClient('https://paexpress.herokuapp.com')
   };
 
-  componentDidMount(){
+  componentDidMount() {
     this.callBackendAPI()
       .then(res => this.setState({ data: res.express }))
       .catch(err => console.log(err));
@@ -37,9 +36,9 @@ class App extends Component {
       console.log('left message recieived');
     });
 
-    this.state.socket.on('SOMEONE CLICKED THE RIGHT BUTTON!!!!', function(){
-      console.log('right message recieived')
-    })
+    this.state.socket.on('SOMEONE CLICKED THE RIGHT BUTTON!!!!', function() {
+      console.log('right message recieived');
+    });
   }
 
   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
@@ -75,13 +74,9 @@ class App extends Component {
               render={props => <PageLogin {...props} data={this.state.data} />}
             />
             <Route
-              path="/mobile"
-              render={props => <PageMobile {...props} data={this.state.data} />}
-            />
-            <Route
-              path="/PageMobilePDF"
+              path="/PagePDF"
               render={props => (
-                <PageMobilePDF
+                <PagePDF
                   {...props}
                   socket={this.state.socket}
                   data={this.state.data}
