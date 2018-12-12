@@ -1,6 +1,6 @@
 import React from 'react';
 import PDF from 'react-pdf-js';
-import demo from './demo.pdf';
+import demo from './Speechflow.pdf';
 import './PdfViewer.css';
 
 class PdfViewer extends React.Component {

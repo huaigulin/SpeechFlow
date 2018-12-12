@@ -15,6 +15,7 @@ class App extends Component {
   };
 
   componentDidMount() {
+    document.title = 'SpeechFlow';
     this.callBackendAPI()
       .then(res => this.setState({ data: res.express }))
       .catch(err => console.log(err));
