@@ -6,13 +6,11 @@ import PdfViewer from './PdfViewer';
 
 const expressAppUrl = 'https://paexpress.herokuapp.com';
 class PagePDF extends Component {
-
-  componentDidMount(){
+  componentDidMount() {
     this.props.socket.on('video', () => {
       this.props.history.push('/PageVideo');
-    })
+    });
   }
-
 
   handleUpClick(socket) {
     console.log('hit up');
@@ -29,12 +27,12 @@ class PagePDF extends Component {
     socket.emit('left click');
   }
 
-  handleRightClick(socket,username) {
+  handleRightClick(socket, username) {
     console.log('hit login');
-    socket.emit('login',username);
+    socket.emit('login', username);
   }
 
-  video(socket){
+  video(socket) {
     console.log('hit video');
     socket.emit('video');
   }
@@ -43,13 +41,20 @@ class PagePDF extends Component {
     return (
       <div>
         <Navbar />
-        <h1>This is the Mobile PDF Viewer</h1>
-        <li onClick={() => {this.video(this.props.socket)}}>
-          <Link to="/PageVideo/">Speech Flow Mobile Video Player</Link>
+        <h1>This is the PDF Viewer</h1>
+        <li
+          onClick={() => {
+            this.video(this.props.socket);
+          }}
+        >
+          <Link to="/PageVideo/">Speech Flow Video Player</Link>
         </li>
         <h2>This is the controller for PDF</h2>
-        <div> <PdfViewer socket={this.props.socket}/> </div>
-        <button onClick={() => {this.handleUpClick(this.props.socket)}}>
+        <div>
+          {' '}
+          <PdfViewer socket={this.props.socket} />{' '}
+        </div>
+        {/* <button onClick={() => {this.handleUpClick(this.props.socket)}}>
           up
         </button>
         <button onClick={() => {this.handleDownClick(this.props.socket)}}>
@@ -60,9 +65,8 @@ class PagePDF extends Component {
         </button>
         <button onClick={() => {this.handleRightClick(this.props.socket,"test username")}}>
           login
-        </button>
+        </button> */}
       </div>
-
     );
   }
 }
