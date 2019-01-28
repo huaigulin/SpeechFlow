@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import crypto from 'crypto-js';
 import axios from 'axios';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
@@ -26,7 +25,7 @@ class PagePDF extends Component {
     const formData = new FormData();
     formData.append('file', this.state.file[0]);
     axios
-      .post(`/test-upload`, formData, {
+      .post('/upload-file', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -35,7 +34,7 @@ class PagePDF extends Component {
         // handle your response;
       })
       .catch(error => {
-        console.log('ERROR in react post request');
+        console.log('ERROR in react PagePDF post request: ' + error);
       });
   };
 
@@ -47,7 +46,6 @@ class PagePDF extends Component {
     return (
       <div>
         <Navbar />
-        <h1>This is the PDF Viewer</h1>
         <li
           onClick={() => {
             this.props.socket.emit('video');

@@ -36,8 +36,8 @@ const uploadFile = (buffer, name, type) => {
   return s3.upload(params).promise();
 };
 
-// Define POST route
-app.post('/test-upload', (request, response) => {
+// Define POST route for file uploads to aws
+app.post('/upload-file', (request, response) => {
   const form = new multiparty.Form();
   form.parse(request, async (error, fields, files) => {
     if (error) throw new Error(error);

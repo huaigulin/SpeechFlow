@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar';
-import VideoPlayer from './VideoPlayer';
+// import VideoPlayer from './VideoPlayer';
 
 class PageHome extends Component {
   constructor(props) {
