@@ -6,14 +6,54 @@ const port = process.env.PORT || 8081;
 const app = express();
 const socketServer = http.createServer(app);
 const io = socketIo(socketServer);
+const aws = require('aws-sdk');
+const fs = require('fs-extra');
+const fileType = require('file-type');
+const bluebird = require('bluebird');
+const multiparty = require('multiparty');
 
-// const mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/paexpress');
-// const db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function() {
-//   console.log('we are connected!');
-// });
+// configure the keys for accessing AWS
+aws.config.update({
+  accessKeyId: process.env.AWS_KEY,
+  secretAccessKey: process.env.AWS_SECRET
+});
+
+// configure AWS to work with promises
+aws.config.setPromisesDependency(bluebird);
+
+// create S3 instance
+const s3 = new aws.S3();
+
+// abstracts function to upload a file returning a promise
+const uploadFile = (buffer, name, type) => {
+  const params = {
+    ACL: 'public-read',
+    Body: buffer,
+    Bucket: process.env.S3_BUCKET,
+    ContentType: type.mime,
+    Key: `${name}.${type.ext}`
+  };
+  return s3.upload(params).promise();
+};
+
+// Define POST route
+app.post('/test-upload', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields, files) => {
+    if (error) throw new Error(error);
+    try {
+      const path = files.file[0].path;
+      const buffer = fs.readFileSync(path);
+      const type = fileType(buffer);
+      const timestamp = Date.now().toString();
+      const fileName = `bucketFolder/${timestamp}-lg`;
+      const data = await uploadFile(buffer, fileName, type);
+      return response.status(200).send(data);
+    } catch (error) {
+      return response.status(400).send(error);
+    }
+  });
+});
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'palocal/build')));
@@ -52,17 +92,16 @@ io.on('connection', socket => {
   });
 
   socket.on('play', time => {
-    io.sockets.to(socket.room).emit('play',time);
+    io.sockets.to(socket.room).emit('play', time);
   });
 
   socket.on('pause', time => {
-    io.sockets.to(socket.room).emit('pause',time);
+    io.sockets.to(socket.room).emit('pause', time);
   });
 
   socket.on('forward', time => {
-    io.sockets.to(socket.room).emit('forward',time);
+    io.sockets.to(socket.room).emit('forward', time);
   });
-
 
   socket.on('down click', function() {
     console.log('sending down click to: ' + socket.room);

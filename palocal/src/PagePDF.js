@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import crypto from 'crypto-js';
+import axios from 'axios';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 import PdfViewer from './PdfViewer';
@@ -6,36 +8,40 @@ import PdfViewer from './PdfViewer';
 
 const expressAppUrl = 'https://paexpress.herokuapp.com';
 class PagePDF extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      file: null
+    };
+  }
+
   componentDidMount() {
     this.props.socket.on('video', () => {
       this.props.history.push('/PageVideo');
     });
   }
 
-  handleUpClick(socket) {
-    console.log('hit up');
-    socket.emit('up click');
-  }
+  submitFile = event => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('file', this.state.file[0]);
+    axios
+      .post(`/test-upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(response => {
+        // handle your response;
+      })
+      .catch(error => {
+        console.log('ERROR in react post request');
+      });
+  };
 
-  handleDownClick(socket) {
-    console.log('hit down');
-    socket.emit('down click');
-  }
-
-  handleLeftClick(socket) {
-    console.log('hit left');
-    socket.emit('left click');
-  }
-
-  handleRightClick(socket, username) {
-    console.log('hit login');
-    socket.emit('login', username);
-  }
-
-  video(socket) {
-    console.log('hit video');
-    socket.emit('video');
-  }
+  handleFileUpload = event => {
+    this.setState({ file: event.target.files });
+  };
 
   render() {
     return (
@@ -44,28 +50,23 @@ class PagePDF extends Component {
         <h1>This is the PDF Viewer</h1>
         <li
           onClick={() => {
-            this.video(this.props.socket);
+            this.props.socket.emit('video');
           }}
         >
           <Link to="/PageVideo/">Speech Flow Video Player</Link>
         </li>
-        <h2>This is the controller for PDF</h2>
+        <form onSubmit={this.submitFile}>
+          <input
+            label="upload file"
+            type="file"
+            onChange={this.handleFileUpload}
+          />
+          <button type="submit">Send</button>
+        </form>
         <div>
           {' '}
           <PdfViewer socket={this.props.socket} />{' '}
         </div>
-        {/* <button onClick={() => {this.handleUpClick(this.props.socket)}}>
-          up
-        </button>
-        <button onClick={() => {this.handleDownClick(this.props.socket)}}>
-          down
-        </button>
-        <button onClick={() => {this.handleLeftClick(this.props.socket)}}>
-          left
-        </button>
-        <button onClick={() => {this.handleRightClick(this.props.socket,"test username")}}>
-          login
-        </button> */}
       </div>
     );
   }
