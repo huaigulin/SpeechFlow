@@ -20,6 +20,7 @@ class PageHome extends Component {
     this.state.socket.emit('login', this.state.userName);
     event.preventDefault();
     this.props.history.push('/PagePDF');
+    this.props.setUserName(this.state.userName);
   }
 
   render() {

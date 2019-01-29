@@ -14,8 +14,8 @@ const multiparty = require('multiparty');
 
 // configure the keys for accessing AWS
 aws.config.update({
-  accessKeyId: process.env.AWS_KEY,
-  secretAccessKey: process.env.AWS_SECRET
+  accessKeyId: process.env.AWS_KEY, //process.env.AWS_KEY,
+  secretAccessKey: process.env.AWS_SECRET //process.env.AWS_SECRET
 });
 
 // configure AWS to work with promises
@@ -29,7 +29,7 @@ const uploadFile = (buffer, name, type) => {
   const params = {
     ACL: 'public-read',
     Body: buffer,
-    Bucket: process.env.S3_BUCKET,
+    Bucket: process.env.S3_BUCKET, //process.env.S3_BUCKET,
     ContentType: type.mime,
     Key: `${name}.${type.ext}`
   };
@@ -42,12 +42,14 @@ app.post('/upload-file', (request, response) => {
   form.parse(request, async (error, fields, files) => {
     if (error) throw new Error(error);
     try {
-      const path = files.file[0].path;
-      const buffer = fs.readFileSync(path);
+      const filePath = files.file[0].path;
+      const buffer = fs.readFileSync(filePath);
       const type = fileType(buffer);
       const timestamp = Date.now().toString();
-      const fileName = `bucketFolder/${timestamp}-lg`;
-      const data = await uploadFile(buffer, fileName, type);
+      const userName = fields.userName[0];
+      const fileName = path.parse(files.file[0].originalFilename).name;
+      const fileDirectory = `${userName}/${fileName}`;
+      const data = await uploadFile(buffer, fileDirectory, type);
       return response.status(200).send(data);
     } catch (error) {
       return response.status(400).send(error);

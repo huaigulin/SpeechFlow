@@ -5,14 +5,26 @@ import PageLogin from './PageLogin';
 import PagePDF from './PagePDF';
 import PageVideo from './PageVideo';
 import PageNonsense from './PageNonsense';
-
 import socketIOClient from 'socket.io-client';
+
 class App extends Component {
-  state = {
-    data: null,
-    messageFromSocketServer: null,
-    socket: socketIOClient('https://paexpress.herokuapp.com/')
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: null,
+      messageFromSocketServer: null,
+      socket: socketIOClient('https://paexpress.herokuapp.com/'),
+      userName: null
+    };
+
+    this.setUserName = this.setUserName.bind(this);
+  }
+
+  setUserName(userName) {
+    this.setState({
+      userName: userName
+    });
+  }
 
   componentDidMount() {
     document.title = 'SpeechFlow';
@@ -67,6 +79,7 @@ class App extends Component {
                   socket={this.state.socket}
                   data={this.state.data}
                   messageFromSocketServer={this.state.messageFromSocketServer}
+                  setUserName={this.setUserName}
                 />
               )}
             />
@@ -81,6 +94,7 @@ class App extends Component {
                   {...props}
                   socket={this.state.socket}
                   data={this.state.data}
+                  userName={this.state.userName}
                 />
               )}
             />

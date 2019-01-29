@@ -24,8 +24,9 @@ class PagePDF extends Component {
     event.preventDefault();
     const formData = new FormData();
     formData.append('file', this.state.file[0]);
+    formData.append('userName', this.props.userName);
     axios
-      .post('/upload-file', formData, {
+      .post(`/upload-file`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -63,7 +64,10 @@ class PagePDF extends Component {
         </form>
         <div>
           {' '}
-          <PdfViewer socket={this.props.socket} />{' '}
+          <PdfViewer
+            socket={this.props.socket}
+            userName={this.props.userName}
+          />{' '}
         </div>
       </div>
     );

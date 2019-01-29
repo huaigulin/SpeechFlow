@@ -2,7 +2,7 @@
   "name": "paexpress",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "heroku-postbuild": "cd palocal && npm install && npm run build"
