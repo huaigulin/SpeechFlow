@@ -13,7 +13,7 @@ class App extends Component {
     this.state = {
       data: null,
       messageFromSocketServer: null,
-      socket: socketIOClient('http://localhost:8081/'),
+      socket: socketIOClient('https://paexpress.herokuapp.com/'),
       userName: null,
       docName: null,
       pageNum: null
