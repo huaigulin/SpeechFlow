@@ -4,8 +4,8 @@ import PageHome from './PageHome';
 import PageLogin from './PageLogin';
 import PagePDF from './PagePDF';
 import PageVideo from './PageVideo';
-import PageNonsense from './PageNonsense';
 import socketIOClient from 'socket.io-client';
+// import PageNonsense from './PageNonsense';
 
 class App extends Component {
   constructor(props) {
@@ -13,11 +13,15 @@ class App extends Component {
     this.state = {
       data: null,
       messageFromSocketServer: null,
-      socket: socketIOClient('https://paexpress.herokuapp.com/'),
-      userName: null
+      socket: socketIOClient('http://localhost:8081/'),
+      userName: null,
+      docName: null,
+      pageNum: null
     };
 
     this.setUserName = this.setUserName.bind(this);
+    this.setDocName = this.setDocName.bind(this);
+    this.setPageNum = this.setPageNum.bind(this);
   }
 
   setUserName(userName) {
@@ -26,44 +30,43 @@ class App extends Component {
     });
   }
 
-  componentDidMount() {
-    document.title = 'SpeechFlow';
-    this.callBackendAPI()
-      .then(res => this.setState({ data: res.express }))
-      .catch(err => console.log(err));
-
-    // On interval event
-    this.state.socket.on('Interval Event', msg =>
-      this.setState({ messageFromSocketServer: msg })
-    );
-
-    this.state.socket.on('SOMEONE CLICKED THE DOWN BUTTON!!!!', function() {
-      console.log('down message recieived');
-    });
-
-    this.state.socket.on('SOMEONE CLICKED THE UP BUTTON!!!!', function() {
-      console.log('up message recieived');
-    });
-
-    this.state.socket.on('SOMEONE CLICKED THE LEFT BUTTON!!!!', function() {
-      console.log('left message recieived');
-    });
-
-    this.state.socket.on('SOMEONE CLICKED THE RIGHT BUTTON!!!!', function() {
-      console.log('right message recieived');
+  setDocName(docName) {
+    this.setState({
+      docName: docName
     });
   }
 
-  // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
-  callBackendAPI = async () => {
-    const response = await fetch('/express_backend');
-    const body = await response.json();
+  setPageNum(pageNum) {
+    this.setState({
+      pageNum: pageNum
+    });
+  }
 
-    if (response.status !== 200) {
-      throw Error(body.message);
-    }
-    return body;
-  };
+  componentDidMount() {
+    document.title = 'SpeechFlow';
+
+    this.state.socket.on('update doc name and page num', (docName, pageNum) => {
+      if (docName != null) {
+        this.setDocName(docName);
+      }
+      if (pageNum != null) {
+        this.setPageNum(pageNum);
+      }
+    });
+
+    this.state.socket.on('do you have doc name and page num?', () => {
+      if (this.state.docName != null && this.state.pageNum != null) {
+        console.log('Yes I have them: ');
+        console.log(this.state.docName);
+        console.log(this.state.pageNum);
+        this.state.socket.emit(
+          'yes i have them',
+          this.state.docName,
+          this.state.pageNum
+        );
+      }
+    });
+  }
 
   render() {
     return (
@@ -95,6 +98,10 @@ class App extends Component {
                   socket={this.state.socket}
                   data={this.state.data}
                   userName={this.state.userName}
+                  setDocName={this.setDocName}
+                  setPageNum={this.setPageNum}
+                  docName={this.state.docName}
+                  pageNum={this.state.pageNum}
                 />
               )}
             />
@@ -105,6 +112,7 @@ class App extends Component {
                   {...props}
                   data={this.state.data}
                   socket={this.state.socket}
+                  userName={this.state.userName}
                 />
               )}
             />

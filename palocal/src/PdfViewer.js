@@ -4,15 +4,22 @@ import demo from './Speechflow.pdf';
 import './PdfViewer.css';
 
 class PdfViewer extends React.Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      docName: this.props.docName
+    };
+  }
 
   componentDidMount() {
     this.props.socket.on('SOMEONE HIT NEXT', pageNum => {
       this.setState({ page: pageNum });
+      this.props.setPageNum(pageNum);
     });
 
     this.props.socket.on('SOMEONE HIT BACK', pageNum => {
       this.setState({ page: pageNum });
+      this.props.setPageNum(pageNum);
     });
   }
 
