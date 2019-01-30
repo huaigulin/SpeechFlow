@@ -118,28 +118,9 @@ class PagePDF extends Component {
       <div>
         <Navbar />
         {isLoggedIn ? (
-          <li
-            onClick={() => {
-              this.props.socket.emit('video');
-            }}
-          >
-            <Link to="/PageVideo/">Speech Flow Video Player</Link>
-          </li>
+          <div />
         ) : (
           <h3>You have not logged in. Please log in or sign up.</h3>
-        )}
-        {isLoggedIn ? (
-          <form onSubmit={this.submitFile}>
-            <h5>Upload your slides in PDF:</h5>
-            <input
-              label="upload file"
-              type="file"
-              onChange={this.handleFileUpload}
-            />
-            <button type="submit">Upload</button>
-          </form>
-        ) : (
-          <div />
         )}
         {isLoggedIn ? (
           <div>
@@ -175,6 +156,30 @@ class PagePDF extends Component {
               </div>
             )}
           </div>
+        ) : (
+          <div />
+        )}
+        {isLoggedIn ? (
+          <form onSubmit={this.submitFile}>
+            <h5>Upload your slides in PDF:</h5>
+            <input
+              label="upload file"
+              type="file"
+              onChange={this.handleFileUpload}
+            />
+            <button type="submit">Upload</button>
+          </form>
+        ) : (
+          <div />
+        )}
+        {isLoggedIn ? (
+          <li
+            onClick={() => {
+              this.props.socket.emit('video');
+            }}
+          >
+            <Link to="/PageVideo/">Speech Flow Video Player</Link>
+          </li>
         ) : (
           <div />
         )}
