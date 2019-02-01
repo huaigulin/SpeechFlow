@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
+import pitch from './SPEECHFLOW.pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${
   pdfjs.version
 }/pdf.worker.js`;
@@ -111,7 +112,7 @@ class PagePDF extends Component {
 
   render() {
     const isLoggedIn = this.props.userName != null;
-    var isDocNameValid = this.state.docName != null;
+    var isDocNameValid = true; //this.state.docName != null;
     const { pageNum, numPages } = this.state;
 
     return (
@@ -127,13 +128,7 @@ class PagePDF extends Component {
             {isDocNameValid ? (
               <div>
                 <Document
-                  file={
-                    'https://s3.us-east-2.amazonaws.com/speechflow/' +
-                    this.props.userName +
-                    '/' +
-                    this.state.docName +
-                    '.pdf'
-                  }
+                  file={pitch}
                   onLoadSuccess={this.onDocumentLoadSuccess}
                 >
                   <Page pageNumber={pageNum} />
