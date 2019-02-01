@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
-import pitch from './SpeechFlow.pdf';
+import demo from './demo.pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${
   pdfjs.version
 }/pdf.worker.js`;
@@ -128,7 +128,7 @@ class PagePDF extends Component {
             {isDocNameValid ? (
               <div>
                 <Document
-                  file={pitch}
+                  file={demo}
                   onLoadSuccess={this.onDocumentLoadSuccess}
                 >
                   <Page pageNumber={pageNum} />
