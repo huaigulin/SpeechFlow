@@ -18,7 +18,6 @@ class PageVideo extends Component {
     return (
       <div>
         <Navbar />
-        <h1>This is the Video Player</h1>
         <li
           onClick={() => {
             this.pdf(this.props.socket);
