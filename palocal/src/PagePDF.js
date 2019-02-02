@@ -6,9 +6,16 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import speechflow from './speechflow.pdf';
 import MediaQuery from 'react-responsive';
+import './PagePDF.css';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${
   pdfjs.version
 }/pdf.worker.js`;
+
+const DOWN_KEY = 40;
+const RIGHT_KEY = 39;
+const UP_KEY = 38;
+const LEFT_KEY = 37;
+const SPACE_KEY = 32;
 
 class PagePDF extends Component {
   constructor(props) {
@@ -52,12 +59,53 @@ class PagePDF extends Component {
       this.props.setPageNum(pageNum);
       this.props.setDocName(this.state.docName);
     });
+
+    document.addEventListener('keydown', this._handleKeyDown);
+
+    window.addEventListener(
+      'keydown',
+      function(e) {
+        // space and arrow keys
+        if (
+          [SPACE_KEY, LEFT_KEY, UP_KEY, RIGHT_KEY, DOWN_KEY].indexOf(
+            e.keyCode
+          ) > -1
+        ) {
+          e.preventDefault();
+        }
+      },
+      false
+    );
   }
 
   componentWillUnmount() {
     this.props.socket.removeListener('SOMEONE HIT NEXT');
     this.props.socket.removeListener('SOMEONE HIT BACK');
+
+    document.removeEventListener('keydown', this._handleKeyDown);
   }
+
+  _handleKeyDown = event => {
+    switch (event.keyCode) {
+      case DOWN_KEY:
+        this.nextSlide();
+        break;
+      case RIGHT_KEY:
+        this.nextSlide();
+        break;
+      case SPACE_KEY:
+        this.nextSlide();
+        break;
+      case UP_KEY:
+        this.previousSlide();
+        break;
+      case LEFT_KEY:
+        this.previousSlide();
+        break;
+      default:
+        break;
+    }
+  };
 
   submitFile = event => {
     event.preventDefault();
@@ -128,15 +176,41 @@ class PagePDF extends Component {
           <div>
             {isDocNameValid ? (
               <div>
-                <Document
-                  file={speechflow}
-                  onLoadSuccess={this.onDocumentLoadSuccess}
-                >
-                  <Page pageNumber={pageNum} />
-                </Document>
-                <button onClick={this.previousSlide}> Previous </button>
-                <button onClick={this.nextSlide}> Next </button>
-                <p>
+                <MediaQuery query="(min-device-width: 1024px)">
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <Document
+                      file={speechflow}
+                      onLoadSuccess={this.onDocumentLoadSuccess}
+                    >
+                      <Page pageNumber={pageNum} scale={0.8} />
+                    </Document>
+                  </div>
+                </MediaQuery>
+                <MediaQuery query="(max-device-width: 1023px)">
+                  <div>
+                    <Document
+                      file={speechflow}
+                      onLoadSuccess={this.onDocumentLoadSuccess}
+                    >
+                      <Page pageNumber={pageNum} width={300} />
+                    </Document>
+                  </div>
+                  <button
+                    className="phoneBackButton"
+                    onClick={this.previousSlide}
+                  >
+                    Back
+                  </button>
+                  <button className="phoneNextButton" onClick={this.nextSlide}>
+                    Next
+                  </button>
+                </MediaQuery>
+                <p className="textCenter">
                   Page {pageNum} of {numPages}
                 </p>
               </div>
@@ -155,6 +229,7 @@ class PagePDF extends Component {
         ) : (
           <div />
         )}
+        <br />
         {isLoggedIn ? (
           <MediaQuery query="(min-device-width: 1224px)">
             <form onSubmit={this.submitFile}>

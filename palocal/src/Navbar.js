@@ -9,9 +9,9 @@ class Navbar extends Component {
           <li>
             <Link to="/">Home</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/login/">Login</Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
     );
