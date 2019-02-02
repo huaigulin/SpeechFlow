@@ -231,20 +231,15 @@ class PagePDF extends Component {
         )}
         <br />
         {isLoggedIn ? (
-          <MediaQuery query="(min-device-width: 1224px)">
-            <form onSubmit={this.submitFile}>
-              <h5>Upload your slides in PDF:</h5>
-              <input
-                label="upload file"
-                type="file"
-                onChange={this.handleFileUpload}
-              />
-              <button type="submit">Upload</button>
-            </form>
-            <MediaQuery query="(max-width: 1224px)">
-              <div>You are sized like a tablet or mobile phone though</div>
-            </MediaQuery>
-          </MediaQuery>
+          <form onSubmit={this.submitFile}>
+            <h5>Upload your slides in PDF:</h5>
+            <input
+              label="upload file"
+              type="file"
+              onChange={this.handleFileUpload}
+            />
+            <button type="submit">Upload</button>
+          </form>
         ) : (
           <div />
         )}
