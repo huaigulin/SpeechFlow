@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import speechflow from './speechflow.pdf';
+import MediaQuery from 'react-responsive';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${
   pdfjs.version
 }/pdf.worker.js`;
@@ -155,15 +156,20 @@ class PagePDF extends Component {
           <div />
         )}
         {isLoggedIn ? (
-          <form onSubmit={this.submitFile}>
-            <h5>Upload your slides in PDF:</h5>
-            <input
-              label="upload file"
-              type="file"
-              onChange={this.handleFileUpload}
-            />
-            <button type="submit">Upload</button>
-          </form>
+          <MediaQuery query="(min-device-width: 1224px)">
+            <form onSubmit={this.submitFile}>
+              <h5>Upload your slides in PDF:</h5>
+              <input
+                label="upload file"
+                type="file"
+                onChange={this.handleFileUpload}
+              />
+              <button type="submit">Upload</button>
+            </form>
+            <MediaQuery query="(max-width: 1224px)">
+              <div>You are sized like a tablet or mobile phone though</div>
+            </MediaQuery>
+          </MediaQuery>
         ) : (
           <div />
         )}
