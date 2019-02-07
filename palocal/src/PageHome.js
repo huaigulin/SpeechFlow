@@ -34,6 +34,9 @@ class PageHome extends Component {
     }
     const googleID = (response) => {
       console.log(response.googleId);
+      this.props.socket.emit('login', response.googleId);
+      this.props.history.push('/PagePDF');
+      this.props.setUserName(response.googleId);
     }
     return (
       <div>
