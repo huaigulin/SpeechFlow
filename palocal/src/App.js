@@ -16,9 +16,11 @@ class App extends Component {
       socket: socketIOClient('https://paexpress.herokuapp.com/'),
       userName: null,
       docName: null,
-      pageNum: null
+      pageNum: null,
+      userType: null
     };
 
+    this.setUserType = this.setUserType.bind(this);
     this.setUserName = this.setUserName.bind(this);
     this.setDocName = this.setDocName.bind(this);
     this.setPageNum = this.setPageNum.bind(this);
@@ -27,6 +29,12 @@ class App extends Component {
   setUserName(userName) {
     this.setState({
       userName: userName
+    });
+  }
+
+  setUserType(userType) {
+    this.setState({
+      userType: userType
     });
   }
 
@@ -80,6 +88,7 @@ class App extends Component {
                   data={this.state.data}
                   messageFromSocketServer={this.state.messageFromSocketServer}
                   setUserName={this.setUserName}
+                  setUserType={this.setUserType}
                 />
               )}
             />
@@ -99,6 +108,7 @@ class App extends Component {
                   setPageNum={this.setPageNum}
                   docName={this.state.docName}
                   pageNum={this.state.pageNum}
+                  userType={this.state.userType}
                 />
               )}
             />

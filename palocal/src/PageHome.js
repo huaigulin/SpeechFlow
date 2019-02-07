@@ -6,26 +6,33 @@ import GoogleLogin from 'react-google-login';
 class PageHome extends Component {
   constructor(props) {
     super(props);
-    this.state = { socket: null, userName: '' };
+    this.state = { socket: null, userName: '', userType:'', selectedOption: 'speaker' };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
-
+    this.handleRadioChange = this.handleRadioChange.bind(this);
+    this.handleRadioSubmit = this.handleRadioSubmit.bind(this);
   }
-
-
 
   handleChange(event) {
     this.setState({ userName: event.target.value });
-    this.setState({ socket: this.props.socket });
   }
 
   handleSubmit(event) {
-    this.state.socket.emit('login', this.state.userName);
+    this.props.socket.emit('login', this.state.userName);
     event.preventDefault();
     this.props.history.push('/PagePDF');
     this.props.setUserName(this.state.userName);
+  }
+
+  handleRadioChange(event) {
+    this.setState({ selectedOption: event.target.value });
+  }
+
+  handleRadioSubmit(event) {
+    event.preventDefault();
+    this.props.history.push('/PagePDF');
+    this.props.setUserType(this.state.selectedOption);
   }
 
   render() {
@@ -61,6 +68,21 @@ class PageHome extends Component {
           </label>
           <input type="submit" value="Submit" />
         </form>
+        <form onSubmit={this.handleRadioSubmit}>
+        <div className="radio">
+          <label>
+            <input type="radio" value="speaker" checked={this.state.selectedOption === 'speaker'} onChange={this.handleRadioChange}/>
+            Speaker
+          </label>
+        </div>
+        <div className="radio">
+          <label>
+            <input type="radio" value="listener" checked={this.state.selectedOption === 'listener'} onChange={this.handleRadioChange} />
+            Listener
+          </label>
+        </div>
+        <input type="submit" value="Submit" />
+      </form>
         {/* <VideoPlayer /> */}
       </div>
     );

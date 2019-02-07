@@ -60,7 +60,9 @@ class PagePDF extends Component {
       this.props.setDocName(this.state.docName);
     });
 
-    document.addEventListener('keydown', this._handleKeyDown);
+    if (this.props.userType == 'speaker') {
+      document.addEventListener('keydown', this._handleKeyDown);
+    }
 
     window.addEventListener(
       'keydown',
@@ -160,10 +162,10 @@ class PagePDF extends Component {
   };
 
   render() {
+    const userType = this.props.userType == 'speaker';
     const isLoggedIn = this.props.userName != null;
     var isDocNameValid = true; //this.state.docName != null;
     const { pageNum, numPages } = this.state;
-
     return (
       <div>
         <Navbar />
@@ -200,15 +202,21 @@ class PagePDF extends Component {
                       <Page pageNumber={pageNum} width={300} />
                     </Document>
                   </div>
-                  <button
-                    className="phoneBackButton"
-                    onClick={this.previousSlide}
-                  >
-                    Back
-                  </button>
-                  <button className="phoneNextButton" onClick={this.nextSlide}>
-                    Next
-                  </button>
+                  {userType ? (
+                    <div>
+                      <button
+                      className="phoneBackButton"
+                      onClick={this.previousSlide}
+                      >
+                      Back
+                      </button>
+                      <button className="phoneNextButton" onClick={this.nextSlide}>
+                      Next
+                      </button>
+                    </div>
+                  ): (
+                    <div />
+                  )}
                 </MediaQuery>
                 <p className="textCenter">
                   Page {pageNum} of {numPages}
