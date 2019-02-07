@@ -36,22 +36,22 @@ class PageHome extends Component {
   }
 
   render() {
-    const responseGoogle = (response) => {
+    const responseGoogle = response => {
       console.log(response);
-    }
-    const googleID = (response) => {
+    };
+    const googleID = response => {
       console.log(response.googleId);
       this.props.socket.emit('login', response.googleId);
       this.props.history.push('/PagePDF');
       this.props.setUserName(response.googleId);
-    }
+    };
     return (
       <div>
-      <GoogleLogin
-        clientId="205354448545-sc5rs1bo1q8tcdg0crsfr8aiflgf54tp.apps.googleusercontent.com"
-        buttonText="Login"
-        onSuccess={googleID}
-        onFailure={responseGoogle}
+        <GoogleLogin
+          clientId="205354448545-sc5rs1bo1q8tcdg0crsfr8aiflgf54tp.apps.googleusercontent.com"
+          buttonText="Login"
+          onSuccess={googleID}
+          onFailure={responseGoogle}
         />
         <Navbar />
         <h1>This is the home page</h1>
