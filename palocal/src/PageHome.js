@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar';
+import GoogleLogin from 'react-google-login';
 // import VideoPlayer from './VideoPlayer';
 
 class PageHome extends Component {
@@ -9,7 +10,11 @@ class PageHome extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+
   }
+
+
 
   handleChange(event) {
     this.setState({ userName: event.target.value });
@@ -24,8 +29,20 @@ class PageHome extends Component {
   }
 
   render() {
+    const responseGoogle = (response) => {
+      console.log(response);
+    }
+    const googleID = (response) => {
+      console.log(response.googleId);
+    }
     return (
       <div>
+      <GoogleLogin
+        clientId="205354448545-sc5rs1bo1q8tcdg0crsfr8aiflgf54tp.apps.googleusercontent.com"
+        buttonText="Login"
+        onSuccess={googleID}
+        onFailure={responseGoogle}
+        />
         <Navbar />
         <h1>This is the home page</h1>
         <p>{this.props.data}</p>
