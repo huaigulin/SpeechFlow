@@ -164,7 +164,7 @@ class PagePDF extends Component {
   render() {
     const userType = this.props.userType == 'speaker';
     const isLoggedIn = this.props.userName != null;
-    var isDocNameValid = true; //this.state.docName != null;
+    var isDocNameValid = this.state.docName != null;
     const { pageNum, numPages } = this.state;
     return (
       <div>
@@ -196,7 +196,13 @@ class PagePDF extends Component {
                 <MediaQuery query="(max-device-width: 1023px)">
                   <div>
                     <Document
-                      file={speechflow}
+                      file={
+                        'https://s3.us-east-2.amazonaws.com/speechflow/' +
+                        this.props.userName +
+                        '/' +
+                        this.state.docName +
+                        '.pdf'
+                      }
                       onLoadSuccess={this.onDocumentLoadSuccess}
                     >
                       <Page pageNumber={pageNum} width={300} />
@@ -205,16 +211,19 @@ class PagePDF extends Component {
                   {userType ? (
                     <div>
                       <button
-                      className="phoneBackButton"
-                      onClick={this.previousSlide}
+                        className="phoneBackButton"
+                        onClick={this.previousSlide}
                       >
-                      Back
+                        Back
                       </button>
-                      <button className="phoneNextButton" onClick={this.nextSlide}>
-                      Next
+                      <button
+                        className="phoneNextButton"
+                        onClick={this.nextSlide}
+                      >
+                        Next
                       </button>
                     </div>
-                  ): (
+                  ) : (
                     <div />
                   )}
                 </MediaQuery>
