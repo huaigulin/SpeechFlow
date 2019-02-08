@@ -186,7 +186,13 @@ class PagePDF extends Component {
                     }}
                   >
                     <Document
-                      file={speechflow}
+                      file={
+                        'https://s3.us-east-2.amazonaws.com/speechflow/' +
+                        this.props.userName +
+                        '/' +
+                        this.state.docName +
+                        '.pdf'
+                      }
                       onLoadSuccess={this.onDocumentLoadSuccess}
                     >
                       <Page pageNumber={pageNum} scale={0.8} />
