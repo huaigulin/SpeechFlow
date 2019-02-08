@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
-import speechflow from './speechflow.pdf';
+// import speechflow from './speechflow.pdf';
 import MediaQuery from 'react-responsive';
 import './PagePDF.css';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${

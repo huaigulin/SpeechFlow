@@ -6,10 +6,14 @@ import GoogleLogin from 'react-google-login';
 class PageHome extends Component {
   constructor(props) {
     super(props);
-    this.state = { socket: null, userName: '', userType:'', selectedOption: 'speaker' };
+    this.state = {
+      socket: null,
+      userName: '',
+      userType: '',
+      selectedOption: 'speaker'
+    };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRadioChange = this.handleRadioChange.bind(this);
     this.handleRadioSubmit = this.handleRadioSubmit.bind(this);
   }
@@ -18,20 +22,15 @@ class PageHome extends Component {
     this.setState({ userName: event.target.value });
   }
 
-  handleSubmit(event) {
-    this.props.socket.emit('login', this.state.userName);
-    event.preventDefault();
-    this.props.history.push('/PagePDF');
-    this.props.setUserName(this.state.userName);
-  }
-
   handleRadioChange(event) {
     this.setState({ selectedOption: event.target.value });
   }
 
   handleRadioSubmit(event) {
+    this.props.socket.emit('login', this.state.userName);
     event.preventDefault();
     this.props.history.push('/PagePDF');
+    this.props.setUserName(this.state.userName);
     this.props.setUserType(this.state.selectedOption);
   }
 
@@ -57,7 +56,7 @@ class PageHome extends Component {
         <h1>This is the home page</h1>
         <p>{this.props.data}</p>
         <p>{this.props.messageFromSocketServer}</p>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleRadioSubmit}>
           <label>
             User name:
             <input
@@ -66,23 +65,30 @@ class PageHome extends Component {
               onChange={this.handleChange}
             />
           </label>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                value="speaker"
+                checked={this.state.selectedOption === 'speaker'}
+                onChange={this.handleRadioChange}
+              />
+              Speaker
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                value="listener"
+                checked={this.state.selectedOption === 'listener'}
+                onChange={this.handleRadioChange}
+              />
+              Listener
+            </label>
+          </div>
           <input type="submit" value="Submit" />
         </form>
-        <form onSubmit={this.handleRadioSubmit}>
-        <div className="radio">
-          <label>
-            <input type="radio" value="speaker" checked={this.state.selectedOption === 'speaker'} onChange={this.handleRadioChange}/>
-            Speaker
-          </label>
-        </div>
-        <div className="radio">
-          <label>
-            <input type="radio" value="listener" checked={this.state.selectedOption === 'listener'} onChange={this.handleRadioChange} />
-            Listener
-          </label>
-        </div>
-        <input type="submit" value="Submit" />
-      </form>
         {/* <VideoPlayer /> */}
       </div>
     );
