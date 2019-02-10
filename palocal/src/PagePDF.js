@@ -60,7 +60,7 @@ class PagePDF extends Component {
       this.props.setDocName(this.state.docName);
     });
 
-    if (this.props.userType == 'speaker') {
+    if (this.props.userType === 'speaker') {
       document.addEventListener('keydown', this._handleKeyDown);
     }
 
@@ -162,7 +162,7 @@ class PagePDF extends Component {
   };
 
   render() {
-    const userType = this.props.userType == 'speaker';
+    const userType = this.props.userType === 'speaker';
     const isLoggedIn = this.props.userName != null;
     var isDocNameValid = this.state.docName != null;
     const { pageNum, numPages } = this.state;
