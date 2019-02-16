@@ -44,9 +44,6 @@ class PDFViewer extends Component {
   }
 
   componentDidMount() {
-    this.props.socket.on('video', () => {
-      this.props.history.push('/PageVideo');
-    });
     this.props.socket.on('SOMEONE HIT NEXT', pageNum => {
       this.props.setPageNum(pageNum);
       this.props.setDocName(this.state.docName);
