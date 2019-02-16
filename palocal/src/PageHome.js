@@ -29,7 +29,7 @@ class PageHome extends Component {
   handleRadioSubmit(event) {
     this.props.socket.emit('login', this.state.userName);
     event.preventDefault();
-    this.props.history.push('/PagePDF');
+    this.props.history.push('/PagePresentation');
     this.props.setUserName(this.state.userName);
     this.props.setUserType(this.state.selectedOption);
   }
@@ -41,7 +41,7 @@ class PageHome extends Component {
     const googleID = response => {
       console.log(response.googleId);
       this.props.socket.emit('login', response.googleId);
-      this.props.history.push('/PagePDF');
+      this.props.history.push('/PagePresentation');
       this.props.setUserName(response.googleId);
     };
     return (

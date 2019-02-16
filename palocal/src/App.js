@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import PageHome from './PageHome';
-import PageLogin from './PageLogin';
-import PagePDF from './PagePDF';
 import PageVideo from './PageVideo';
 import socketIOClient from 'socket.io-client';
+import PagePresentation from './PagePresentation';
 // import PageNonsense from './PageNonsense';
 
 class App extends Component {
@@ -91,9 +90,9 @@ class App extends Component {
               )}
             />
             <Route
-              path="/PagePDF"
+              path="/PagePresentation"
               render={props => (
-                <PagePDF
+                <PagePresentation
                   {...props}
                   socket={this.state.socket}
                   userName={this.state.userName}

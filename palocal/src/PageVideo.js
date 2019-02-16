@@ -5,7 +5,7 @@ import VideoPlayer from './VideoPlayer';
 class PageVideo extends Component {
   componentDidMount() {
     this.props.socket.on('pdf', () => {
-      this.props.history.push('/PagePDF');
+      this.props.history.push('/PagePresentation');
     });
   }
 
@@ -23,7 +23,7 @@ class PageVideo extends Component {
             this.pdf(this.props.socket);
           }}
         >
-          <Link to="/PagePDF/">Speech Flow PDF Viewer</Link>
+          <Link to="/PagePresentation/">Speech Flow PDF Viewer</Link>
         </li>
         <VideoPlayer socket={this.props.socket} />
       </div>

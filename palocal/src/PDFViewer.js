@@ -6,7 +6,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 // import speechflow from './speechflow.pdf';
 import MediaQuery from 'react-responsive';
-import './PagePDF.css';
+import './PDFViewer.css';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${
   pdfjs.version
 }/pdf.worker.js`;
@@ -17,7 +17,7 @@ const UP_KEY = 38;
 const LEFT_KEY = 37;
 const SPACE_KEY = 32;
 
-class PagePDF extends Component {
+class PDFViewer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,7 +124,7 @@ class PagePDF extends Component {
         // handle your response;
       })
       .catch(error => {
-        console.log('ERROR in react PagePDF post request: ' + error);
+        console.log('ERROR in react PDFViewer post request: ' + error);
       });
   };
 
@@ -158,7 +158,6 @@ class PagePDF extends Component {
 
   submitDocName = event => {
     this.props.setDocName(this.state.docNameTemp);
-    this.props.history.push('/PagePDF');
   };
 
   render() {
@@ -288,4 +287,5 @@ class PagePDF extends Component {
     );
   }
 }
-export default PagePDF;
+
+export default PDFViewer;
