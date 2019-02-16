@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import Navbar from './Navbar';
-import { Link } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 // import speechflow from './speechflow.pdf';
@@ -109,29 +106,6 @@ class PDFViewer extends Component {
     }
   };
 
-  submitFile = event => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append('file', this.state.file[0]);
-    formData.append('userName', this.props.userName);
-    axios
-      .post(`/upload-file`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then(response => {
-        // handle your response;
-      })
-      .catch(error => {
-        console.log('ERROR in react PDFViewer post request: ' + error);
-      });
-  };
-
-  handleFileUpload = event => {
-    this.setState({ file: event.target.files });
-  };
-
   previousSlide = event => {
     if (this.state.pageNum > 1) {
       this.props.socket.emit(
@@ -162,126 +136,78 @@ class PDFViewer extends Component {
 
   render() {
     const userType = this.props.userType === 'speaker';
-    const isLoggedIn = this.props.userName != null;
     var isDocNameValid = this.state.docName != null;
     const { pageNum, numPages } = this.state;
     return (
       <div>
-        <Navbar />
-        {isLoggedIn ? (
-          <div />
-        ) : (
-          <h3>You have not logged in. Please log in or sign up.</h3>
-        )}
-        {isLoggedIn ? (
-          <div>
-            {isDocNameValid ? (
-              <div>
-                <MediaQuery query="(min-device-width: 1024px)">
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    <Document
-                      file={
-                        'https://s3.us-east-2.amazonaws.com/speechflow/' +
-                        this.props.userName +
-                        '/' +
-                        this.state.docName +
-                        '.pdf'
-                      }
-                      onLoadSuccess={this.onDocumentLoadSuccess}
-                    >
-                      <Page pageNumber={pageNum} scale={0.8} />
-                    </Document>
-                  </div>
-                </MediaQuery>
-                <MediaQuery query="(max-device-width: 1023px)">
-                  <div>
-                    <Document
-                      file={
-                        'https://s3.us-east-2.amazonaws.com/speechflow/' +
-                        this.props.userName +
-                        '/' +
-                        this.state.docName +
-                        '.pdf'
-                      }
-                      onLoadSuccess={this.onDocumentLoadSuccess}
-                    >
-                      <Page pageNumber={pageNum} width={300} />
-                    </Document>
-                  </div>
-                  {userType ? (
-                    <div>
-                      <button
-                        className="phoneBackButton"
-                        onClick={this.previousSlide}
-                      >
-                        Back
-                      </button>
-                      <button
-                        className="phoneNextButton"
-                        onClick={this.nextSlide}
-                      >
-                        Next
-                      </button>
-                    </div>
-                  ) : (
-                    <div />
-                  )}
-                </MediaQuery>
-                <p className="textCenter">
-                  Page {pageNum} of {numPages}
-                </p>
-              </div>
-            ) : (
-              <div>
-                <h5>Enter the name of your document: </h5>
-                <input
-                  type="text"
-                  value={this.state.value}
-                  onChange={this.handleDocNameChange}
-                />
-                <button onClick={this.submitDocName}>Submit</button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div />
-        )}
-        <br />
-        {isLoggedIn ? (
+        {isDocNameValid ? (
           <div>
             <MediaQuery query="(min-device-width: 1024px)">
-              <form onSubmit={this.submitFile}>
-                <h5>Upload your slides in PDF:</h5>
-                <input
-                  label="upload file"
-                  type="file"
-                  onChange={this.handleFileUpload}
-                />
-                <button type="submit">Upload</button>
-              </form>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}
+              >
+                <Document
+                  file={
+                    'https://s3.us-east-2.amazonaws.com/speechflow/' +
+                    this.props.userName +
+                    '/' +
+                    this.state.docName +
+                    '.pdf'
+                  }
+                  onLoadSuccess={this.onDocumentLoadSuccess}
+                >
+                  <Page pageNumber={pageNum} scale={0.8} />
+                </Document>
+              </div>
             </MediaQuery>
             <MediaQuery query="(max-device-width: 1023px)">
-              <br />
+              <div>
+                <Document
+                  file={
+                    'https://s3.us-east-2.amazonaws.com/speechflow/' +
+                    this.props.userName +
+                    '/' +
+                    this.state.docName +
+                    '.pdf'
+                  }
+                  onLoadSuccess={this.onDocumentLoadSuccess}
+                >
+                  <Page pageNumber={pageNum} width={300} />
+                </Document>
+              </div>
+              {userType ? (
+                <div>
+                  <button
+                    className="phoneBackButton"
+                    onClick={this.previousSlide}
+                  >
+                    Back
+                  </button>
+                  <button className="phoneNextButton" onClick={this.nextSlide}>
+                    Next
+                  </button>
+                </div>
+              ) : (
+                <div />
+              )}
             </MediaQuery>
+            <p className="textCenter">
+              Page {pageNum} of {numPages}
+            </p>
           </div>
         ) : (
-          <div />
-        )}
-        {isLoggedIn ? (
-          <li
-            onClick={() => {
-              this.props.socket.emit('video');
-            }}
-          >
-            <Link to="/PageVideo/">Speech Flow Video Player</Link>
-          </li>
-        ) : (
-          <div />
+          <div>
+            <h5>Enter the name of your document: </h5>
+            <input
+              type="text"
+              value={this.state.value}
+              onChange={this.handleDocNameChange}
+            />
+            <button onClick={this.submitDocName}>Submit</button>
+          </div>
         )}
       </div>
     );
