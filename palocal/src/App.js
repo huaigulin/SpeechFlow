@@ -11,7 +11,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: null,
       messageFromSocketServer: null,
       socket: socketIOClient('https://paexpress.herokuapp.com/'),
       userName: null,
@@ -85,7 +84,6 @@ class App extends Component {
                 <PageHome
                   {...props}
                   socket={this.state.socket}
-                  data={this.state.data}
                   messageFromSocketServer={this.state.messageFromSocketServer}
                   setUserName={this.setUserName}
                   setUserType={this.setUserType}
@@ -93,16 +91,11 @@ class App extends Component {
               )}
             />
             <Route
-              path="/login"
-              render={props => <PageLogin {...props} data={this.state.data} />}
-            />
-            <Route
               path="/PagePDF"
               render={props => (
                 <PagePDF
                   {...props}
                   socket={this.state.socket}
-                  data={this.state.data}
                   userName={this.state.userName}
                   setDocName={this.setDocName}
                   setPageNum={this.setPageNum}
@@ -117,7 +110,6 @@ class App extends Component {
               render={props => (
                 <PageVideo
                   {...props}
-                  data={this.state.data}
                   socket={this.state.socket}
                   userName={this.state.userName}
                 />
