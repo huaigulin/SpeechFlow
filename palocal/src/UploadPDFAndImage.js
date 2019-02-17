@@ -38,10 +38,11 @@ class UploadPDFAndImage extends Component {
       <div>
         <MediaQuery query="(min-device-width: 1024px)">
           <form onSubmit={this.submitFile}>
-            <h5>Upload your PDF slides and pictures:</h5>
+            <h5>Upload your PDF and images:</h5>
             <input
               label="upload file"
               type="file"
+              accept="application/pdf, image/*"
               onChange={this.handleFileUpload}
             />
             <button type="submit">Upload</button>
