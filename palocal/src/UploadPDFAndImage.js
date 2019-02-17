@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MediaQuery from 'react-responsive';
 import axios from 'axios';
 
-class FileUpload extends Component {
+class UploadPDFAndImage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +38,7 @@ class FileUpload extends Component {
       <div>
         <MediaQuery query="(min-device-width: 1024px)">
           <form onSubmit={this.submitFile}>
-            <h5>Upload your slides in PDF:</h5>
+            <h5>Upload your PDF slides and pictures:</h5>
             <input
               label="upload file"
               type="file"
@@ -55,4 +55,4 @@ class FileUpload extends Component {
   }
 }
 
-export default FileUpload;
+export default UploadPDFAndImage;

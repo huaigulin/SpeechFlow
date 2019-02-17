@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FileUpload from './FileUpload';
+import UploadPDFAndImage from './UploadPDFAndImage';
 import Navbar from './Navbar';
 
 class PageMaterials extends Component {
@@ -13,7 +13,11 @@ class PageMaterials extends Component {
         ) : (
           <h3>You have not logged in. Please log in or sign up.</h3>
         )}
-        {isLoggedIn ? <FileUpload userName={this.props.userName} /> : <div />}
+        {isLoggedIn ? (
+          <UploadPDFAndImage userName={this.props.userName} />
+        ) : (
+          <div />
+        )}
       </div>
     );
   }
