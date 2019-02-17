@@ -10,7 +10,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messageFromSocketServer: null,
       socket: socketIOClient('https://paexpress.herokuapp.com/'),
       userName: null,
       docName: null,

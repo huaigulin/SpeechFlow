@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import UploadPDFAndImage from './UploadPDFAndImage';
 import Navbar from './Navbar';
+import UploadVideoLink from './UploadVideoLink';
 
 class PageMaterials extends Component {
   render() {
@@ -15,6 +16,14 @@ class PageMaterials extends Component {
         )}
         {isLoggedIn ? (
           <UploadPDFAndImage userName={this.props.userName} />
+        ) : (
+          <div />
+        )}
+        {isLoggedIn ? (
+          <UploadVideoLink
+            socket={this.props.socket}
+            userName={this.props.userName}
+          />
         ) : (
           <div />
         )}
