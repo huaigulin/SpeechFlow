@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PDFViewer from './PDFViewer';
 import VideoPlayer from './VideoPlayer';
 import Navbar from './Navbar';
-import FileUpload from './FileUpload';
 
 class PagePresentation extends Component {
   constructor(props) {
@@ -45,13 +44,21 @@ class PagePresentation extends Component {
             ) : (
               <div />
             )}
-            {loadVideo ? <VideoPlayer socket={this.props.socket} /> : <div />}
+            {loadVideo ? (
+              <VideoPlayer
+                socket={this.props.socket}
+                userName={this.props.userName}
+                userType={this.props.userType}
+                videoLink={this.props.videoLink}
+              />
+            ) : (
+              <div />
+            )}
             {loadGallery ? <div /> : <div />}
           </div>
         ) : (
           <div />
         )}
-        {isLoggedIn ? <FileUpload userName={this.props.userName} /> : <div />}
       </div>
     );
   }

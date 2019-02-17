@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import PageHome from './PageHome';
-import PageVideo from './PageVideo';
+import PageMaterials from './PageMaterials';
 import socketIOClient from 'socket.io-client';
 import PagePresentation from './PagePresentation';
 // import PageNonsense from './PageNonsense';
@@ -15,24 +15,20 @@ class App extends Component {
       userName: null,
       docName: null,
       pageNum: null,
-      userType: null
+      userType: null,
+      videoLink: null
     };
 
-    this.setUserType = this.setUserType.bind(this);
     this.setUserName = this.setUserName.bind(this);
     this.setDocName = this.setDocName.bind(this);
     this.setPageNum = this.setPageNum.bind(this);
+    this.setUserType = this.setUserType.bind(this);
+    this.setVideoLink = this.setVideoLink.bind(this);
   }
 
   setUserName(userName) {
     this.setState({
       userName: userName
-    });
-  }
-
-  setUserType(userType) {
-    this.setState({
-      userType: userType
     });
   }
 
@@ -45,6 +41,18 @@ class App extends Component {
   setPageNum(pageNum) {
     this.setState({
       pageNum: pageNum
+    });
+  }
+
+  setUserType(userType) {
+    this.setState({
+      userType: userType
+    });
+  }
+
+  setVideoLink(videoLink) {
+    this.setState({
+      videoLink: videoLink
     });
   }
 
@@ -101,13 +109,15 @@ class App extends Component {
                   docName={this.state.docName}
                   pageNum={this.state.pageNum}
                   userType={this.state.userType}
+                  videoLink={this.state.videoLink}
+                  setVideoLink={this.setVideoLink}
                 />
               )}
             />
             <Route
-              path="/PageVideo"
+              path="/PageMaterials"
               render={props => (
-                <PageVideo
+                <PageMaterials
                   {...props}
                   socket={this.state.socket}
                   userName={this.state.userName}
