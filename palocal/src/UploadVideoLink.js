@@ -25,6 +25,7 @@ class UploadVideoLink extends Component {
         }
       })
       .then(response => {
+        console.log('fuck harvard');
         this.setState({ link: null });
       })
       .catch(error => {
