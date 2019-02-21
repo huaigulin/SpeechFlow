@@ -25,8 +25,7 @@ class UploadVideoLink extends Component {
         }
       })
       .then(response => {
-        console.log('fuck harvard');
-        this.setState({ link: null });
+        document.getElementById('SubmitLink').reset();
       })
       .catch(error => {
         console.log('ERROR in UploadVideoLink post request: ' + error);
@@ -38,7 +37,7 @@ class UploadVideoLink extends Component {
     return (
       <div>
         <MediaQuery query="(min-device-width: 1024px)">
-          <form onSubmit={this.submitLink}>
+          <form id="SubmitLink" onSubmit={this.submitLink}>
             <label>
               Upload your video links:
               <input

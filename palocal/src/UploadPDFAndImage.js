@@ -22,7 +22,7 @@ class UploadPDFAndImage extends Component {
         }
       })
       .then(response => {
-        this.setState({ file: null });
+        document.getElementById('SubmitFile').reset();
       })
       .catch(error => {
         console.log('ERROR in react UploadPDFAndImage post request: ' + error);
@@ -37,7 +37,7 @@ class UploadPDFAndImage extends Component {
     return (
       <div>
         <MediaQuery query="(min-device-width: 1024px)">
-          <form onSubmit={this.submitFile}>
+          <form id="SubmitFile" onSubmit={this.submitFile}>
             <h5>Upload your PDF and images:</h5>
             <input
               label="upload file"

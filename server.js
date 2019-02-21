@@ -100,16 +100,17 @@ app.post('/upload-video-link', (request, response) => {
           var linkArray = databaseEntry[0].links;
           if (!linkArray.includes(fields.link[0])) {
             linkArray.push(fields.link[0]);
+            VideoLinkModel.updateMany(
+              { userName: fields.userName[0] },
+              { $set: { links: linkArray } }
+            ).catch(error => {
+              console.log(
+                'ERROR in upload-video-link post request update(): ' + error
+              );
+            });
           }
-          VideoLinkModel.updateMany(
-            { userName: fields.userName[0] },
-            { $set: { links: linkArray } }
-          ).catch(error => {
-            console.log(
-              'ERROR in upload-video-link post request update(): ' + error
-            );
-          });
         }
+        response.status(200).send('success');
       });
   });
 });
