@@ -58,14 +58,15 @@ app.post('/upload-file', (request, response) => {
   });
 });
 
-// Connect to aws DocumentDB
-mongoose.connect(
+const atlas_url =
   'mongodb://' +
-    process.env.ATLAS_USERNAME +
-    ':' +
-    process.env.ATLAS_PASSWORD +
-    '@cluster0-shard-00-00-mdfix.mongodb.net:27017,cluster0-shard-00-01-mdfix.mongodb.net:27017,cluster0-shard-00-02-mdfix.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true'
-);
+  process.env.ATLAS_USERNAME + //process.env.ATLAS_USERNAME
+  ':' +
+  process.env.ATLAS_PASSWORD + //process.env.ATLAS_PASSWORD
+  '@cluster0-shard-00-00-mdfix.mongodb.net:27017,cluster0-shard-00-01-mdfix.mongodb.net:27017,cluster0-shard-00-02-mdfix.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true';
+
+// Connect to Mongo Atlas
+mongoose.connect(atlas_url, { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -73,7 +74,7 @@ db.once('open', function() {
 });
 const VideoLinkModel = require('./models/videoLink');
 
-// Define POST route for video link uploads to aws DocumentDB
+// Define POST route for video link uploads to Mongo Atlas
 app.post('/upload-video-link', (request, response) => {
   const form = new multiparty.Form();
   form.parse(request, async (error, fields) => {
@@ -97,8 +98,10 @@ app.post('/upload-video-link', (request, response) => {
           });
         } else {
           var linkArray = databaseEntry[0].links;
-          linkArray.push(fields.link[0]);
-          VideoLinkModel.update(
+          if (!linkArray.includes(fields.link[0])) {
+            linkArray.push(fields.link[0]);
+          }
+          VideoLinkModel.updateMany(
             { userName: fields.userName[0] },
             { $set: { links: linkArray } }
           ).catch(error => {
