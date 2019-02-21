@@ -11,6 +11,7 @@ const fs = require('fs-extra');
 const fileType = require('file-type');
 const bluebird = require('bluebird');
 const multiparty = require('multiparty');
+const mongoose = require('mongoose');
 
 // configure the keys for accessing AWS
 aws.config.update({
@@ -36,7 +37,7 @@ const uploadFile = (buffer, name, type) => {
   return s3.upload(params).promise();
 };
 
-// Define POST route for file uploads to aws
+// Define POST route for file uploads to aws s3
 app.post('/upload-file', (request, response) => {
   const form = new multiparty.Form();
   form.parse(request, async (error, fields, files) => {
@@ -54,6 +55,59 @@ app.post('/upload-file', (request, response) => {
     } catch (error) {
       return response.status(400).send(error);
     }
+  });
+});
+
+// Connect to aws DocumentDB
+mongoose.connect(
+  'mongodb://' +
+    process.env.ATLAS_USERNAME +
+    ':' +
+    process.env.ATLAS_PASSWORD +
+    '@cluster0-shard-00-00-mdfix.mongodb.net:27017,cluster0-shard-00-01-mdfix.mongodb.net:27017,cluster0-shard-00-02-mdfix.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true'
+);
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('we are connected!');
+});
+const VideoLinkModel = require('./models/videoLink');
+
+// Define POST route for video link uploads to aws DocumentDB
+app.post('/upload-video-link', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    VideoLinkModel.find({
+      userName: fields.userName[0]
+    })
+      .exec()
+      .then(databaseEntry => {
+        if (databaseEntry.length == 0) {
+          var linkArray = [fields.link[0]];
+          let newVideoLinkModel = new VideoLinkModel({
+            userName: fields.userName[0],
+            links: linkArray
+          });
+          newVideoLinkModel.save().catch(error => {
+            console.log(
+              'ERROR in upload-video-link post request save(): ' + error
+            );
+          });
+        } else {
+          var linkArray = databaseEntry[0].links;
+          linkArray.push(fields.link[0]);
+          VideoLinkModel.update(
+            { userName: fields.userName[0] },
+            { $set: { links: linkArray } }
+          ).catch(error => {
+            console.log(
+              'ERROR in upload-video-link post request update(): ' + error
+            );
+          });
+        }
+      });
   });
 });
 
@@ -122,42 +176,4 @@ io.on('connection', socket => {
   });
 });
 
-//useless db code
-// const Connection = require('./palocal/models/connection');
-// function createUser(username,socket){
-//   let newConnection = new Connection ({
-//     socketID: [socket.id],
-//     username: username
-//   });
-//   newConnection
-//     .save()
-//     .then(() => {
-//       console.log('Connection saved')
-//     })
-// }
-
-// function addUser(username,connections,socket){
-//   var newConnections = connections[0].socketID.push(socket.id);
-//   Connections.update({ username: username }, { $set: { socketID: newConnections } })
-//     .then(console.log('addUser promise complete'))
-//     .error(console.log(error));
-// }
-//
-// function login(username, socket) {
-//   Connection.find({username: username})
-//     .exec()
-//     .then(connections => {
-//       console.dir(connections)
-//       if (connections.length == 0){
-//         createUser(username, socket);
-//         console.log('created socket connection')
-//       } else {
-//         addUser(username,connections,socket);
-//         console.log('added socket connection')
-//       }
-//     })
-//     .catch(error => {
-//       console.log(error.message);
-//     });
-// }
 socketServer.listen(port, () => console.log(`Listening on port ${port}`));

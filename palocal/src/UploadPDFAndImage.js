@@ -22,10 +22,10 @@ class UploadPDFAndImage extends Component {
         }
       })
       .then(response => {
-        // handle your response;
+        this.setState({ file: null });
       })
       .catch(error => {
-        console.log('ERROR in react PagePresentation post request: ' + error);
+        console.log('ERROR in react UploadPDFAndImage post request: ' + error);
       });
   };
 

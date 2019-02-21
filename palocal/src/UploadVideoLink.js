@@ -15,7 +15,21 @@ class UploadVideoLink extends Component {
   };
 
   submitLink = event => {
-    this.props.socket.emit('submit video link', this.state.link);
+    const formData = new FormData();
+    formData.append('userName', this.props.userName);
+    formData.append('link', this.state.link);
+    axios
+      .post(`/upload-video-link`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(response => {
+        this.setState({ link: null });
+      })
+      .catch(error => {
+        console.log('ERROR in UploadVideoLink post request: ' + error);
+      });
     event.preventDefault();
   };
 

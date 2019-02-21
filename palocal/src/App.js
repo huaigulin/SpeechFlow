@@ -90,7 +90,6 @@ class App extends Component {
                 <PageHome
                   {...props}
                   socket={this.state.socket}
-                  messageFromSocketServer={this.state.messageFromSocketServer}
                   setUserName={this.setUserName}
                   setUserType={this.setUserType}
                 />
@@ -116,11 +115,7 @@ class App extends Component {
             <Route
               path="/PageMaterials"
               render={props => (
-                <PageMaterials
-                  {...props}
-                  socket={this.state.socket}
-                  userName={this.state.userName}
-                />
+                <PageMaterials {...props} userName={this.state.userName} />
               )}
             />
           </div>

@@ -20,10 +20,7 @@ class PageMaterials extends Component {
           <div />
         )}
         {isLoggedIn ? (
-          <UploadVideoLink
-            socket={this.props.socket}
-            userName={this.props.userName}
-          />
+          <UploadVideoLink userName={this.props.userName} />
         ) : (
           <div />
         )}
