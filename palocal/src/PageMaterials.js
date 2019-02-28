@@ -57,7 +57,7 @@ class PageMaterials extends Component {
           <div>
           <h1> Your Files: </h1>
           {this.state.files.map((file, index) => (
-            <p> file {index + 1}: {file} </p>
+            <p key={index}> file {index + 1}: {file} </p>
           ))}
           </div>
         ) : (
