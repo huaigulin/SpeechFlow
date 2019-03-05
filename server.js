@@ -15,8 +15,8 @@ const mongoose = require('mongoose');
 
 // configure the keys for accessing AWS
 aws.config.update({
-  accessKeyId: process.env.AWS_KEY, //process.env.AWS_KEY,
-  secretAccessKey: process.env.AWS_SECRET //process.env.AWS_SECRET
+  accessKeyId: 'AKIAIBVB7KVFQQJBUA6A', //process.env.AWS_KEY,
+  secretAccessKey: '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' //process.env.AWS_SECRET
 });
 
 // configure AWS to work with promises
@@ -30,7 +30,7 @@ const uploadFile = (buffer, name, type) => {
   const params = {
     ACL: 'public-read',
     Body: buffer,
-    Bucket: process.env.S3_BUCKET, //process.env.S3_BUCKET,
+    Bucket: 'speechflow', //process.env.S3_BUCKET,
     ContentType: type.mime,
     Key: `${name}.${type.ext}`
   };
@@ -59,11 +59,11 @@ app.post('/upload-file', (request, response) => {
 });
 
 const atlas_url =
-  'mongodb://' +
-  process.env.ATLAS_USERNAME + //process.env.ATLAS_USERNAME
+  'mongodb+srv://' +
+  'speechflowdev' + //process.env.ATLAS_USERNAME
   ':' +
-  process.env.ATLAS_PASSWORD + //process.env.ATLAS_PASSWORD
-  '@cluster0-shard-00-00-mdfix.mongodb.net:27017,cluster0-shard-00-01-mdfix.mongodb.net:27017,cluster0-shard-00-02-mdfix.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true';
+  'T3zDyaYaNv78hGX' + //process.env.ATLAS_PASSWORD
+  '@cluster0-mdfix.mongodb.net/test?retryWrites=true';
 
 // Connect to Mongo Atlas
 mongoose.connect(atlas_url, { useNewUrlParser: true });

@@ -10,7 +10,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      socket: socketIOClient('https://paexpress.herokuapp.com/'),
+      socket: socketIOClient('http://localhost:8081/'), //https://paexpress.herokuapp.com/
       userName: null,
       docName: null,
       pageNum: null,
