@@ -11,7 +11,7 @@ class App extends Component {
     super(props);
     this.state = {
       socket: socketIOClient('http://localhost:8081/'), //https://paexpress.herokuapp.com/
-      userName: null,
+      userName: sessionStorage.getItem('userName'),
       docName: null,
       pageNum: null,
       userType: null,

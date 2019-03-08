@@ -23,6 +23,7 @@ class UploadPDFAndImage extends Component {
       })
       .then(response => {
         document.getElementById('SubmitFile').reset();
+        window.location.reload();
       })
       .catch(error => {
         console.log('ERROR in react UploadPDFAndImage post request: ' + error);

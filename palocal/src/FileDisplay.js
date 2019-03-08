@@ -26,8 +26,7 @@ class FileDisplay extends Component {
       var s3 = new AWS.S3();
       params = {
         Bucket: 'speechflow',
-        Prefix: this.props.userName,
-        MaxKeys: 10
+        Prefix: this.props.userName
       };
       s3.listObjectsV2(
         params,
