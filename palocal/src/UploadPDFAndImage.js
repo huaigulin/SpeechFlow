@@ -6,7 +6,8 @@ class UploadPDFAndImage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      file: null
+      file: null,
+      uploadProgress: 0
     };
   }
 
@@ -17,8 +18,17 @@ class UploadPDFAndImage extends Component {
       formData.append('files', this.state.file[i]);
     }
     formData.append('userName', this.props.userName);
+    var config = {
+      onUploadProgress: function(progressEvent) {
+        var percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        this.setState({ uploadProgress: percentCompleted });
+      }.bind(this)
+    };
+
     axios
-      .post(`/upload-file`, formData, {
+      .post(`/upload-file`, formData, config, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -51,6 +61,7 @@ class UploadPDFAndImage extends Component {
             />
             <button type="submit">Upload</button>
           </form>
+          Progress: {this.state.uploadProgress} %
         </MediaQuery>
         <MediaQuery query="(max-device-width: 1023px)">
           <br />
