@@ -18,6 +18,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+import AWS from 'aws-sdk';
+import bluebird from 'bluebird';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -155,6 +157,36 @@ const toolbarStyles = theme => ({
 let EnhancedTableToolbar = props => {
   const { numSelected, classes } = props;
 
+  function handleDelete(event) {
+    event.preventDefault();
+    AWS.config.setPromisesDependency(bluebird);
+    AWS.config.update({
+      accessKeyId: 'AKIAJ2AJSWCEWUVGAXUQ', //process.env.AWS_KEY,
+      secretAccessKey: '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' //process.env.AWS_SECRET
+    });
+    var s3 = new AWS.S3();
+    for (var i = 0; i < props.fileSelected.length; i++) {
+      const key = props.userName + '/' + props.fileSelected[i];
+      var params = {
+        Bucket: 'speechflow',
+        Key: key
+      };
+      s3.deleteObject(params, function(err, data) {
+        if (err) {
+          // an error occurred
+          console.log(err, err.stack);
+        } else {
+          window.location.reload();
+          console.log(data); // successful response
+        }
+        /*
+        data = {
+        }
+        */
+      });
+    }
+  }
+
   return (
     <Toolbar
       className={classNames(classes.root, {
@@ -176,7 +208,7 @@ let EnhancedTableToolbar = props => {
       <div className={classes.actions}>
         {numSelected > 0 ? (
           <Tooltip title="Delete">
-            <IconButton aria-label="Delete">
+            <IconButton aria-label="Delete" onClick={handleDelete}>
               <DeleteIcon />
             </IconButton>
           </Tooltip>
@@ -220,6 +252,7 @@ class EnhancedTable extends React.Component {
       order: 'asc',
       orderBy: 'dateUploaded',
       selected: [],
+      fileSelected: [],
       data: this.props.table,
       page: 0,
       rowsPerPage: 5
@@ -240,12 +273,16 @@ class EnhancedTable extends React.Component {
   handleSelectAllClick = event => {
     if (event.target.checked) {
       this.setState(state => ({ selected: state.data.map(n => n.id) }));
+      this.setState(state => ({
+        fileSelected: state.data.map(n => n.fileName)
+      }));
       return;
     }
     this.setState({ selected: [] });
+    this.setState({ fileSelected: [] });
   };
 
-  handleClick = (event, id) => {
+  handleClick = (event, id, fileName) => {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
@@ -264,6 +301,24 @@ class EnhancedTable extends React.Component {
     }
 
     this.setState({ selected: newSelected });
+
+    const { fileSelected } = this.state;
+    const fileSelectedIndex = fileSelected.indexOf(fileName);
+    let newFileSelected = [];
+
+    if (fileSelectedIndex === -1) {
+      newFileSelected = newFileSelected.concat(fileSelected, fileName);
+    } else if (fileSelectedIndex === 0) {
+      newFileSelected = newFileSelected.concat(fileSelected.slice(1));
+    } else if (fileSelectedIndex === fileSelected.length - 1) {
+      newFileSelected = newFileSelected.concat(fileSelected.slice(0, -1));
+    } else if (fileSelectedIndex > 0) {
+      newFileSelected = newFileSelected.concat(
+        fileSelected.slice(0, fileSelectedIndex),
+        fileSelected.slice(fileSelectedIndex + 1)
+      );
+    }
+    this.setState({ fileSelected: newFileSelected });
   };
 
   handleChangePage = (event, page) => {
@@ -284,7 +339,11 @@ class EnhancedTable extends React.Component {
 
     return (
       <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          userName={this.props.userName}
+          fileSelected={this.state.fileSelected}
+        />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -303,7 +362,9 @@ class EnhancedTable extends React.Component {
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, n.id)}
+                      onClick={event =>
+                        this.handleClick(event, n.id, n.fileName)
+                      }
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}

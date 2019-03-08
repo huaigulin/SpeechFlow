@@ -120,7 +120,14 @@ class FileDisplay extends Component {
     const tableIsNotNull = this.state.table != null;
     return (
       <div>
-        {tableIsNotNull ? <EnhancedTable table={this.state.table} /> : <div />}
+        {tableIsNotNull ? (
+          <EnhancedTable
+            table={this.state.table}
+            userName={this.props.userName}
+          />
+        ) : (
+          <div />
+        )}
         {/* {this.state.files.map((file, index) => (
           <p key={index}>
             {' '}
