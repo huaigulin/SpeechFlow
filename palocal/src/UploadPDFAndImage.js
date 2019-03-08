@@ -13,7 +13,9 @@ class UploadPDFAndImage extends Component {
   submitFile = event => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append('file', this.state.file[0]);
+    for (var i = 0; i < this.state.file.length; i++) {
+      formData.append('files', this.state.file[i]);
+    }
     formData.append('userName', this.props.userName);
     axios
       .post(`/upload-file`, formData, {
@@ -43,6 +45,7 @@ class UploadPDFAndImage extends Component {
             <input
               label="upload file"
               type="file"
+              multiple
               accept="application/pdf, image/*"
               onChange={this.handleFileUpload}
             />

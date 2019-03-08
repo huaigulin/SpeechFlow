@@ -43,14 +43,17 @@ app.post('/upload-file', (request, response) => {
   form.parse(request, async (error, fields, files) => {
     if (error) throw new Error(error);
     try {
-      const filePath = files.file[0].path;
-      const buffer = fs.readFileSync(filePath);
-      const type = fileType(buffer);
-      const timestamp = Date.now().toString();
-      const userName = fields.userName[0];
-      const fileName = path.parse(files.file[0].originalFilename).name;
-      const fileDirectory = `${userName}/${fileName}`;
-      const data = await uploadFile(buffer, fileDirectory, type);
+      var data = null;
+      for (var i = 0; i < files.files.length; i++) {
+        const filePath = files.files[i].path;
+        const buffer = fs.readFileSync(filePath);
+        const type = fileType(buffer);
+        const timestamp = Date.now().toString();
+        const userName = fields.userName[0];
+        const fileName = path.parse(files.files[i].originalFilename).name;
+        const fileDirectory = `${userName}/${fileName}`;
+        data = await uploadFile(buffer, fileDirectory, type);
+      }
       return response.status(200).send(data);
     } catch (error) {
       return response.status(400).send(error);
