@@ -118,6 +118,29 @@ app.post('/upload-video-link', (request, response) => {
   });
 });
 
+//Get Thumbnails from mongodb
+app.post('/getThumbnails', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    VideoLinkModel.find({
+      userName: fields.userName[0]
+    })
+      .exec()
+      .then(databaseEntry => {
+        var linkArray = databaseEntry[0].links;
+        var thumbnailUrls = new Array();
+        for (var i=0; i<linkArray.length; i++){
+          var id = linkArray[i].substring(32);
+          var url = "http://i1.ytimg.com/vi/" + id + "/default.jpg";
+          thumbnailUrls.push(url);
+        }
+        response.send(thumbnailUrls);
+      });
+  });
+})
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'palocal/build')));
 

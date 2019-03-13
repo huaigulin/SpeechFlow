@@ -3,6 +3,7 @@ import UploadPDFAndImage from './UploadPDFAndImage';
 import Navbar from './Navbar';
 import UploadVideoLink from './UploadVideoLink';
 import FileDisplay from './FileDisplay';
+import Videos from './Videos';
 
 class PageMaterials extends Component {
   render() {
@@ -22,7 +23,10 @@ class PageMaterials extends Component {
           <div />
         )}
         {isLoggedIn ? (
-          <UploadVideoLink userName={this.props.userName} />
+          <div>
+            <UploadVideoLink userName={this.props.userName} />
+            <Videos userName={this.props.userName} />
+          </div>
         ) : (
           <div />
         )}
