@@ -132,8 +132,13 @@ app.post('/getThumbnails', (request, response) => {
         var linkArray = databaseEntry[0].links;
         var thumbnailUrls = new Array();
         for (var i = 0; i < linkArray.length; i++) {
-          var id = linkArray[i].substring(32);
-          console.log(id);
+          var link = linkArray[i];
+          var regEx = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+          var match = link.match(regEx);
+          var id = '';
+          if (match && match[1].length == 11) {
+            id = match[1];
+          }
           var url = 'http://i1.ytimg.com/vi/' + id + '/default.jpg';
           thumbnailUrls.push(url);
         }
