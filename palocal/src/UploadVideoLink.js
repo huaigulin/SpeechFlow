@@ -26,6 +26,7 @@ class UploadVideoLink extends Component {
       })
       .then(response => {
         document.getElementById('SubmitLink').reset();
+        window.location.reload();
       })
       .catch(error => {
         console.log('ERROR in UploadVideoLink post request: ' + error);
