@@ -131,15 +131,16 @@ app.post('/getThumbnails', (request, response) => {
       .then(databaseEntry => {
         var linkArray = databaseEntry[0].links;
         var thumbnailUrls = new Array();
-        for (var i=0; i<linkArray.length; i++){
+        for (var i = 0; i < linkArray.length; i++) {
           var id = linkArray[i].substring(32);
-          var url = "http://i1.ytimg.com/vi/" + id + "/default.jpg";
+          console.log(id);
+          var url = 'http://i1.ytimg.com/vi/' + id + '/default.jpg';
           thumbnailUrls.push(url);
         }
         response.send(thumbnailUrls);
       });
   });
-})
+});
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'palocal/build')));

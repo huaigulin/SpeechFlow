@@ -65,7 +65,7 @@ const rows = [
   { id: 'label', numeric: true, disablePadding: false, label: 'Label' }
 ];
 
-class EnhancedTableHead extends React.Component {
+class EnhancedTableHead extends Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
@@ -244,7 +244,7 @@ const styles = theme => ({
   }
 });
 
-class EnhancedTable extends React.Component {
+class EnhancedTable extends Component {
   constructor(props) {
     super(props);
 
