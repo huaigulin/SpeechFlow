@@ -1,0 +1,13 @@
+.thumbnailDiv {
+  display: inline-block;
+}
+
+.thumbnailCheckbox {
+  position: relative;
+}
+
+.thumbnailImage {
+  position: relative;
+  /* top: 1px;
+  left: 1px; */
+}

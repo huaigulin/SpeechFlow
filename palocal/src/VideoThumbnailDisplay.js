@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import VideoThumbnail from './VideoThumbnail.js';
 
-class Videos extends Component {
+class VideoThumbnailDisplay extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,16 +32,20 @@ class Videos extends Component {
   render() {
     var urls = this.state.urls;
     var thumnails = [];
+
     for (var i = 0; i < urls.length; i++) {
-      thumnails.push(<img src={urls[i]} alt="video thumnail" />);
+      thumnails.push(
+        <VideoThumbnail src={urls[i]} alt="video thumnail" key={i} />
+      );
     }
+
     return (
       <div>
         <h5>Your Videos:</h5>
-        <tbody>{thumnails}</tbody>
+        <div>{thumnails}</div>
       </div>
     );
   }
 }
 
-export default Videos;
+export default VideoThumbnailDisplay;
