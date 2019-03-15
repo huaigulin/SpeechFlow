@@ -13,7 +13,14 @@ const styles = {
 class VideoThumbnail extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      checked: false
+    };
   }
+
+  handleChange = event => {
+    this.setState({ checked: event.target.checked });
+  };
 
   render() {
     const { classes } = this.props;
@@ -22,6 +29,8 @@ class VideoThumbnail extends Component {
         <Checkbox
           className="thumbnailCheckbox"
           classes={{ root: classes.root, checked: classes.checked }}
+          checked={this.state.checked}
+          onChange={this.handleChange}
         />
         <img
           className="thumbnailImage"

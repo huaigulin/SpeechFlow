@@ -15,7 +15,9 @@ class App extends Component {
       docName: null,
       pageNum: null,
       userType: null,
-      videoLink: null
+      videoLink: null,
+      fileCheckedStates: [],
+      videoCheckedStates: []
     };
 
     this.setUserName = this.setUserName.bind(this);
@@ -23,6 +25,8 @@ class App extends Component {
     this.setPageNum = this.setPageNum.bind(this);
     this.setUserType = this.setUserType.bind(this);
     this.setVideoLink = this.setVideoLink.bind(this);
+    this.setFileCheckedStates = this.setFileCheckedStates.bind(this);
+    this.setVideoCheckedStates = this.setVideoCheckedStates.bind(this);
   }
 
   setUserName(userName) {
@@ -52,6 +56,18 @@ class App extends Component {
   setVideoLink(videoLink) {
     this.setState({
       videoLink: videoLink
+    });
+  }
+
+  setFileCheckedStates(fileCheckedStates) {
+    this.setState({
+      fileCheckedStates: fileCheckedStates
+    });
+  }
+
+  setVideoCheckedStates(videoCheckedStates) {
+    this.setState({
+      videoCheckedStates: videoCheckedStates
     });
   }
 
@@ -115,7 +131,14 @@ class App extends Component {
             <Route
               path="/PageMaterials"
               render={props => (
-                <PageMaterials {...props} userName={this.state.userName} />
+                <PageMaterials
+                  {...props}
+                  userName={this.state.userName}
+                  fileCheckedStates={this.state.fileCheckedStates}
+                  videoCheckedStates={this.state.videoCheckedStates}
+                  setFileCheckedStates={this.setFileCheckedStates}
+                  setVideoCheckedStates={this.setVideoCheckedStates}
+                />
               )}
             />
           </div>

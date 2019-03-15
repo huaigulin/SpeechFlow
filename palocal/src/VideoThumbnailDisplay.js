@@ -6,7 +6,8 @@ class VideoThumbnailDisplay extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      urls: []
+      thumbnails: [],
+      checkedStates: this.props.videoCheckedStates
     };
     this.getThumbnails = this.getThumbnails.bind(this);
     this.getThumbnails(this.props.userName);
@@ -14,7 +15,7 @@ class VideoThumbnailDisplay extends Component {
 
   getThumbnails(userName) {
     const formData = new FormData();
-    formData.append('userName', this.props.userName);
+    formData.append('userName', userName);
     axios
       .post(`/getThumbnails`, formData, {
         headers: {
@@ -22,7 +23,23 @@ class VideoThumbnailDisplay extends Component {
         }
       })
       .then(response => {
-        this.setState({ urls: response.data });
+        var urls = response.data;
+        var thumbnails = [];
+        var checkedStates = [];
+
+        for (var i = 0; i < urls.length; i++) {
+          thumbnails.push(
+            <VideoThumbnail
+              src={urls[i]}
+              alt="video thumnail"
+              key={i}
+              index={i}
+            />
+          );
+          checkedStates.push(false);
+        }
+        this.setState({ thumbnails: thumbnails });
+        this.props.setVideoCheckedStates(checkedStates);
       })
       .catch(error => {
         console.log('ERROR in getThumbnails post request: ' + error);
@@ -30,19 +47,10 @@ class VideoThumbnailDisplay extends Component {
   }
 
   render() {
-    var urls = this.state.urls;
-    var thumnails = [];
-
-    for (var i = 0; i < urls.length; i++) {
-      thumnails.push(
-        <VideoThumbnail src={urls[i]} alt="video thumnail" key={i} />
-      );
-    }
-
     return (
       <div>
         <h5>Your Videos:</h5>
-        <div>{thumnails}</div>
+        <div>{this.state.thumbnails}</div>
       </div>
     );
   }
