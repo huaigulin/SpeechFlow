@@ -40,11 +40,19 @@ class VideoThumbnailDisplay extends Component {
     super(props);
     this.state = {
       IDs: [],
-      thumbnails: []
+      thumbnails: [],
+      videoCheckedStates: []
     };
     this.getThumbnails = this.getThumbnails.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.setVideoCheckedStates = this.setVideoCheckedStates.bind(this);
     this.getThumbnails(this.props.userName);
+  }
+
+  setVideoCheckedStates(videoCheckedStates) {
+    this.setState({
+      videoCheckedStates: videoCheckedStates
+    });
   }
 
   getThumbnails(userName) {
@@ -69,8 +77,8 @@ class VideoThumbnailDisplay extends Component {
           thumbnails.push(
             <VideoThumbnail
               src={urls[i]}
-              videoCheckedStates={this.props.videoCheckedStates}
-              setVideoCheckedStates={this.props.setVideoCheckedStates}
+              videoCheckedStates={this.state.videoCheckedStates}
+              setVideoCheckedStates={this.setVideoCheckedStates}
               key={i}
               index={i}
             />
@@ -78,7 +86,7 @@ class VideoThumbnailDisplay extends Component {
           checkedStates.push(false);
         }
         this.setState({ thumbnails: thumbnails });
-        this.props.setVideoCheckedStates(checkedStates);
+        this.setState({ videoCheckedStates: checkedStates });
       })
       .catch(error => {
         console.log('ERROR in getThumbnails post request: ' + error);
@@ -90,8 +98,8 @@ class VideoThumbnailDisplay extends Component {
     const formData = new FormData();
     formData.append('userName', this.props.userName);
 
-    for (var i = 0; i < this.props.videoCheckedStates.length; i++) {
-      if (this.props.videoCheckedStates[i] === true) {
+    for (var i = 0; i < this.state.videoCheckedStates.length; i++) {
+      if (this.state.videoCheckedStates[i] === true) {
         formData.append('IDs', this.state.IDs[i]);
       }
     }
@@ -113,8 +121,8 @@ class VideoThumbnailDisplay extends Component {
   render() {
     const { classes } = this.props;
     var numSelected = 0;
-    for (var i = 0; i < this.props.videoCheckedStates.length; i++) {
-      if (this.props.videoCheckedStates[i] === true) {
+    for (var i = 0; i < this.state.videoCheckedStates.length; i++) {
+      if (this.state.videoCheckedStates[i] === true) {
         numSelected++;
       }
     }
