@@ -14,12 +14,16 @@ class VideoThumbnail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: false
+      checked: this.props.videoCheckedStates[this.props.index]
     };
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange = event => {
-    this.setState({ checked: event.target.checked });
+    var videoCheckedStates = this.props.videoCheckedStates;
+    videoCheckedStates[this.props.index] = event.target.checked;
+    this.props.setVideoCheckedStates(videoCheckedStates);
   };
 
   render() {
@@ -35,7 +39,7 @@ class VideoThumbnail extends Component {
         <img
           className="thumbnailImage"
           src={this.props.src}
-          alt={this.props.alt}
+          alt="video thumbnail"
         />
       </div>
     );

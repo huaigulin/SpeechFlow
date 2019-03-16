@@ -88,11 +88,18 @@ app.post('/upload-video-link', (request, response) => {
     })
       .exec()
       .then(databaseEntry => {
+        var link = fields.link[0];
+        var regEx = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+        var match = link.match(regEx);
+        var id = '';
+        if (match && match[1].length == 11) {
+          id = match[1];
+        }
         if (databaseEntry.length == 0) {
-          var linkArray = [fields.link[0]];
+          var linkIDArray = [id];
           let newVideoLinkModel = new VideoLinkModel({
             userName: fields.userName[0],
-            links: linkArray
+            linkIDs: linkIDArray
           });
           newVideoLinkModel.save().catch(error => {
             console.log(
@@ -100,12 +107,12 @@ app.post('/upload-video-link', (request, response) => {
             );
           });
         } else {
-          var linkArray = databaseEntry[0].links;
-          if (!linkArray.includes(fields.link[0])) {
-            linkArray.push(fields.link[0]);
+          var linkIDArray = databaseEntry[0].linkIDs;
+          if (!linkIDArray.includes(id)) {
+            linkIDArray.push(id);
             VideoLinkModel.updateMany(
               { userName: fields.userName[0] },
-              { $set: { links: linkArray } }
+              { $set: { linkIDs: linkIDArray } }
             ).catch(error => {
               console.log(
                 'ERROR in upload-video-link post request update(): ' + error
@@ -118,7 +125,7 @@ app.post('/upload-video-link', (request, response) => {
   });
 });
 
-//Get Thumbnails from mongodb
+// Get Thumbnails from mongodb
 app.post('/getThumbnails', (request, response) => {
   const form = new multiparty.Form();
   form.parse(request, async (error, fields) => {
@@ -129,20 +136,46 @@ app.post('/getThumbnails', (request, response) => {
     })
       .exec()
       .then(databaseEntry => {
-        var linkArray = databaseEntry[0].links;
-        var thumbnailUrls = new Array();
-        for (var i = 0; i < linkArray.length; i++) {
-          var link = linkArray[i];
-          var regEx = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
-          var match = link.match(regEx);
-          var id = '';
-          if (match && match[1].length == 11) {
-            id = match[1];
+        var linkIDArray = databaseEntry[0].linkIDs;
+        response.send(linkIDArray);
+      });
+  });
+});
+
+// Delete links on mongodb
+app.post('/deleteThumbnails', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    VideoLinkModel.find({
+      userName: fields.userName[0]
+    })
+      .exec()
+      .then(databaseEntry => {
+        var linkIDArray = databaseEntry[0].linkIDs;
+        var newLinkIDArray = [];
+        for (var i = 0; i < linkIDArray.length; i++) {
+          var id = linkIDArray[i];
+          var toDelete = false;
+          for (var j = 0; j < fields.IDs.length; j++) {
+            if (fields.IDs[j] === id) {
+              toDelete = true;
+            }
           }
-          var url = 'http://i1.ytimg.com/vi/' + id + '/default.jpg';
-          thumbnailUrls.push(url);
+          if (toDelete === false) {
+            newLinkIDArray.push(id);
+          }
         }
-        response.send(thumbnailUrls);
+        VideoLinkModel.updateMany(
+          { userName: fields.userName[0] },
+          { $set: { linkIDs: newLinkIDArray } }
+        ).catch(error => {
+          console.log(
+            'ERROR in deleteThumbnails post request update(): ' + error
+          );
+        });
+        response.send('success');
       });
   });
 });
