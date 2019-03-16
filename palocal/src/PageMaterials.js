@@ -16,9 +16,19 @@ class PageMaterials extends Component {
         ) : (
           <h3>You have not logged in. Please log in or sign up.</h3>
         )}
-        {isLoggedIn ? <FileDisplay userName={this.props.userName} /> : <div />}
         {isLoggedIn ? (
-          <VideoThumbnailDisplay userName={this.props.userName} />
+          <FileDisplay
+            userName={this.props.userName}
+            setSelectedFiles={this.props.setSelectedFiles}
+          />
+        ) : (
+          <div />
+        )}
+        {isLoggedIn ? (
+          <VideoThumbnailDisplay
+            userName={this.props.userName}
+            setSelectedVideos={this.props.setSelectedVideos}
+          />
         ) : (
           <div />
         )}

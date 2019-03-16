@@ -15,7 +15,9 @@ class App extends Component {
       docName: null,
       pageNum: null,
       userType: null,
-      videoLink: null
+      videoLink: null,
+      selectedFiles: [],
+      selectedVideos: []
     };
 
     this.setUserName = this.setUserName.bind(this);
@@ -23,6 +25,8 @@ class App extends Component {
     this.setPageNum = this.setPageNum.bind(this);
     this.setUserType = this.setUserType.bind(this);
     this.setVideoLink = this.setVideoLink.bind(this);
+    this.setSelectedFiles = this.setSelectedFiles.bind(this);
+    this.setSelectedVideos = this.setSelectedVideos.bind(this);
   }
 
   setUserName(userName) {
@@ -52,6 +56,18 @@ class App extends Component {
   setVideoLink(videoLink) {
     this.setState({
       videoLink: videoLink
+    });
+  }
+
+  setSelectedFiles(selectedFiles) {
+    this.setState({
+      selectedFiles: selectedFiles
+    });
+  }
+
+  setSelectedVideos(selectedVideos) {
+    this.setState({
+      selectedVideos: selectedVideos
     });
   }
 
@@ -115,7 +131,12 @@ class App extends Component {
             <Route
               path="/PageMaterials"
               render={props => (
-                <PageMaterials {...props} userName={this.state.userName} />
+                <PageMaterials
+                  {...props}
+                  userName={this.state.userName}
+                  setSelectedFiles={this.setSelectedFiles}
+                  setSelectedVideos={this.setSelectedVideos}
+                />
               )}
             />
           </div>

@@ -124,6 +124,7 @@ class FileDisplay extends Component {
           <EnhancedTable
             table={this.state.table}
             userName={this.props.userName}
+            setSelectedFiles={this.props.setSelectedFiles}
           />
         ) : (
           <div />
