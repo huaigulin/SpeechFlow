@@ -53,6 +53,13 @@ class VideoThumbnailDisplay extends Component {
     this.setState({
       videoCheckedStates: videoCheckedStates
     });
+    var selectedVideoIDs = [];
+    for (var i = 0; i < videoCheckedStates.length; i++) {
+      if (videoCheckedStates[i] === true) {
+        selectedVideoIDs.push(this.state.IDs[i]);
+      }
+    }
+    this.props.setSelectedVideos(selectedVideoIDs);
   }
 
   getThumbnails(userName) {
