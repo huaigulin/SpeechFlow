@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import AWS from 'aws-sdk';
-import bluebird from 'bluebird';
 import EnhancedTable from './EnhancedTable';
 
 class FileDisplay extends Component {
@@ -18,17 +16,11 @@ class FileDisplay extends Component {
     var params = null;
     var isLoggedIn = this.props.userName != null;
     if (isLoggedIn) {
-      AWS.config.setPromisesDependency(bluebird);
-      AWS.config.update({
-        accessKeyId: 'AKIAJ2AJSWCEWUVGAXUQ', //process.env.AWS_KEY,
-        secretAccessKey: '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' //process.env.AWS_SECRET
-      });
-      var s3 = new AWS.S3();
       params = {
         Bucket: 'speechflow',
         Prefix: this.props.userName
       };
-      s3.listObjectsV2(
+      this.props.s3.listObjectsV2(
         params,
         function(err, data) {
           if (err) console.log(err, err.stack);

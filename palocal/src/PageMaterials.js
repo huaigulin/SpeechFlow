@@ -19,6 +19,7 @@ class PageMaterials extends Component {
         {isLoggedIn ? (
           <FileDisplay
             userName={this.props.userName}
+            s3={this.props.s3}
             setSelectedFiles={this.props.setSelectedFiles}
           />
         ) : (

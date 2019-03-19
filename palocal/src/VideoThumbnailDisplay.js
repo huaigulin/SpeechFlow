@@ -73,14 +73,14 @@ class VideoThumbnailDisplay extends Component {
         }
         var thumbnails = [];
         var checkedStates = [];
-        for (var i = 0; i < urls.length; i++) {
+        for (var j = 0; j < urls.length; j++) {
           thumbnails.push(
             <VideoThumbnail
-              src={urls[i]}
+              src={urls[j]}
               videoCheckedStates={this.state.videoCheckedStates}
               setVideoCheckedStates={this.setVideoCheckedStates}
-              key={i}
-              index={i}
+              key={j}
+              index={j}
             />
           );
           checkedStates.push(false);
