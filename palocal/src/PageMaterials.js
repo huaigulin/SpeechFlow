@@ -3,11 +3,13 @@ import UploadPDFAndImage from './UploadPDFAndImage';
 import Navbar from './Navbar';
 import UploadVideoLink from './UploadVideoLink';
 import FileDisplay from './FileDisplay';
+import Flow from './Flow';
 import VideoThumbnailDisplay from './VideoThumbnailDisplay';
 
 class PageMaterials extends Component {
   render() {
     const isLoggedIn = this.props.userName != null;
+    const selectedItems = (this.props.selectedFiles.length > 0 || this.props.selectedVideos.length > 0)
     return (
       <div>
         <Navbar />
@@ -40,6 +42,15 @@ class PageMaterials extends Component {
         )}
         {isLoggedIn ? (
           <UploadVideoLink userName={this.props.userName} />
+        ) : (
+          <div />
+        )}
+        {selectedItems ? (
+          <Flow
+          userName={this.props.userName}
+          selectedFiles={this.props.selectedFiles}
+          selectedVideos={this.props.selctedVideos}
+          />
         ) : (
           <div />
         )}

@@ -146,6 +146,8 @@ class App extends Component {
                   s3={this.state.s3}
                   setSelectedFiles={this.setSelectedFiles}
                   setSelectedVideos={this.setSelectedVideos}
+                  selectedFiles={this.state.selectedFiles}
+                  selectedVideos={this.state.selectedVideos}
                 />
               )}
             />
