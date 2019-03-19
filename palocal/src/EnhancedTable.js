@@ -159,19 +159,13 @@ let EnhancedTableToolbar = props => {
 
   function handleDelete(event) {
     event.preventDefault();
-    AWS.config.setPromisesDependency(bluebird);
-    AWS.config.update({
-      accessKeyId: 'AKIAJ2AJSWCEWUVGAXUQ', //process.env.AWS_KEY,
-      secretAccessKey: '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' //process.env.AWS_SECRET
-    });
-    var s3 = new AWS.S3();
     for (var i = 0; i < props.fileSelected.length; i++) {
       const key = props.userName + '/' + props.fileSelected[i];
       var params = {
         Bucket: 'speechflow',
         Key: key
       };
-      s3.deleteObject(params, function(err, data) {
+      this.props.s3.deleteObject(params, function(err, data) {
         if (err) {
           // an error occurred
           console.log(err, err.stack);

@@ -114,6 +114,7 @@ class FileDisplay extends Component {
       <div>
         {tableIsNotNull ? (
           <EnhancedTable
+            s3={this.props.s3}
             table={this.state.table}
             userName={this.props.userName}
             setSelectedFiles={this.props.setSelectedFiles}
