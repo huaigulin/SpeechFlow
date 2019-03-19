@@ -18,8 +18,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import AWS from 'aws-sdk';
-import bluebird from 'bluebird';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -270,10 +268,16 @@ class EnhancedTable extends Component {
       this.setState(state => ({
         fileSelected: state.data.map(n => n.fileName)
       }));
+      var fileSelected = [];
+      for (var i = 0; i < this.state.data.length; i++) {
+        fileSelected.push(this.state.data[i].fileName);
+      }
+      this.props.setSelectedFiles(fileSelected);
       return;
     }
     this.setState({ selected: [] });
     this.setState({ fileSelected: [] });
+    this.props.setSelectedFiles([]);
   };
 
   handleClick = (event, id, fileName) => {
@@ -313,6 +317,7 @@ class EnhancedTable extends Component {
       );
     }
     this.setState({ fileSelected: newFileSelected });
+    this.props.setSelectedFiles(newFileSelected);
   };
 
   handleChangePage = (event, page) => {

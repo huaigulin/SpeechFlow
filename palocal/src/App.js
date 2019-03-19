@@ -72,6 +72,7 @@ class App extends Component {
     this.setState({
       selectedFiles: selectedFiles
     });
+    console.dir(this.state.selectedFiles);
   }
 
   setSelectedVideos(selectedVideos) {
