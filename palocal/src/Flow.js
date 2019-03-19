@@ -7,6 +7,11 @@ class Flow extends Component {
       currentPDF: null,
       currentVideo: null
     }
+    this.start = this.start.bind(this);
+  }
+
+  start(){
+    //push to PDF page
   }
 
   render () {
@@ -22,6 +27,7 @@ class Flow extends Component {
           <div>
             <p> Pick a file to start presentation with </p>
             <p> {this.props.selectedFiles} </p>
+            <button onClick={this.start}> Start Presentation </button>
           </div>
         )}
       </div>
