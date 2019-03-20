@@ -75,9 +75,9 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log('we are connected!');
 });
-const VideoLinkModel = require('./models/videoLink');
 
 // Define POST route for video link uploads to Mongo Atlas
+const VideoLinkModel = require('./models/videoLink');
 app.post('/upload-video-link', (request, response) => {
   const form = new multiparty.Form();
   form.parse(request, async (error, fields) => {
@@ -119,6 +119,66 @@ app.post('/upload-video-link', (request, response) => {
               );
             });
           }
+        }
+        response.status(200).send('success');
+      });
+  });
+});
+
+// POST request to upload a flow
+const FlowModel = require('./models/flow');
+app.post('/upload-flow', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    var pdfAndImages = fields.pdfAndImages;
+    var pdfs = [];
+    var images = [];
+    for (var i = 0; i < pdfAndImages.length; i++) {
+      if (pdfAndImages[i].substr(pdfAndImages[i].length - 3) === 'pdf') {
+        pdfs.push(pdfAndImages[i]);
+      } else {
+        images.push(pdfAndImages[i]);
+      }
+    }
+
+    FlowModel.find({
+      userName: fields.userName[0]
+    })
+      .exec()
+      .then(databaseEntry => {
+        if (databaseEntry.length == 0) {
+          let newFlowModel = new FlowModel({
+            userName: fields.userName[0],
+            flows: [
+              {
+                id: 0,
+                flowName: 'New Flow',
+                pdfs: pdfs,
+                images: images,
+                videos: fields.videos
+              }
+            ]
+          });
+          newFlowModel.save().catch(error => {
+            console.log('ERROR in upload-flow post request save(): ' + error);
+          });
+        } else {
+          var flowsArray = databaseEntry[0].flows;
+          flowsArray.push({
+            id: flowsArray.length,
+            flowName: 'New Flow',
+            pdfs: pdfs,
+            images: images,
+            videos: fields.videos
+          });
+          FlowModel.updateMany(
+            { userName: fields.userName[0] },
+            { $set: { flows: flowsArray } }
+          ).catch(error => {
+            console.log('ERROR in upload-flow post request update(): ' + error);
+          });
         }
         response.status(200).send('success');
       });
