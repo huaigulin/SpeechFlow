@@ -1,15 +1,33 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import UploadPDFAndImage from './UploadPDFAndImage';
 import Navbar from './Navbar';
 import UploadVideoLink from './UploadVideoLink';
 import FileDisplay from './FileDisplay';
-import Flow from './Flow';
 import VideoThumbnailDisplay from './VideoThumbnailDisplay';
 
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit
+  },
+  input: {
+    display: 'none'
+  }
+});
+
 class PageMaterials extends Component {
+  createFlow = event => {
+    event.preventDefault();
+    this.props.history.push('/PageFlows');
+  };
   render() {
+    const { classes } = this.props;
     const isLoggedIn = this.props.userName != null;
-    const selectedItems = (this.props.selectedFiles.length > 0 || this.props.selectedVideos.length > 0)
+    const selectedItems =
+      this.props.selectedFiles.length > 0 ||
+      this.props.selectedVideos.length > 0;
+
     return (
       <div>
         <Navbar />
@@ -24,6 +42,31 @@ class PageMaterials extends Component {
             s3={this.props.s3}
             setSelectedFiles={this.props.setSelectedFiles}
           />
+        ) : (
+          <div />
+        )}
+        {isLoggedIn ? (
+          <div>
+            {selectedItems ? (
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={this.createFlow}
+              >
+                Create new flow
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="secondary"
+                disabled
+                className={classes.button}
+              >
+                Create new flow
+              </Button>
+            )}
+          </div>
         ) : (
           <div />
         )}
@@ -45,18 +88,9 @@ class PageMaterials extends Component {
         ) : (
           <div />
         )}
-        {selectedItems ? (
-          <Flow
-          userName={this.props.userName}
-          selectedFiles={this.props.selectedFiles}
-          selectedVideos={this.props.selctedVideos}
-          />
-        ) : (
-          <div />
-        )}
       </div>
     );
   }
 }
 
-export default PageMaterials;
+export default withStyles(styles)(PageMaterials);

@@ -4,8 +4,9 @@ import bluebird from 'bluebird';
 import { BrowserRouter, Route } from 'react-router-dom';
 import PageHome from './PageHome';
 import PageMaterials from './PageMaterials';
-import socketIOClient from 'socket.io-client';
 import PagePresentation from './PagePresentation';
+import PageFlows from './PageFlows';
+import socketIOClient from 'socket.io-client';
 
 class App extends Component {
   constructor(props) {
@@ -146,6 +147,18 @@ class App extends Component {
                   s3={this.state.s3}
                   setSelectedFiles={this.setSelectedFiles}
                   setSelectedVideos={this.setSelectedVideos}
+                  selectedFiles={this.state.selectedFiles}
+                  selectedVideos={this.state.selectedVideos}
+                />
+              )}
+            />
+            <Route
+              path="/PageFlows"
+              render={props => (
+                <PageFlows
+                  {...props}
+                  userName={this.state.userName}
+                  s3={this.state.s3}
                   selectedFiles={this.state.selectedFiles}
                   selectedVideos={this.state.selectedVideos}
                 />
