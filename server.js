@@ -308,9 +308,6 @@ io.on('connection', socket => {
   });
 
   socket.on('next slide', (docName, pageNum) => {
-    console.log(docName);
-    console.log(pageNum);
-    console.log(socket.room);
     io.sockets.to(socket.room).emit('SOMEONE HIT NEXT', pageNum + 1);
   });
 
