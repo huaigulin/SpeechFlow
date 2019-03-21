@@ -31,32 +31,33 @@ class PDFViewer extends Component {
   onDocumentLoadSuccess = ({ numPages }) => {
     this.setState({ numPages });
     if (this.props.pageNum == null) {
-      this.setState({ pageNum: 1 });
+      this.props.setPageNum(1);
     }
   };
 
-  componentDidUpdate(prevProps) {
-    if (this.props.pageNum !== prevProps.pageNum) {
-      this.setState({ pageNum: this.props.pageNum });
-    }
-    if (this.props.docName !== prevProps.docName) {
-      this.setState({ docName: this.props.docName });
-    }
-  }
-
   componentDidMount() {
+    this.props.socket.on('update doc name and page num', (docName, pageNum) => {
+      if (docName != null) {
+        this.props.setDocName(docName);
+      }
+      if (pageNum != null) {
+        this.props.setPageNum(pageNum);
+      }
+    });
+
     this.props.socket.on('SOMEONE HIT NEXT', pageNum => {
       this.props.setPageNum(pageNum);
       sessionStorage.setItem('pageNum', pageNum);
-      this.props.setDocName(this.state.docName);
-      sessionStorage.setItem('docName', this.state.docName);
+
+      // this.props.setDocName(this.state.docName);
+      // sessionStorage.setItem('docName', this.state.docName);
     });
 
     this.props.socket.on('SOMEONE HIT BACK', pageNum => {
       this.props.setPageNum(pageNum);
       sessionStorage.setItem('pageNum', pageNum);
-      this.props.setDocName(this.state.docName);
-      sessionStorage.setItem('docName', this.state.docName);
+      // this.props.setDocName(this.state.docName);
+      // sessionStorage.setItem('docName', this.state.docName);
     });
 
     if (this.props.userType === 'speaker') {
@@ -109,21 +110,21 @@ class PDFViewer extends Component {
   };
 
   previousSlide = event => {
-    if (this.state.pageNum > 1) {
+    if (this.props.pageNum > 1) {
       this.props.socket.emit(
         'back slide',
-        this.state.docName,
-        this.state.pageNum
+        this.props.docName,
+        this.props.pageNum
       );
     }
   };
 
   nextSlide = event => {
-    if (this.state.pageNum < this.state.numPages) {
+    if (this.props.pageNum < this.state.numPages) {
       this.props.socket.emit(
         'next slide',
-        this.state.docName,
-        this.state.pageNum
+        this.props.docName,
+        this.props.pageNum
       );
     }
   };
@@ -138,8 +139,8 @@ class PDFViewer extends Component {
 
   render() {
     const userType = this.props.userType === 'speaker';
-    var isDocNameValid = this.state.docName != null;
-    const { pageNum, numPages } = this.state;
+    var isDocNameValid = this.props.docName != null;
+    const { numPages } = this.state;
     return (
       <div>
         {isDocNameValid ? (
@@ -156,12 +157,12 @@ class PDFViewer extends Component {
                     'https://s3.us-east-2.amazonaws.com/speechflow/' +
                     this.props.userName +
                     '/' +
-                    this.state.docName +
+                    this.props.docName +
                     '.pdf'
                   }
                   onLoadSuccess={this.onDocumentLoadSuccess}
                 >
-                  <Page pageNumber={pageNum} scale={0.8} />
+                  <Page pageNumber={this.props.pageNum} scale={0.8} />
                 </Document>
               </div>
             </MediaQuery>
@@ -172,12 +173,12 @@ class PDFViewer extends Component {
                     'https://s3.us-east-2.amazonaws.com/speechflow/' +
                     this.props.userName +
                     '/' +
-                    this.state.docName +
+                    this.props.docName +
                     '.pdf'
                   }
                   onLoadSuccess={this.onDocumentLoadSuccess}
                 >
-                  <Page pageNumber={pageNum} width={300} />
+                  <Page pageNumber={this.props.pageNum} width={300} />
                 </Document>
               </div>
               {userType ? (
@@ -197,7 +198,7 @@ class PDFViewer extends Component {
               )}
             </MediaQuery>
             <p className="textCenter">
-              Page {pageNum} of {numPages}
+              Page {this.props.pageNum} of {numPages}
             </p>
           </div>
         ) : (

@@ -94,7 +94,9 @@ class App extends Component {
     });
 
     this.state.socket.on('do you have doc name and page num?', () => {
-      if (this.state.docName != null && this.state.pageNum != NaN) {
+      if (this.state.docName != null && !this.state.pageNum.isNaN) {
+        // console.log(this.state.docName);
+        // console.log(this.state.pageNum);
         this.state.socket.emit(
           'yes i have them',
           this.state.docName,
