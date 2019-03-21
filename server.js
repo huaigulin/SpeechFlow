@@ -250,6 +250,23 @@ app.post('/deleteThumbnails', (request, response) => {
   });
 });
 
+// Get flows from mongodb
+app.post('/getFlows', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    FlowModel.find({
+      userName: fields.userName[0]
+    })
+      .exec()
+      .then(databaseEntry => {
+        var flowArray = databaseEntry[0].flows;
+        response.send(flowArray);
+      });
+  });
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'palocal/build')));
 

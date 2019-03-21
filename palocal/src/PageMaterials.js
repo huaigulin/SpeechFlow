@@ -36,7 +36,8 @@ class PageMaterials extends Component {
         }
       })
       .then(response => {
-        this.props.history.push('/PageFlows');
+        // Start presentation with the first pdf for now
+        this.props.history.push('/PagePresentation');
       });
   };
 

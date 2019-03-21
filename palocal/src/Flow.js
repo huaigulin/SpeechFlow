@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-// fake data generator
-const getItems = count =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k}`,
-    content: `item ${k}`
-  }));
-
-const getPdfs = files => {
-  console.dir(files);
+const getPdfs = pdfs => {
+  var array = [];
+  for (var i = 0; i < pdfs.length; i++) {
+    array.push({ id: i.toString(), content: pdfs[i] });
+  }
+  return array;
 };
 
 // a little function to help us with reordering the result
@@ -42,14 +40,25 @@ const getListStyle = isDraggingOver => ({
   width: 250
 });
 
+const Container = styled.div`
+  margin: 8px;
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+  width: 220px;
+
+  display: flex;
+  flex-direction: column;
+`;
+const Title = styled.h3`
+  padding: 8px;
+`;
+
 class Flow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: getItems(10),
-      pdfs: getPdfs(this.props.seletedFiles)
+      items: getPdfs(this.props.pdfs)
     };
-    console.dir(getItems(10));
     this.onDragEnd = this.onDragEnd.bind(this);
   }
 
@@ -74,8 +83,9 @@ class Flow extends Component {
   // But in this example everything is just done in one place for simplicity
   render() {
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="droppable">
+      <Container>
+        <Title>{this.props.flowName}</Title>
+        <Droppable droppableId={this.props.flowID}>
           {(provided, snapshot) => (
             <div
               {...provided.droppableProps}
@@ -103,7 +113,7 @@ class Flow extends Component {
             </div>
           )}
         </Droppable>
-      </DragDropContext>
+      </Container>
     );
   }
 }
