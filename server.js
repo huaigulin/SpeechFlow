@@ -161,9 +161,14 @@ app.post('/upload-flow', (request, response) => {
               }
             ]
           });
-          newFlowModel.save().catch(error => {
-            console.log('ERROR in upload-flow post request save(): ' + error);
-          });
+          newFlowModel
+            .save()
+            .then(() => {
+              response.send('success');
+            })
+            .catch(error => {
+              console.log('ERROR in upload-flow post request save(): ' + error);
+            });
         } else {
           var flowsArray = databaseEntry[0].flows;
           flowsArray.push({
@@ -176,11 +181,16 @@ app.post('/upload-flow', (request, response) => {
           FlowModel.updateMany(
             { userName: fields.userName[0] },
             { $set: { flows: flowsArray } }
-          ).catch(error => {
-            console.log('ERROR in upload-flow post request update(): ' + error);
-          });
+          )
+            .then(() => {
+              response.send('success');
+            })
+            .catch(error => {
+              console.log(
+                'ERROR in upload-flow post request update(): ' + error
+              );
+            });
         }
-        response.status(200).send('success');
       });
   });
 });

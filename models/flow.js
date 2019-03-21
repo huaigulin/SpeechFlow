@@ -14,11 +14,4 @@ var userSchema = mongoose.Schema({
   ]
 });
 
-// var flowSchema = mongoose.Schema({
-//   flowName: String,
-//   pdfs: [String],
-//   images: [String],
-//   videos: [String]
-// });
-
 module.exports = mongoose.model('flow', userSchema);
