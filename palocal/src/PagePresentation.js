@@ -1,7 +1,18 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import PDFViewer from './PDFViewer';
 import VideoPlayer from './VideoPlayer';
 import Navbar from './Navbar';
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit
+  },
+  input: {
+    display: 'none'
+  }
+});
 
 class PagePresentation extends Component {
   constructor(props) {
@@ -13,8 +24,21 @@ class PagePresentation extends Component {
     };
   }
 
+  goToVideo = event => {
+    this.setState({ loadPDF: false });
+    this.setState({ loadVideo: true });
+    this.setState({ loadGallery: false });
+  };
+
+  goToPdf = event => {
+    this.setState({ loadPDF: true });
+    this.setState({ loadVideo: false });
+    this.setState({ loadGallery: false });
+  };
+
   render() {
     const isLoggedIn = this.props.userName != null;
+    const { classes } = this.props;
     var loadPDF = this.state.loadPDF;
     var loadVideo = this.state.loadVideo;
     var loadGallery = this.state.loadGallery;
@@ -40,17 +64,33 @@ class PagePresentation extends Component {
                   pageNum={this.props.pageNum}
                   userType={this.props.userType}
                 />
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToVideo}
+                >
+                  Video Player
+                </Button>
               </div>
             ) : (
               <div />
             )}
             {loadVideo ? (
-              <VideoPlayer
-                socket={this.props.socket}
-                userName={this.props.userName}
-                userType={this.props.userType}
-                videoLink={this.props.videoLink}
-              />
+              <div>
+                <VideoPlayer
+                  socket={this.props.socket}
+                  userName={this.props.userName}
+                  userType={this.props.userType}
+                  videoLink={this.props.videoLink}
+                />
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToPdf}
+                >
+                  PDF Viewer
+                </Button>
+              </div>
             ) : (
               <div />
             )}
@@ -64,4 +104,4 @@ class PagePresentation extends Component {
   }
 }
 
-export default PagePresentation;
+export default withStyles(styles)(PagePresentation);

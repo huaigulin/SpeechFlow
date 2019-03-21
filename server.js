@@ -164,7 +164,7 @@ app.post('/upload-flow', (request, response) => {
           newFlowModel
             .save()
             .then(() => {
-              response.send(pdfs[0]); // TO CHANGE
+              response.send({ pdf: pdfs[0], video: fields.videos[0] }); // TO CHANGE
             })
             .catch(error => {
               console.log('ERROR in upload-flow post request save(): ' + error);
@@ -183,7 +183,7 @@ app.post('/upload-flow', (request, response) => {
             { $set: { flows: flowsArray } }
           )
             .then(() => {
-              response.send(pdfs[0]); // TO CHANGE
+              response.send({ pdf: pdfs[0], video: fields.videos[0] }); // TO CHANGE
             })
             .catch(error => {
               console.log(

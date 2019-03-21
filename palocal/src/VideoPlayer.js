@@ -73,10 +73,11 @@ class VideoPlayer extends Component {
     this.player = player;
   };
   render() {
+    const url = 'https://www.youtube.com/watch?v=' + this.props.videoLink;
     return (
       <div>
         <ReactPlayer
-          url="https://www.youtube.com/watch?v=9j7ANRXsCwc"
+          url={url}
           ref={this.ref}
           playing={this.state.playing}
           controls={true}

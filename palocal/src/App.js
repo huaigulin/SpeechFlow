@@ -25,7 +25,7 @@ class App extends Component {
       docName: sessionStorage.getItem('docName'),
       pageNum: parseInt(sessionStorage.getItem('pageNum')),
       userType: sessionStorage.getItem('userType'),
-      videoLink: null,
+      videoLink: sessionStorage.getItem('videoID'),
       selectedFiles: [],
       selectedVideos: []
     };
@@ -155,6 +155,7 @@ class App extends Component {
                   selectedVideos={this.state.selectedVideos}
                   setDocName={this.setDocName}
                   setPageNum={this.setPageNum}
+                  setVideoLink={this.setVideoLink}
                 />
               )}
             />
