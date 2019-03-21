@@ -36,7 +36,12 @@ class PageMaterials extends Component {
         }
       })
       .then(response => {
-        // Start presentation with the first pdf for now
+        // Start presentation with the first pdf in the newest flow for now
+        var docName = response.data.substring(0, response.data.length - 4);
+        this.props.setDocName(docName);
+        this.props.setPageNum(1);
+        sessionStorage.setItem('docName', docName);
+        sessionStorage.setItem('pageNum', 1);
         this.props.history.push('/PagePresentation');
       });
   };

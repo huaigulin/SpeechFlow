@@ -164,7 +164,7 @@ app.post('/upload-flow', (request, response) => {
           newFlowModel
             .save()
             .then(() => {
-              response.send('success');
+              response.send(pdfs[0]); // TO CHANGE
             })
             .catch(error => {
               console.log('ERROR in upload-flow post request save(): ' + error);
@@ -183,7 +183,7 @@ app.post('/upload-flow', (request, response) => {
             { $set: { flows: flowsArray } }
           )
             .then(() => {
-              response.send('success');
+              response.send(pdfs[0]); // TO CHANGE
             })
             .catch(error => {
               console.log(
@@ -308,6 +308,9 @@ io.on('connection', socket => {
   });
 
   socket.on('next slide', (docName, pageNum) => {
+    console.log(docName);
+    console.log(pageNum);
+    console.log(socket.room);
     io.sockets.to(socket.room).emit('SOMEONE HIT NEXT', pageNum + 1);
   });
 

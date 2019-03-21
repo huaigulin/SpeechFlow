@@ -25,6 +25,7 @@ class PDFViewer extends Component {
     };
 
     this.props.socket.emit('what is doc name and page num?');
+    this.props.socket.emit('login', this.props.userName);
   }
 
   onDocumentLoadSuccess = ({ numPages }) => {
@@ -46,12 +47,16 @@ class PDFViewer extends Component {
   componentDidMount() {
     this.props.socket.on('SOMEONE HIT NEXT', pageNum => {
       this.props.setPageNum(pageNum);
+      sessionStorage.setItem('pageNum', pageNum);
       this.props.setDocName(this.state.docName);
+      sessionStorage.setItem('docName', this.state.docName);
     });
 
     this.props.socket.on('SOMEONE HIT BACK', pageNum => {
       this.props.setPageNum(pageNum);
+      sessionStorage.setItem('pageNum', pageNum);
       this.props.setDocName(this.state.docName);
+      sessionStorage.setItem('docName', this.state.docName);
     });
 
     if (this.props.userType === 'speaker') {

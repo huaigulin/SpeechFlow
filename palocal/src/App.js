@@ -22,9 +22,9 @@ class App extends Component {
       socket: socketIOClient('http://localhost:8081/'), //https://paexpress.herokuapp.com/
       userName: sessionStorage.getItem('userName'),
       s3: s3,
-      docName: null,
-      pageNum: null,
-      userType: null,
+      docName: sessionStorage.getItem('docName'),
+      pageNum: parseInt(sessionStorage.getItem('pageNum')),
+      userType: sessionStorage.getItem('userType'),
       videoLink: null,
       selectedFiles: [],
       selectedVideos: []
@@ -149,6 +149,8 @@ class App extends Component {
                   setSelectedVideos={this.setSelectedVideos}
                   selectedFiles={this.state.selectedFiles}
                   selectedVideos={this.state.selectedVideos}
+                  setDocName={this.setDocName}
+                  setPageNum={this.setPageNum}
                 />
               )}
             />

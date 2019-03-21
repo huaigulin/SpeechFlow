@@ -29,6 +29,7 @@ class PageHome extends Component {
   handleRadioSubmit(event) {
     this.props.socket.emit('login', this.state.userName);
     sessionStorage.setItem('userName', this.state.userName);
+    sessionStorage.setItem('userType', this.state.selectedOption);
     event.preventDefault();
     this.props.history.push('/PageMaterials');
     this.props.setUserName(this.state.userName);
