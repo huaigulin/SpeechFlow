@@ -93,12 +93,6 @@ class PagePresentation extends Component {
             )}
             {loadVideo ? (
               <div>
-                <VideoPlayer
-                  socket={this.props.socket}
-                  userName={this.props.userName}
-                  userType={this.props.userType}
-                  videoLink={this.props.videoLink}
-                />
                 <Button
                   color="primary"
                   className={classes.button}
@@ -106,6 +100,12 @@ class PagePresentation extends Component {
                 >
                   PDF Viewer
                 </Button>
+                <VideoPlayer
+                  socket={this.props.socket}
+                  userName={this.props.userName}
+                  userType={this.props.userType}
+                  videoLink={this.props.videoLink}
+                />
               </div>
             ) : (
               <div />

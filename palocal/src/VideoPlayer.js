@@ -90,7 +90,6 @@ class VideoPlayer extends Component {
           height="600px"
           onDuration={this.onDuration}
         />
-        <h2>This is the controller for Video Player</h2>
         <button
           onClick={() => {
             this.handlePlay(this.props.socket, this.player.getCurrentTime());
