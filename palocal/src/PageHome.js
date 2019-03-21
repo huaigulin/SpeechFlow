@@ -28,12 +28,17 @@ class PageHome extends Component {
 
   handleRadioSubmit(event) {
     this.props.socket.emit('login', this.state.userName);
+    this.props.socket.emit('what is doc name and page num?');
     sessionStorage.setItem('userName', this.state.userName);
     sessionStorage.setItem('userType', this.state.selectedOption);
-    event.preventDefault();
-    this.props.history.push('/PageMaterials');
     this.props.setUserName(this.state.userName);
     this.props.setUserType(this.state.selectedOption);
+    if (this.props.docName !== null && this.props.pageNum !== null) {
+      this.props.history.push('/PagePresentation');
+    } else {
+      this.props.history.push('/PageMaterials');
+    }
+    event.preventDefault();
   }
 
   render() {

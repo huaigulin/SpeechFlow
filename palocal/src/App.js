@@ -118,6 +118,8 @@ class App extends Component {
                   socket={this.state.socket}
                   setUserName={this.setUserName}
                   setUserType={this.setUserType}
+                  docName={this.state.docName}
+                  pageNum={this.state.pageNum}
                 />
               )}
             />
