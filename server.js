@@ -319,10 +319,18 @@ io.on('connection', socket => {
     io.sockets.to(socket.room).emit('do you have doc name and page num?');
   });
 
+  socket.on('what is video link?', () => {
+    io.sockets.to(socket.room).emit('do you have video link?');
+  });
+
   socket.on('yes i have them', (docName, pageNum) => {
     io.sockets
       .to(socket.room)
       .emit('update doc name and page num', docName, pageNum);
+  });
+
+  socket.on('yes i have video link', videoLink => {
+    io.sockets.to(socket.room).emit('update video link', videoLink);
   });
 
   socket.on('login', username => {

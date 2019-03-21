@@ -93,6 +93,12 @@ class App extends Component {
       }
     });
 
+    this.state.socket.on('update video link', videoLink => {
+      if (videoLink != null) {
+        this.setVideoLink(videoLink);
+      }
+    });
+
     this.state.socket.on('do you have doc name and page num?', () => {
       if (this.state.docName != null && !this.state.pageNum.isNaN) {
         // console.log(this.state.docName);
@@ -102,6 +108,12 @@ class App extends Component {
           this.state.docName,
           this.state.pageNum
         );
+      }
+    });
+
+    this.state.socket.on('do you have video link?', () => {
+      if (this.state.videoLink != null) {
+        this.state.socket.emit('yes i have video link', this.state.videoLink);
       }
     });
   }

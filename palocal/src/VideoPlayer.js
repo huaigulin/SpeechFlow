@@ -2,18 +2,23 @@ import React, { Component } from 'react';
 import ReactPlayer from 'react-player';
 
 class VideoPlayer extends Component {
-  state = {
-    url: null,
-    pip: false,
-    playing: true,
-    volume: 0.8,
-    muted: false,
-    played: 0,
-    loaded: 0,
-    duration: 0,
-    playbackRate: 1.0,
-    loop: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      url: null,
+      pip: false,
+      playing: true,
+      volume: 0.8,
+      muted: false,
+      played: 0,
+      loaded: 0,
+      duration: 0,
+      playbackRate: 1.0,
+      loop: false
+    };
+
+    this.props.socket.emit('what is video link?');
+  }
 
   componentDidMount() {
     this.props.socket.on('play', time => {
