@@ -28,13 +28,29 @@ class PagePresentation extends Component {
     this.setState({ loadPDF: false });
     this.setState({ loadVideo: true });
     this.setState({ loadGallery: false });
+    this.props.socket.emit('video');
   };
 
   goToPdf = event => {
     this.setState({ loadPDF: true });
     this.setState({ loadVideo: false });
     this.setState({ loadGallery: false });
+    this.props.socket.emit('pdf');
   };
+
+  componentDidMount() {
+    this.props.socket.on('video', () => {
+      this.setState({ loadPDF: false });
+      this.setState({ loadVideo: true });
+      this.setState({ loadGallery: false });
+    });
+
+    this.props.socket.on('pdf', () => {
+      this.setState({ loadPDF: true });
+      this.setState({ loadVideo: false });
+      this.setState({ loadGallery: false });
+    });
+  }
 
   render() {
     const isLoggedIn = this.props.userName != null;
