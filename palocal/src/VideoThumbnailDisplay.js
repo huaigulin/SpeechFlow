@@ -76,7 +76,7 @@ class VideoThumbnailDisplay extends Component {
         this.setState({ IDs: IDs });
         var urls = [];
         for (var i = 0; i < IDs.length; i++) {
-          urls.push('http://i1.ytimg.com/vi/' + IDs[i] + '/default.jpg');
+          urls.push('https://i1.ytimg.com/vi/' + IDs[i] + '/default.jpg');
         }
         var thumbnails = [];
         var checkedStates = [];
