@@ -19,9 +19,7 @@ class PDFViewer extends Component {
     super(props);
     this.state = {
       file: null,
-      numPages: null,
-      pageNum: this.props.pageNum,
-      docName: this.props.docName
+      numPages: null
     };
 
     this.props.socket.emit('what is doc name and page num?');
@@ -36,15 +34,6 @@ class PDFViewer extends Component {
   };
 
   componentDidMount() {
-    this.props.socket.on('update doc name and page num', (docName, pageNum) => {
-      if (docName != null) {
-        this.props.setDocName(docName);
-      }
-      if (pageNum != null) {
-        this.props.setPageNum(pageNum);
-      }
-    });
-
     this.props.socket.on('SOMEONE HIT NEXT', pageNum => {
       this.props.setPageNum(pageNum);
       sessionStorage.setItem('pageNum', pageNum);
