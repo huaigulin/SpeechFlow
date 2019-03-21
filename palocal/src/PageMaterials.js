@@ -46,6 +46,11 @@ class PageMaterials extends Component {
       });
   };
 
+  goToPresentation = event => {
+    event.preventDefault();
+    this.props.history.push('/PagePresentation');
+  };
+
   render() {
     const { classes } = this.props;
     const isLoggedIn = this.props.userName != null;
@@ -73,23 +78,43 @@ class PageMaterials extends Component {
         {isLoggedIn ? (
           <div>
             {selectedItems ? (
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={this.createFlow}
-              >
-                Create new flow
-              </Button>
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.createFlow}
+                >
+                  Create new flow
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  disabled
+                  className={classes.button}
+                >
+                  Go to current presentation
+                </Button>
+              </div>
             ) : (
-              <Button
-                variant="contained"
-                color="secondary"
-                disabled
-                className={classes.button}
-              >
-                Create new flow
-              </Button>
+              <div>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  disabled
+                  className={classes.button}
+                >
+                  Create new flow
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  className={classes.button}
+                  onClick={this.goToPresentation}
+                >
+                  Go to current presentation
+                </Button>
+              </div>
             )}
           </div>
         ) : (
