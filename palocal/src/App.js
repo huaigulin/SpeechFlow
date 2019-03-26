@@ -153,6 +153,7 @@ class App extends Component {
                   {...props}
                   socket={this.state.socket}
                   userName={this.state.userName}
+                  profileImageUrl={this.state.profileImageUrl}
                   setDocName={this.setDocName}
                   setPageNum={this.setPageNum}
                   docName={this.state.docName}
