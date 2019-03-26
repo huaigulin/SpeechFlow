@@ -20,6 +20,15 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
+import InfoIcon from '@material-ui/icons/Info';
+import CloseIcon from '@material-ui/icons/Close';
+import WarningIcon from '@material-ui/icons/Warning';
+import green from '@material-ui/core/colors/green';
+import amber from '@material-ui/core/colors/amber';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -249,6 +258,71 @@ const styles = theme => ({
   }
 });
 
+const variantIcon = {
+  success: CheckCircleIcon,
+  warning: WarningIcon,
+  error: ErrorIcon,
+  info: InfoIcon
+};
+
+const snackbarStyles = theme => ({
+  success: {
+    backgroundColor: green[600]
+  },
+  error: {
+    backgroundColor: theme.palette.error.dark
+  },
+  info: {
+    backgroundColor: theme.palette.primary.dark
+  },
+  warning: {
+    backgroundColor: amber[700]
+  },
+  icon: {
+    fontSize: 20
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing.unit
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center'
+  }
+});
+
+function MySnackbarContent(props) {
+  const { classes, className, message, onClose, variant, ...other } = props;
+  const Icon = variantIcon[variant];
+
+  return (
+    <SnackbarContent
+      className={classNames(classes[variant], className)}
+      aria-describedby="client-snackbar"
+      message={
+        <span id="client-snackbar" className={classes.message}>
+          <Icon className={classNames(classes.icon, classes.iconVariant)} />
+          {message}
+        </span>
+      }
+      action={[
+        <IconButton
+          key="close"
+          aria-label="Close"
+          color="inherit"
+          className={classes.close}
+          onClick={onClose}
+        >
+          <CloseIcon className={classes.icon} />
+        </IconButton>
+      ]}
+      {...other}
+    />
+  );
+}
+
+const MySnackbarContentWrapper = withStyles(snackbarStyles)(MySnackbarContent);
+
 class EnhancedTable extends Component {
   constructor(props) {
     super(props);
@@ -261,7 +335,8 @@ class EnhancedTable extends Component {
       data: this.props.table,
       page: 0,
       rowsPerPage: 5,
-      uploadProgress: 0
+      uploadProgress: 0,
+      snackbarOpen: false
     };
   }
 
@@ -357,6 +432,8 @@ class EnhancedTable extends Component {
       }.bind(this)
     };
 
+    this.setState({ snackbarOpen: true });
+
     axios
       .post(`/upload-file`, formData, config, {
         headers: {
@@ -371,6 +448,14 @@ class EnhancedTable extends Component {
       });
   };
 
+  handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({ snackbarOpen: false });
+  };
+
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   render() {
@@ -378,101 +463,121 @@ class EnhancedTable extends Component {
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    var snackbarMsg = 'Upload in progress: ' + this.state.uploadProgress + '%';
+    if (this.state.uploadProgress === 100) {
+      snackbarMsg = 'Upload Complete, refreshing page';
+    }
 
     return (
-      <Paper className={classes.root}>
-        <EnhancedTableToolbar
-          numSelected={selected.length}
-          userName={this.props.userName}
-          fileSelected={this.state.fileSelected}
-          s3={this.props.s3}
-        />
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
-              onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
-            />
-            <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  const isSelected = this.isSelected(n.id);
-                  return (
-                    <TableRow
-                      hover
-                      onClick={event =>
-                        this.handleClick(event, n.id, n.fileName)
-                      }
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n.id}
-                      selected={isSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {n.fileName}
-                      </TableCell>
-                      <TableCell align="right">{n.dateUploaded}</TableCell>
-                      <TableCell align="right">{n.type}</TableCell>
-                      <TableCell align="right">{n.size}</TableCell>
-                      <TableCell align="right">{n.label}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              {/* {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )} */}
-            </TableBody>
-          </Table>
-        </div>
-        <div className={classes.footer}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={e => this.upload.click()}
-          >
-            PDF/Image Upload
-            <input
-              label="upload file"
-              type="file"
-              multiple
-              hidden
-              ref={ref => (this.upload = ref)}
-              accept="application/pdf, image/*"
-              onChange={this.handleFileUpload}
-            />
-          </Button>
-          Progress: {this.state.uploadProgress} %
-          <div className={classes.tablePagination}>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={data.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              backIconButtonProps={{
-                'aria-label': 'Previous Page'
-              }}
-              nextIconButtonProps={{
-                'aria-label': 'Next Page'
-              }}
-              onChangePage={this.handleChangePage}
-              onChangeRowsPerPage={this.handleChangeRowsPerPage}
-            />
+      <div>
+        <Paper className={classes.root}>
+          <EnhancedTableToolbar
+            numSelected={selected.length}
+            userName={this.props.userName}
+            fileSelected={this.state.fileSelected}
+            s3={this.props.s3}
+          />
+          <div className={classes.tableWrapper}>
+            <Table className={classes.table} aria-labelledby="tableTitle">
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={this.handleSelectAllClick}
+                onRequestSort={this.handleRequestSort}
+                rowCount={data.length}
+              />
+              <TableBody>
+                {stableSort(data, getSorting(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(n => {
+                    const isSelected = this.isSelected(n.id);
+                    return (
+                      <TableRow
+                        hover
+                        onClick={event =>
+                          this.handleClick(event, n.id, n.fileName)
+                        }
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        tabIndex={-1}
+                        key={n.id}
+                        selected={isSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox checked={isSelected} />
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          {n.fileName}
+                        </TableCell>
+                        <TableCell align="right">{n.dateUploaded}</TableCell>
+                        <TableCell align="right">{n.type}</TableCell>
+                        <TableCell align="right">{n.size}</TableCell>
+                        <TableCell align="right">{n.label}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {/* {emptyRows > 0 && (
+                  <TableRow style={{ height: 49 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )} */}
+              </TableBody>
+            </Table>
           </div>
-        </div>
-      </Paper>
+          <div className={classes.footer}>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={e => this.upload.click()}
+            >
+              PDF/Image Upload
+              <input
+                label="upload file"
+                type="file"
+                multiple
+                hidden
+                ref={ref => (this.upload = ref)}
+                accept="application/pdf, image/*"
+                onChange={this.handleFileUpload}
+              />
+            </Button>
+            <div className={classes.tablePagination}>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={data.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                backIconButtonProps={{
+                  'aria-label': 'Previous Page'
+                }}
+                nextIconButtonProps={{
+                  'aria-label': 'Next Page'
+                }}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+            </div>
+          </div>
+        </Paper>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right'
+          }}
+          open={this.state.snackbarOpen}
+          autoHideDuration={60000}
+          onClose={this.handleSnackbarClose}
+        >
+          <MySnackbarContentWrapper
+            onClose={this.handleClose}
+            variant="info"
+            message={snackbarMsg}
+          />
+        </Snackbar>
+      </div>
     );
   }
 }
