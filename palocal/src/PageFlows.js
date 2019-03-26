@@ -64,7 +64,11 @@ class PageFlows extends Component {
     const isLoggedIn = this.props.userName != null;
     return (
       <div>
-        <Navbar />
+        <Navbar
+          history={this.props.history}
+          userName={this.props.userName}
+          profileImageUrl={this.props.profileImageUrl}
+        />
         {isLoggedIn ? (
           <div />
         ) : (

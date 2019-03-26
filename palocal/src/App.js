@@ -20,8 +20,9 @@ class App extends Component {
 
     this.state = {
       socket: socketIOClient('https://paexpress.herokuapp.com/'), //https://paexpress.herokuapp.com/
-      userName: sessionStorage.getItem('userName'),
       s3: s3,
+      userName: sessionStorage.getItem('userName'),
+      profileImageUrl: sessionStorage.getItem('profileImageUrl'),
       docName: sessionStorage.getItem('docName'),
       pageNum: parseInt(sessionStorage.getItem('pageNum')),
       userType: sessionStorage.getItem('userType'),
@@ -31,6 +32,7 @@ class App extends Component {
     };
 
     this.setUserName = this.setUserName.bind(this);
+    this.setProfileImageUrl = this.setProfileImageUrl.bind(this);
     this.setDocName = this.setDocName.bind(this);
     this.setPageNum = this.setPageNum.bind(this);
     this.setUserType = this.setUserType.bind(this);
@@ -42,6 +44,12 @@ class App extends Component {
   setUserName(userName) {
     this.setState({
       userName: userName
+    });
+  }
+
+  setProfileImageUrl(profileImageUrl) {
+    this.setState({
+      profileImageUrl: profileImageUrl
     });
   }
 
@@ -132,6 +140,7 @@ class App extends Component {
                   socket={this.state.socket}
                   setUserName={this.setUserName}
                   setUserType={this.setUserType}
+                  setProfileImageUrl={this.setProfileImageUrl}
                   docName={this.state.docName}
                   pageNum={this.state.pageNum}
                 />
@@ -160,6 +169,7 @@ class App extends Component {
                 <PageMaterials
                   {...props}
                   userName={this.state.userName}
+                  profileImageUrl={this.state.profileImageUrl}
                   s3={this.state.s3}
                   setSelectedFiles={this.setSelectedFiles}
                   setSelectedVideos={this.setSelectedVideos}

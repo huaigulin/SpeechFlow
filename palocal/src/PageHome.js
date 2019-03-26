@@ -41,11 +41,15 @@ class PageHome extends Component {
       console.log(response);
     };
     const successCallback = response => {
+      console.dir(response.profileObj.imageUrl);
       this.props.socket.emit('login', response.googleId);
       this.props.setUserName(response.googleId);
       this.props.setUserType('speaker'); // Only speaker has to login in with Google
+      this.props.setProfileImageUrl(response.profileObj.imageUrl);
+      // set session storage for all the states
       sessionStorage.setItem('userName', response.googleId);
       sessionStorage.setItem('userType', 'speaker');
+      sessionStorage.setItem('profileImageUrl', response.profileObj.imageUrl);
       this.props.history.push('/PageMaterials');
     };
     return (
