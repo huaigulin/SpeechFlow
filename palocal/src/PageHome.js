@@ -41,7 +41,6 @@ class PageHome extends Component {
       console.log(response);
     };
     const successCallback = response => {
-      console.dir(response.profileObj.imageUrl);
       this.props.socket.emit('login', response.googleId);
       this.props.setUserName(response.googleId);
       this.props.setUserType('speaker'); // Only speaker has to login in with Google

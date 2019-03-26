@@ -10,7 +10,9 @@ import grey from '@material-ui/core/colors/grey';
 
 const styles = {
   fab: {
-    backgroundColor: grey[200]
+    backgroundColor: grey[200],
+    marginRight: 25,
+    marginTop: 10
   },
   avatar: {
     // margin: 10,
