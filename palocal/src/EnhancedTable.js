@@ -18,6 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+import Button from '@material-ui/core/Button';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -192,7 +193,7 @@ let EnhancedTableToolbar = props => {
           </Typography>
         ) : (
           <Typography variant="h6" id="tableTitle">
-            Your Files:
+            Your PDF/Images:
           </Typography>
         )}
       </div>
@@ -233,6 +234,17 @@ const styles = theme => ({
   },
   tableWrapper: {
     overflowX: 'auto'
+  },
+  footer: {
+    display: 'flex',
+    paddingBottom: 20
+  },
+  button: {
+    top: 10
+  },
+  tablePagination: {
+    position: 'absolute',
+    right: 5
   }
 });
 
@@ -328,6 +340,10 @@ class EnhancedTable extends Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
+  handleFileUpload = event => {
+    console.log(event);
+  };
+
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   render() {
@@ -384,29 +400,41 @@ class EnhancedTable extends Component {
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
+              {/* {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
-              )}
+              )} */}
             </TableBody>
           </Table>
         </div>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page'
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page'
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
+        <div className={classes.footer}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={this.createFlow}
+          >
+            PDF/Image Upload
+          </Button>
+          <div className={classes.tablePagination}>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={data.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              backIconButtonProps={{
+                'aria-label': 'Previous Page'
+              }}
+              nextIconButtonProps={{
+                'aria-label': 'Next Page'
+              }}
+              onChangePage={this.handleChangePage}
+              onChangeRowsPerPage={this.handleChangeRowsPerPage}
+            />
+          </div>
+        </div>
       </Paper>
     );
   }
