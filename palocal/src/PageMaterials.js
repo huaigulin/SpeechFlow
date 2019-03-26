@@ -138,11 +138,11 @@ class PageMaterials extends Component {
         ) : (
           <div />
         )}
-        {isLoggedIn ? (
+        {/* {isLoggedIn ? (
           <UploadPDFAndImage userName={this.props.userName} />
         ) : (
           <div />
-        )}
+        )} */}
         {isLoggedIn ? (
           <UploadVideoLink userName={this.props.userName} />
         ) : (

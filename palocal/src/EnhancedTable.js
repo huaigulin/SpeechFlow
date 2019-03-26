@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -259,7 +260,8 @@ class EnhancedTable extends Component {
       fileSelected: [],
       data: this.props.table,
       page: 0,
-      rowsPerPage: 5
+      rowsPerPage: 5,
+      uploadProgress: 0
     };
   }
 
@@ -341,7 +343,32 @@ class EnhancedTable extends Component {
   };
 
   handleFileUpload = event => {
-    console.log(event);
+    const formData = new FormData();
+    for (var i = 0; i < event.target.files.length; i++) {
+      formData.append('files', event.target.files[i]);
+    }
+    formData.append('userName', this.props.userName);
+    var config = {
+      onUploadProgress: function(progressEvent) {
+        var percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        this.setState({ uploadProgress: percentCompleted });
+      }.bind(this)
+    };
+
+    axios
+      .post(`/upload-file`, formData, config, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(response => {
+        window.location.reload();
+      })
+      .catch(error => {
+        console.log('ERROR in react UploadPDFAndImage post request: ' + error);
+      });
   };
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
@@ -413,10 +440,20 @@ class EnhancedTable extends Component {
             variant="contained"
             color="primary"
             className={classes.button}
-            onClick={this.createFlow}
+            onClick={e => this.upload.click()}
           >
             PDF/Image Upload
+            <input
+              label="upload file"
+              type="file"
+              multiple
+              hidden
+              ref={ref => (this.upload = ref)}
+              accept="application/pdf, image/*"
+              onChange={this.handleFileUpload}
+            />
           </Button>
+          Progress: {this.state.uploadProgress} %
           <div className={classes.tablePagination}>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
