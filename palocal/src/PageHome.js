@@ -13,50 +13,57 @@ class PageHome extends Component {
       selectedOption: 'speaker'
     };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleRadioChange = this.handleRadioChange.bind(this);
-    this.handleRadioSubmit = this.handleRadioSubmit.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.handleRadioChange = this.handleRadioChange.bind(this);
+    // this.handleRadioSubmit = this.handleRadioSubmit.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({ userName: event.target.value });
-  }
+  // handleChange(event) {
+  //   this.setState({ userName: event.target.value });
+  // }
 
-  handleRadioChange(event) {
-    this.setState({ selectedOption: event.target.value });
-  }
+  // handleRadioChange(event) {
+  //   this.setState({ selectedOption: event.target.value });
+  // }
 
-  handleRadioSubmit(event) {
-    this.props.socket.emit('login', this.state.userName);
-    sessionStorage.setItem('userName', this.state.userName);
-    sessionStorage.setItem('userType', this.state.selectedOption);
-    this.props.setUserName(this.state.userName);
-    this.props.setUserType(this.state.selectedOption);
-    this.props.history.push('/PageMaterials');
-    event.preventDefault();
-  }
+  // handleRadioSubmit(event) {
+  //   this.props.socket.emit('login', this.state.userName);
+  //   sessionStorage.setItem('userName', this.state.userName);
+  //   sessionStorage.setItem('userType', this.state.selectedOption);
+  //   this.props.setUserName(this.state.userName);
+  //   this.props.setUserType(this.state.selectedOption);
+  //   this.props.history.push('/PageMaterials');
+  //   event.preventDefault();
+  // }
 
   render() {
     const responseGoogle = response => {
       console.log(response);
     };
-    const googleID = response => {
-      console.log(response.googleId);
+    const successCallback = response => {
       this.props.socket.emit('login', response.googleId);
-      this.props.history.push('/PageMaterials');
       this.props.setUserName(response.googleId);
+      this.props.setUserType('speaker'); // Only speaker has to login in with Google
+      sessionStorage.setItem('userName', response.googleId);
+      sessionStorage.setItem('userType', 'speaker');
+      this.props.history.push('/PageMaterials');
     };
     return (
       <div>
+        <Navbar />
+        <h1>Welcome to SpeechFlow!</h1>
+        To start a new presentation or control your own presentation:
+        <br />
         <GoogleLogin
           clientId="205354448545-sc5rs1bo1q8tcdg0crsfr8aiflgf54tp.apps.googleusercontent.com"
-          buttonText="Login"
-          onSuccess={googleID}
+          buttonText="Please sign in with Google"
+          onSuccess={successCallback}
           onFailure={responseGoogle}
         />
-        <Navbar />
-        <h1>This is the home page</h1>
-        <form onSubmit={this.handleRadioSubmit}>
+        <br />
+        <br />
+        To view/control other people's presentation, enter your code below:
+        {/* <form onSubmit={this.handleRadioSubmit}>
           <label>
             User name:
             <input
@@ -88,8 +95,7 @@ class PageHome extends Component {
             </label>
           </div>
           <input type="submit" value="Submit" />
-        </form>
-        {/* <VideoPlayer /> */}
+        </form> */}
       </div>
     );
   }

@@ -185,7 +185,6 @@ class App extends Component {
             />
           </div>
         </BrowserRouter>
-        {/* <PageNonsense data={this.state.data} /> */}
       </div>
     );
   }

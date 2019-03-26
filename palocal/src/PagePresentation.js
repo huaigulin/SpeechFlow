@@ -65,7 +65,7 @@ class PagePresentation extends Component {
         {isLoggedIn ? (
           <div />
         ) : (
-          <h3>You have not logged in. Please log in or sign up.</h3>
+          <h3>You have not logged in. Please go to Home to sign in.</h3>
         )}
         {isLoggedIn ? (
           <div>
