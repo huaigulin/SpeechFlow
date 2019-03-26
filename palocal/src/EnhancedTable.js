@@ -163,7 +163,7 @@ let EnhancedTableToolbar = props => {
         Bucket: 'speechflow',
         Key: key
       };
-      this.props.s3.deleteObject(params, function(err, data) {
+      props.s3.deleteObject(params, function(err, data) {
         if (err) {
           // an error occurred
           console.log(err, err.stack);
@@ -342,6 +342,7 @@ class EnhancedTable extends Component {
           numSelected={selected.length}
           userName={this.props.userName}
           fileSelected={this.state.fileSelected}
+          s3={this.props.s3}
         />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
