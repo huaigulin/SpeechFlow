@@ -80,7 +80,7 @@ class Navbar extends Component {
                     href="PageMaterials"
                     color="inherit"
                   >
-                    Upload Files
+                    Upload Materials
                   </IconButton>
                   <IconButton
                     className={classes.beegButton}

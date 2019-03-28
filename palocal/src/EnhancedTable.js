@@ -328,7 +328,7 @@ class EnhancedTable extends Component {
     super(props);
 
     this.state = {
-      order: 'asc',
+      order: 'desc',
       orderBy: 'dateUploaded',
       selected: [],
       fileSelected: [],

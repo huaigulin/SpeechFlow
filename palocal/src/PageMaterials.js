@@ -97,14 +97,14 @@ class PageMaterials extends Component {
                 >
                   Create new flow
                 </Button>
-                <Button
+                {/* <Button
                   variant="contained"
                   color="secondary"
                   disabled
                   className={classes.button}
                 >
                   Go to current presentation
-                </Button>
+                </Button> */}
               </div>
             ) : (
               <div>
@@ -116,14 +116,14 @@ class PageMaterials extends Component {
                 >
                   Create new flow
                 </Button>
-                <Button
+                {/* <Button
                   variant="contained"
                   color="secondary"
                   className={classes.button}
                   onClick={this.goToPresentation}
                 >
                   Go to current presentation
-                </Button>
+                </Button> */}
               </div>
             )}
           </div>
