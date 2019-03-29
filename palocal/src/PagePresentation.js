@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import PDFViewer from './PDFViewer';
 import VideoPlayer from './VideoPlayer';
+import ImageGallery from './ImageGallery';
 import Navbar from './Navbar';
 
 const styles = theme => ({
@@ -24,19 +25,19 @@ class PagePresentation extends Component {
     };
   }
 
+
   goToVideo = event => {
-    this.setState({ loadPDF: false });
-    this.setState({ loadVideo: true });
-    this.setState({ loadGallery: false });
     this.props.socket.emit('video');
   };
 
   goToPdf = event => {
-    this.setState({ loadPDF: true });
-    this.setState({ loadVideo: false });
-    this.setState({ loadGallery: false });
     this.props.socket.emit('pdf');
   };
+
+  goToGallery = event => {
+    this.props.socket.emit('gallery');
+  };
+
 
   componentDidMount() {
     this.props.socket.on('video', () => {
@@ -49,6 +50,12 @@ class PagePresentation extends Component {
       this.setState({ loadPDF: true });
       this.setState({ loadVideo: false });
       this.setState({ loadGallery: false });
+    });
+
+    this.props.socket.on('gallery', () => {
+      this.setState({ loadPDF: false });
+      this.setState({ loadVideo: false });
+      this.setState({ loadGallery: true });
     });
   }
 
@@ -91,6 +98,13 @@ class PagePresentation extends Component {
                 >
                   Video Player
                 </Button>
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToGallery}
+                >
+                  ImageGallery
+                </Button>
               </div>
             ) : (
               <div />
@@ -104,6 +118,13 @@ class PagePresentation extends Component {
                 >
                   PDF Viewer
                 </Button>
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToGallery}
+                >
+                  ImageGallery
+                </Button>
                 <VideoPlayer
                   socket={this.props.socket}
                   userName={this.props.userName}
@@ -114,7 +135,32 @@ class PagePresentation extends Component {
             ) : (
               <div />
             )}
-            {loadGallery ? <div /> : <div />}
+            {loadGallery ? (
+              <div>
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToPdf}
+                >
+                  PDF Viewer
+                </Button>
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToVideo}
+                >
+                  Video Player
+                </Button>
+                <ImageGallery
+                  socket={this.props.socket}
+                  userName={this.props.userName}
+                  userType={this.props.userType}
+                  videoLink={this.props.videoLink}
+                />
+              </div>
+            ) : (
+              <div />
+            )}
           </div>
         ) : (
           <div />

@@ -303,6 +303,10 @@ io.on('connection', socket => {
     io.sockets.to(socket.room).emit('pdf');
   });
 
+  socket.on('gallery', () => {
+    io.sockets.to(socket.room).emit('gallery');
+  });
+
   socket.on('play', time => {
     io.sockets.to(socket.room).emit('play', time);
   });
