@@ -55,6 +55,16 @@ class Navbar extends Component {
     this.props.history.push('/');
   };
 
+  goToPresentation = event => {
+    event.preventDefault();
+    this.props.history.push('/PagePresentation');
+  };
+
+  goToMaterials = event => {
+    event.preventDefault();
+    this.props.history.push('/PageMaterials');
+  };
+
   render() {
     const isLoggedIn = this.props.userName != null;
     const { classes } = this.props;
@@ -77,14 +87,14 @@ class Navbar extends Component {
                   </IconButton>
                   <IconButton
                     className={classes.beegButton}
-                    href="PageMaterials"
+                    onClick={this.goToMaterials}
                     color="inherit"
                   >
                     Upload Materials
                   </IconButton>
                   <IconButton
                     className={classes.beegButton}
-                    href="PagePresentation"
+                    onClick={this.goToPresentation}
                     color="inherit"
                   >
                     Presentation
