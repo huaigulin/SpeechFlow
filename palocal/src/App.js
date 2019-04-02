@@ -19,8 +19,8 @@ class App extends Component {
     const s3 = new AWS.S3();
 
     this.state = {
-      socket: socketIOClient('https://paexpress.herokuapp.com/'), //https://paexpress.herokuapp.com/
-      //socket: socketIOClient('http://localhost:8081/'),
+      // socket: socketIOClient('https://paexpress.herokuapp.com/'), //https://paexpress.herokuapp.com/
+      socket: socketIOClient('http://localhost:8081/'),
       s3: s3,
       userName: sessionStorage.getItem('userName'),
       profileImageUrl: sessionStorage.getItem('profileImageUrl'),
