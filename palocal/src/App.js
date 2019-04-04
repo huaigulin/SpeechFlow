@@ -19,8 +19,8 @@ class App extends Component {
     const s3 = new AWS.S3();
 
     this.state = {
-      socket: socketIOClient('https://paexpress.herokuapp.com/'), //https://paexpress.herokuapp.com/
-      // socket: socketIOClient('http://localhost:8081/'),
+      //socket: socketIOClient('https://paexpress.herokuapp.com/'), //https://paexpress.herokuapp.com/
+       socket: socketIOClient('http://localhost:8081/'),
       s3: s3,
       userName: sessionStorage.getItem('userName'),
       profileImageUrl: sessionStorage.getItem('profileImageUrl'),
@@ -28,6 +28,7 @@ class App extends Component {
       pageNum: parseInt(sessionStorage.getItem('pageNum')),
       userType: sessionStorage.getItem('userType'),
       videoLink: sessionStorage.getItem('videoID'),
+      videos: sessionStorage.getItem('videos'),
       selectedFiles: [],
       selectedVideos: []
     };
@@ -38,6 +39,7 @@ class App extends Component {
     this.setPageNum = this.setPageNum.bind(this);
     this.setUserType = this.setUserType.bind(this);
     this.setVideoLink = this.setVideoLink.bind(this);
+    this.setVideos = this.setVideos.bind(this);
     this.setSelectedFiles = this.setSelectedFiles.bind(this);
     this.setSelectedVideos = this.setSelectedVideos.bind(this);
   }
@@ -75,6 +77,12 @@ class App extends Component {
   setVideoLink(videoLink) {
     this.setState({
       videoLink: videoLink
+    });
+  }
+
+  setVideos(videos) {
+    this.setState({
+      videos: videos
     });
   }
 
@@ -162,6 +170,8 @@ class App extends Component {
                   userType={this.state.userType}
                   videoLink={this.state.videoLink}
                   setVideoLink={this.setVideoLink}
+                  setVideos={this.state.setVideos}
+                  videos={this.state.videos}
                 />
               )}
             />
@@ -180,6 +190,7 @@ class App extends Component {
                   setDocName={this.setDocName}
                   setPageNum={this.setPageNum}
                   setVideoLink={this.setVideoLink}
+                  setVideos={this.setVideos}
                 />
               )}
             />

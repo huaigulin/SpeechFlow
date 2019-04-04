@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import PDFViewer from './PDFViewer';
 import VideoPlayer from './VideoPlayer';
+import VideoList from './VideoList';
 import ImageGallery from './ImageGallery';
 import Navbar from './Navbar';
 
@@ -65,6 +66,7 @@ class PagePresentation extends Component {
     var loadPDF = this.state.loadPDF;
     var loadVideo = this.state.loadVideo;
     var loadGallery = this.state.loadGallery;
+    console.log("page presentation " + this.props.videoLink)
 
     return (
       <div>
@@ -130,6 +132,10 @@ class PagePresentation extends Component {
                   userName={this.props.userName}
                   userType={this.props.userType}
                   videoLink={this.props.videoLink}
+                  videos={this.props.videos}
+                />
+                <VideoList
+                  videos={this.props.videos}
                 />
               </div>
             ) : (

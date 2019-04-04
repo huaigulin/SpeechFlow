@@ -165,9 +165,12 @@ app.post('/upload-flow', (request, response) => {
             .save()
             .then(() => {
               if (fields.videos == null) {
+                console.log(fields.videos)
                 response.send({ pdf: pdfs[0], video: '9j7ANRXsCwc' }); // TO CHANGE
               } else {
-                response.send({ pdf: pdfs[0], video: fields.videos[0] }); // TO CHANGE
+                console.log(fields.videos)
+                response.send({ pdf: pdfs[0], video: fields.videos});
+                //response.send({ pdf: pdfs[0], video: fields.videos[0] }); // TO CHANGE
               }
             })
             .catch(error => {
@@ -188,9 +191,13 @@ app.post('/upload-flow', (request, response) => {
           )
             .then(() => {
               if (fields.videos == null) {
-                response.send({ pdf: pdfs[0], video: '9j7ANRXsCwc' }); // TO CHANGE
+                console.log(fields.videos)
+                //response.send({ pdf: pdfs[0], video: '9j7ANRXsCwc' }); // TO CHANGE
+                response.send({ pdf: pdfs[0], video: [] });
               } else {
-                response.send({ pdf: pdfs[0], video: fields.videos[0] }); // TO CHANGE
+                console.log(fields.videos)
+                response.send({ pdf: pdfs[0], video: fields.videos});
+                //response.send({ pdf: pdfs[0], video: fields.videos[0] }); // TO CHANGE
               }
             })
             .catch(error => {
