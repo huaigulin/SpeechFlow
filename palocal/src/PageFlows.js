@@ -1,52 +1,43 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component, PureComponent } from 'react';
+import initialData from './initial-data';
+import '@atlaskit/css-reset';
 import styled from 'styled-components';
-import { DragDropContext } from 'react-beautiful-dnd';
-import Navbar from './Navbar';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Flow from './Flow';
 
-class PageFlows extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      flowComponents: []
-    };
-    this.getFlows = this.getFlows.bind(this);
-    this.onDragEnd = this.onDragEnd.bind(this);
-    this.getFlows(this.props.userName);
-  }
+const Container = styled.div`
+  display: flex;
+`;
 
-  getFlows(userName) {
-    const formData = new FormData();
-    formData.append('userName', userName);
-    axios
-      .post(`/getFlows`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then(response => {
-        var flows = response.data;
-        var flowComponents = [];
-        for (var i = 0; i < flows.length; i++) {
-          flowComponents.push(
-            <Flow
-              userName={this.props.userName}
-              flowName={flows[i].flowName}
-              flowID={flows[i].id}
-              pdfs={flows[i].pdfs}
-              images={flows[i].images}
-              videos={flows[i].videos}
-              key={i}
-            />
-          );
-        }
-        this.setState({ flowComponents: flowComponents });
-      });
+class InnerList extends PureComponent {
+  render() {
+    const { flow, cardMap, index } = this.props;
+    const cards = flow.cardIds.map(cardId => cardMap[cardId]);
+    return <Flow flow={flow} cards={cards} index={index} />;
   }
+}
+
+class PageFlows extends Component {
+  state = initialData;
+
+  // onDragStart = () => {
+  //   document.body.style.color = 'orange';
+  //   document.body.style.transition = 'background-color 0.5s ease';
+  // };
+
+  // onDragUpdate = update => {
+  //   const { destination } = update;
+  //   const opacity = destination
+  //     ? destination.index / Object.keys(this.state.cards).length
+  //     : 0;
+  //   document.body.style.backgroundColor = `rgba(153, 141, 217, ${opacity})`;
+  // };
 
   onDragEnd = result => {
-    const { destination, source, draggableId } = result;
+    // document.body.style.color = 'inherit';
+    // document.body.style.backgroundColor = 'inherit';
+
+    const { destination, source, draggableId, type } = result;
 
     if (!destination) {
       return;
@@ -58,30 +49,94 @@ class PageFlows extends Component {
     ) {
       return;
     }
+
+    if (type === 'flow') {
+      const newFlowOrder = Array.from(this.state.flowOrder);
+      newFlowOrder.splice(source.index, 1);
+      newFlowOrder.splice(destination.index, 0, draggableId);
+
+      const newState = {
+        ...this.state,
+        flowOrder: newFlowOrder
+      };
+      this.setState(newState);
+      return;
+    }
+
+    const start = this.state.flows[source.droppableId];
+    const finish = this.state.flows[destination.droppableId];
+
+    if (start === finish) {
+      const newCardIds = Array.from(start.cardIds);
+      newCardIds.splice(source.index, 1);
+      newCardIds.splice(destination.index, 0, draggableId);
+
+      const newFlow = {
+        ...start,
+        cardIds: newCardIds
+      };
+
+      const newState = {
+        ...this.state,
+        flows: {
+          ...this.state.flows,
+          [newFlow.id]: newFlow
+        }
+      };
+
+      this.setState(newState);
+      return;
+    }
+
+    // Moving from one list to another
+    const startCardIds = Array.from(start.cardIds);
+    startCardIds.splice(source.index, 1);
+    const newStart = {
+      ...start,
+      cardIds: startCardIds
+    };
+
+    const finishCardIds = Array.from(finish.cardIds);
+    finishCardIds.splice(destination.index, 0, draggableId);
+    const newFinish = {
+      ...finish,
+      cardIds: finishCardIds
+    };
+
+    const newState = {
+      ...this.state,
+      flows: {
+        ...this.state.flows,
+        [newStart.id]: newStart,
+        [newFinish.id]: newFinish
+      }
+    };
+    this.setState(newState);
   };
 
   render() {
-    const isLoggedIn = this.props.userName != null;
     return (
-      <div>
-        <Navbar
-          history={this.props.history}
-          userName={this.props.userName}
-          profileImageUrl={this.props.profileImageUrl}
-        />
-        {isLoggedIn ? (
-          <div />
-        ) : (
-          <h3>You have not logged in. Please go to Home to sign in.</h3>
-        )}
-        {isLoggedIn ? (
-          <DragDropContext onDragEnd={this.onDragEnd}>
-            {this.state.flowComponents}
-          </DragDropContext>
-        ) : (
-          <div />
-        )}
-      </div>
+      <DragDropContext onDragEnd={this.onDragEnd}>
+        <Droppable droppableId="all-flows" direction="horizontal" type="flow">
+          {provided => (
+            <Container {...provided.droppableProps} ref={provided.innerRef}>
+              {this.state.flowOrder.map((flowId, index) => {
+                const flow = this.state.flows[flowId];
+
+                return (
+                  <InnerList
+                    key={flow.id}
+                    flow={flow}
+                    cardMap={this.state.cards}
+                    index={index}
+                  />
+                );
+              })}
+              {provided.placeholder}
+            </Container>
+          )}
+        </Droppable>
+      </DragDropContext>
     );
   }
 }

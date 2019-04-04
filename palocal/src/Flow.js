@@ -1,48 +1,12 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
-const getPdfs = pdfs => {
-  var array = [];
-  for (var i = 0; i < pdfs.length; i++) {
-    array.push({ id: i.toString(), content: pdfs[i] });
-  }
-  return array;
-};
-
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
-const grid = 8;
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
-  background: isDragging ? 'lightgreen' : 'grey',
-
-  // styles we need to apply on draggables
-  ...draggableStyle
-});
-
-const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
-  padding: grid,
-  width: 250
-});
+import { Droppable, Draggable } from 'react-beautiful-dnd';
+import Card from './Card';
 
 const Container = styled.div`
   margin: 8px;
   border: 1px solid lightgrey;
+  background-color: white;
   border-radius: 2px;
   width: 220px;
 
@@ -53,67 +17,51 @@ const Title = styled.h3`
   padding: 8px;
 `;
 
-class Flow extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: getPdfs(this.props.pdfs)
-    };
-    this.onDragEnd = this.onDragEnd.bind(this);
-  }
+const CardList = styled.div`
+  padding: 8px;
+  transition: background-color 0.5s ease;
+  background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'inherit')};
+  flex-grow: 1;
+  min-height: 100px;
+`;
 
-  onDragEnd(result) {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
+class InnerList extends Component {
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.cards === this.props.cards) {
+      return false;
     }
-
-    const items = reorder(
-      this.state.items,
-      result.source.index,
-      result.destination.index
-    );
-
-    this.setState({
-      items
-    });
+    return true;
   }
 
-  // Normally you would want to split things out into separate components.
-  // But in this example everything is just done in one place for simplicity
+  render() {
+    return this.props.cards.map((card, index) => (
+      <Card key={card.id} card={card} index={index} />
+    ));
+  }
+}
+
+class Flow extends Component {
   render() {
     return (
-      <Container>
-        <Title>{this.props.flowName}</Title>
-        <Droppable droppableId={this.props.flowID}>
-          {(provided, snapshot) => (
-            <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
-            >
-              {this.state.items.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
-                    >
-                      {item.content}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </Container>
+      <Draggable draggableId={this.props.flow.id} index={this.props.index}>
+        {provided => (
+          <Container {...provided.draggableProps} ref={provided.innerRef}>
+            <Title {...provided.dragHandleProps}>{this.props.flow.title}</Title>
+            <Droppable droppableId={this.props.flow.id} type="card">
+              {(provided, snapshot) => (
+                <CardList
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  isDraggingOver={snapshot.isDraggingOver}
+                >
+                  <InnerList cards={this.props.cards} />
+                  {provided.placeholder}
+                </CardList>
+              )}
+            </Droppable>
+          </Container>
+        )}
+      </Draggable>
     );
   }
 }
