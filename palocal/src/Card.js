@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const Container = styled.div`
   border: 1px solid lightgrey;
@@ -11,6 +14,9 @@ const Container = styled.div`
 `;
 
 class Card extends Component {
+  handleDelete = event => {
+    console.log(event);
+  };
   render() {
     return (
       <Draggable draggableId={this.props.card.id} index={this.props.index}>
@@ -21,7 +27,17 @@ class Card extends Component {
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
           >
-            {this.props.card.content}
+            <Grid
+              container
+              direction="row"
+              justify="space-between"
+              alignItems="center"
+            >
+              {this.props.card.content}
+              <IconButton aria-label="Delete" onClick={this.handleDelete}>
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            </Grid>
           </Container>
         )}
       </Draggable>
