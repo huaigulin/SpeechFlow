@@ -15,7 +15,7 @@ const initialData = {
   flows: {
     'flow-1': {
       id: 'flow-1',
-      title: 'Flow 1',
+      title: 'New Flow',
       cardIds: ['card-1', 'card-2']
     },
     'flow-1-1': {
@@ -30,7 +30,7 @@ const initialData = {
     },
     'flow-2': {
       id: 'flow-2',
-      title: 'Flow 2',
+      title: 'New Flow',
       cardIds: ['card-3', 'card-4']
     },
     'flow-2-1': {

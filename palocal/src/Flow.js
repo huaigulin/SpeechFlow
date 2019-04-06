@@ -1,7 +1,9 @@
 import React, { Component, PureComponent } from 'react';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import InputBase from '@material-ui/core/InputBase';
 import Card from './Card';
+import './Flow.css';
 
 const MainContainer = styled.div`
   margin: 8px;
@@ -58,13 +60,21 @@ class InnerList extends PureComponent {
 }
 
 class Flow extends Component {
+  handleTitleChange = event => {
+    console.log(event.target.value);
+  };
+
   render() {
     return (
       <Draggable draggableId={this.props.flow.id} index={this.props.index}>
         {provided => (
           <MainContainer {...provided.draggableProps} ref={provided.innerRef}>
             <MainTitle {...provided.dragHandleProps}>
-              {this.props.flow.title}
+              <InputBase
+                className="mainTitle"
+                defaultValue="New Flow"
+                onChange={this.handleTitleChange}
+              />
             </MainTitle>
             <Droppable droppableId={this.props.flow.id} type="main">
               {(provided, snapshot) => (
@@ -78,8 +88,8 @@ class Flow extends Component {
                 </MainCardList>
               )}
             </Droppable>
-            <SubContainer {...provided.draggableProps} ref={provided.innerRef}>
-              <SubTitle {...provided.dragHandleProps}>Videos</SubTitle>
+            <SubContainer ref={provided.innerRef}>
+              <SubTitle>Videos</SubTitle>
               <Droppable droppableId={this.props.flow.id + '-1'} type="sub-1">
                 {(provided, snapshot) => (
                   <SubCardList
@@ -93,8 +103,8 @@ class Flow extends Component {
                 )}
               </Droppable>
             </SubContainer>
-            <SubContainer {...provided.draggableProps} ref={provided.innerRef}>
-              <SubTitle {...provided.dragHandleProps}>Images</SubTitle>
+            <SubContainer ref={provided.innerRef}>
+              <SubTitle>Images</SubTitle>
               <Droppable droppableId={this.props.flow.id + '-2'} type="sub-2">
                 {(provided, snapshot) => (
                   <SubCardList
