@@ -1,4 +1,5 @@
 import React, { Component, PureComponent } from 'react';
+import axios from 'axios';
 import initialData from './initial-data';
 import '@atlaskit/css-reset';
 import styled from 'styled-components';
@@ -35,7 +36,22 @@ class InnerList extends PureComponent {
 }
 
 class PageFlows extends Component {
-  state = initialData;
+  constructor(props) {
+    super(props);
+
+    const formData = new FormData();
+    formData.append('userName', this.props.userName);
+    axios
+      .post(`/getFlows`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(response => {
+        console.dir(response.data);
+      });
+    this.state = initialData;
+  }
 
   // onDragStart = () => {
   //   document.body.style.color = 'orange';

@@ -36,7 +36,6 @@ class PageMaterials extends Component {
         }
       })
       .then(response => {
-        console.dir(response.data)
         // Start presentation with the first pdf in the newest flow for now
         var docName = response.data.pdf.substring(
           0,
@@ -47,9 +46,7 @@ class PageMaterials extends Component {
         this.props.setDocName(docName);
         this.props.setPageNum(1);
         this.props.setVideoLink(videoID);
-        console.log("video link: " + this.props.videoLink);
         this.props.setVideos(videos);
-        console.log(this.props.videos);
         sessionStorage.setItem('docName', docName);
         sessionStorage.setItem('pageNum', 1);
         sessionStorage.setItem('videos', videos);

@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import InputBase from '@material-ui/core/InputBase';
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import MenuIcon from '@material-ui/icons/MoreVert';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 import Card from './Card';
 import './Flow.css';
 
@@ -62,6 +64,16 @@ class InnerList extends PureComponent {
 }
 
 class Flow extends Component {
+  state = { anchorEL: null };
+
+  handleMenuClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleMenuClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
   handleTitleChange = event => {
     console.log(event.target.value);
   };
@@ -70,7 +82,14 @@ class Flow extends Component {
     console.log(event);
   };
 
+  deleteFlow = event => {
+    console.log(event);
+  };
+
   render() {
+    const { anchorEl } = this.state;
+    const open = Boolean(anchorEl);
+
     return (
       <Draggable draggableId={this.props.flow.id} index={this.props.index}>
         {provided => (
@@ -83,14 +102,33 @@ class Flow extends Component {
                 onChange={this.handleTitleChange}
               />
               <Fab
-                color="primary"
+                aria-owns={open ? 'menu-appbar' : undefined}
+                aria-haspopup="true"
+                onClick={this.handleMenuClick}
+                color="inherit"
                 aria-label="Add"
-                className="addIcon"
+                className="MenuIcon"
                 size="small"
-                onClick={this.addToFlow}
               >
-                <AddIcon />
+                <MenuIcon />
               </Fab>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                open={open}
+                onClose={this.handleMenuClose}
+              >
+                <MenuItem onClick={this.addToFlow}>Add more files</MenuItem>
+                <MenuItem onClick={this.deleteFlow}>Delete this flow</MenuItem>
+              </Menu>
             </MainTitle>
             <Droppable droppableId={this.props.flow.id} type="main">
               {(provided, snapshot) => (
