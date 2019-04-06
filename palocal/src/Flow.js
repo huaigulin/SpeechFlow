@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Card from './Card';
 
-const Container = styled.div`
+const MainContainer = styled.div`
   margin: 8px;
   border: 1px solid lightgrey;
   background-color: white;
@@ -13,11 +13,27 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Title = styled.h3`
+
+const SubContainer = styled.div`
+  margin: 8px;
+  border: 1px solid lightgrey;
+  background-color: white;
+  border-radius: 2px;
+  width: 200px;
+
+  display: flex;
+  flex-direction: column;
+`;
+
+const MainTitle = styled.h3`
   padding: 8px;
 `;
 
-const CardList = styled.div`
+const SubTitle = styled.h5`
+  padding: 8px;
+`;
+
+const MainCardList = styled.div`
   padding: 8px;
   transition: background-color 0.5s ease;
   background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'inherit')};
@@ -25,14 +41,15 @@ const CardList = styled.div`
   min-height: 100px;
 `;
 
-class InnerList extends Component {
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.cards === this.props.cards) {
-      return false;
-    }
-    return true;
-  }
+const SubCardList = styled.div`
+  padding: 8px;
+  transition: background-color 0.5s ease;
+  background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'inherit')};
+  flex-grow: 1;
+  min-height: 100px;
+`;
 
+class InnerList extends PureComponent {
   render() {
     return this.props.cards.map((card, index) => (
       <Card key={card.id} card={card} index={index} />
@@ -45,21 +62,53 @@ class Flow extends Component {
     return (
       <Draggable draggableId={this.props.flow.id} index={this.props.index}>
         {provided => (
-          <Container {...provided.draggableProps} ref={provided.innerRef}>
-            <Title {...provided.dragHandleProps}>{this.props.flow.title}</Title>
-            <Droppable droppableId={this.props.flow.id} type="card">
+          <MainContainer {...provided.draggableProps} ref={provided.innerRef}>
+            <MainTitle {...provided.dragHandleProps}>
+              {this.props.flow.title}
+            </MainTitle>
+            <Droppable droppableId={this.props.flow.id} type="main">
               {(provided, snapshot) => (
-                <CardList
+                <MainCardList
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   isDraggingOver={snapshot.isDraggingOver}
                 >
-                  <InnerList cards={this.props.cards} />
+                  <InnerList cards={this.props.pdfCards} />
                   {provided.placeholder}
-                </CardList>
+                </MainCardList>
               )}
             </Droppable>
-          </Container>
+            <SubContainer {...provided.draggableProps} ref={provided.innerRef}>
+              <SubTitle {...provided.dragHandleProps}>Videos</SubTitle>
+              <Droppable droppableId={this.props.flow.id + '-1'} type="sub-1">
+                {(provided, snapshot) => (
+                  <SubCardList
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    isDraggingOver={snapshot.isDraggingOver}
+                  >
+                    <InnerList cards={this.props.videoCards} />
+                    {provided.placeholder}
+                  </SubCardList>
+                )}
+              </Droppable>
+            </SubContainer>
+            <SubContainer {...provided.draggableProps} ref={provided.innerRef}>
+              <SubTitle {...provided.dragHandleProps}>Images</SubTitle>
+              <Droppable droppableId={this.props.flow.id + '-2'} type="sub-2">
+                {(provided, snapshot) => (
+                  <SubCardList
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    isDraggingOver={snapshot.isDraggingOver}
+                  >
+                    <InnerList cards={this.props.imageCards} />
+                    {provided.placeholder}
+                  </SubCardList>
+                )}
+              </Droppable>
+            </SubContainer>
+          </MainContainer>
         )}
       </Draggable>
     );

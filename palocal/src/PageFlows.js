@@ -11,9 +11,26 @@ const Container = styled.div`
 
 class InnerList extends PureComponent {
   render() {
-    const { flow, cardMap, index } = this.props;
-    const cards = flow.cardIds.map(cardId => cardMap[cardId]);
-    return <Flow flow={flow} cards={cards} index={index} />;
+    const { flows, mainFlowId, cardMap, index } = this.props;
+    const mainFlow = flows[mainFlowId];
+    const pdfCards = mainFlow.cardIds.map(cardId => cardMap[cardId]);
+
+    const videoFlowId = mainFlowId + '-1';
+    const videoFlow = flows[videoFlowId];
+    const videoCards = videoFlow.cardIds.map(cardId => cardMap[cardId]);
+
+    const imageFlowId = mainFlowId + '-2';
+    const imageFlow = flows[imageFlowId];
+    const imageCards = imageFlow.cardIds.map(cardId => cardMap[cardId]);
+    return (
+      <Flow
+        flow={mainFlow}
+        pdfCards={pdfCards}
+        videoCards={videoCards}
+        imageCards={imageCards}
+        index={index}
+      />
+    );
   }
 }
 
@@ -121,12 +138,11 @@ class PageFlows extends Component {
           {provided => (
             <Container {...provided.droppableProps} ref={provided.innerRef}>
               {this.state.flowOrder.map((flowId, index) => {
-                const flow = this.state.flows[flowId];
-
                 return (
                   <InnerList
-                    key={flow.id}
-                    flow={flow}
+                    key={flowId}
+                    flows={this.state.flows}
+                    mainFlowId={flowId}
                     cardMap={this.state.cards}
                     index={index}
                   />
