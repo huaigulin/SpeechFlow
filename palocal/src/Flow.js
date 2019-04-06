@@ -2,6 +2,8 @@ import React, { Component, PureComponent } from 'react';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import InputBase from '@material-ui/core/InputBase';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import Card from './Card';
 import './Flow.css';
 
@@ -31,7 +33,7 @@ const MainTitle = styled.h3`
   padding: 8px;
 `;
 
-const SubTitle = styled.h5`
+const SubTitle = styled.h6`
   padding: 8px;
 `;
 
@@ -64,6 +66,10 @@ class Flow extends Component {
     console.log(event.target.value);
   };
 
+  addToFlow = event => {
+    console.log(event);
+  };
+
   render() {
     return (
       <Draggable draggableId={this.props.flow.id} index={this.props.index}>
@@ -73,8 +79,18 @@ class Flow extends Component {
               <InputBase
                 className="mainTitle"
                 defaultValue="New Flow"
+                multiline={true}
                 onChange={this.handleTitleChange}
               />
+              <Fab
+                color="primary"
+                aria-label="Add"
+                className="addIcon"
+                size="small"
+                onClick={this.addToFlow}
+              >
+                <AddIcon />
+              </Fab>
             </MainTitle>
             <Droppable droppableId={this.props.flow.id} type="main">
               {(provided, snapshot) => (
