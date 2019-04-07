@@ -52,6 +52,9 @@ class PageMaterials extends Component {
         sessionStorage.setItem('videos', videos);
         sessionStorage.setItem('videoID', videoID);
         this.props.history.push('/PagePresentation');
+      })
+      .catch(error => {
+        console.log('ERROR in react upload-flow post request: ' + error);
       });
   };
 

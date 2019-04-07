@@ -92,7 +92,10 @@ class Flow extends Component {
           'Content-Type': 'multipart/form-data'
         }
       })
-      .then(response => {});
+      .then(response => {})
+      .catch(error => {
+        console.log('ERROR in react changeFlowTitle post request: ' + error);
+      });
   };
 
   startPresentation = event => {
@@ -104,7 +107,22 @@ class Flow extends Component {
   };
 
   deleteFlow = event => {
-    console.log(event);
+    const formData = new FormData();
+    formData.append('userName', this.props.userName);
+    formData.append('flowId', this.props.flow.id);
+
+    axios
+      .post(`/deleteFlow`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(response => {
+        window.location.reload();
+      })
+      .catch(error => {
+        console.log('ERROR in react deleteFlow post request: ' + error);
+      });
   };
 
   render() {

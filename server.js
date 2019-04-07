@@ -191,11 +191,9 @@ app.post('/upload-flow', (request, response) => {
           )
             .then(() => {
               if (fields.videos == null) {
-                console.log(fields.videos);
                 //response.send({ pdf: pdfs[0], video: '9j7ANRXsCwc' }); // TO CHANGE
                 response.send({ pdf: pdfs[0], video: [] });
               } else {
-                console.log(fields.videos);
                 response.send({ pdf: pdfs[0], video: fields.videos });
                 //response.send({ pdf: pdfs[0], video: fields.videos[0] }); // TO CHANGE
               }
@@ -282,6 +280,7 @@ app.post('/getFlows', (request, response) => {
   });
 });
 
+// Change the title of a flow in mongodb
 app.post('/changeFlowTitle', (request, response) => {
   const form = new multiparty.Form();
   form.parse(request, async (error, fields) => {
@@ -306,6 +305,38 @@ app.post('/changeFlowTitle', (request, response) => {
           console.log(
             'ERROR in changeFlowTitle post request update(): ' + error
           );
+        });
+        response.send('success');
+      });
+  });
+});
+
+// Delete a flow in mongodb
+app.post('/deleteFlow', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    var flowId = fields.flowId[0];
+    flowId = flowId.substr(-1);
+    flowId = parseInt(flowId);
+    flowId = flowId - 1;
+
+    FlowModel.find({
+      userName: fields.userName[0]
+    })
+      .exec()
+      .then(databaseEntry => {
+        var flowArray = databaseEntry[0].flows;
+        flowArray.splice(flowId, 1);
+        for (var i = 0; i < flowArray.length; i++) {
+          flowArray[i].id = i;
+        }
+        FlowModel.updateMany(
+          { userName: fields.userName[0] },
+          { $set: { flows: flowArray } }
+        ).catch(error => {
+          console.log('ERROR in deleteFlow post request update(): ' + error);
         });
         response.send('success');
       });
