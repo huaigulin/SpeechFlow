@@ -13,6 +13,11 @@ const Container = styled.div`
   background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
 `;
 
+const TextBox = styled.div`
+  width: 180px;
+  word-wrap: break-word;
+`;
+
 class Card extends Component {
   handleDelete = event => {
     console.log(event);
@@ -33,7 +38,7 @@ class Card extends Component {
               justify="space-between"
               alignItems="center"
             >
-              {this.props.card.content}
+              <TextBox>{this.props.card.content}</TextBox>
               <IconButton aria-label="Delete" onClick={this.handleDelete}>
                 <DeleteIcon fontSize="small" />
               </IconButton>

@@ -26,7 +26,6 @@ class PagePresentation extends Component {
     };
   }
 
-
   goToVideo = event => {
     this.props.socket.emit('video');
   };
@@ -38,7 +37,6 @@ class PagePresentation extends Component {
   goToGallery = event => {
     this.props.socket.emit('gallery');
   };
-
 
   componentDidMount() {
     this.props.socket.on('video', () => {
@@ -66,7 +64,6 @@ class PagePresentation extends Component {
     var loadPDF = this.state.loadPDF;
     var loadVideo = this.state.loadVideo;
     var loadGallery = this.state.loadGallery;
-    console.log("page presentation " + this.props.videoLink)
 
     return (
       <div>
@@ -134,9 +131,7 @@ class PagePresentation extends Component {
                   videoLink={this.props.videoLink}
                   videos={this.props.videos}
                 />
-                <VideoList
-                  videos={this.props.videos}
-                />
+                <VideoList videos={this.props.videos} />
               </div>
             ) : (
               <div />

@@ -14,7 +14,7 @@ const MainContainer = styled.div`
   border: 1px solid lightgrey;
   background-color: white;
   border-radius: 2px;
-  width: 220px;
+  width: 300px;
 
   display: flex;
   flex-direction: column;
@@ -25,7 +25,7 @@ const SubContainer = styled.div`
   border: 1px solid lightgrey;
   background-color: white;
   border-radius: 2px;
-  width: 200px;
+  width: 280px;
 
   display: flex;
   flex-direction: column;
@@ -78,6 +78,10 @@ class Flow extends Component {
     console.log(event.target.value);
   };
 
+  startPresentation = event => {
+    console.log(event);
+  };
+
   addToFlow = event => {
     console.log(event);
   };
@@ -107,7 +111,7 @@ class Flow extends Component {
                 onClick={this.handleMenuClick}
                 color="inherit"
                 aria-label="Add"
-                className="MenuIcon"
+                className="menuIcon"
                 size="small"
               >
                 <MenuIcon />
@@ -126,6 +130,7 @@ class Flow extends Component {
                 open={open}
                 onClose={this.handleMenuClose}
               >
+                <MenuItem onClick={this.startPresentation}>Present</MenuItem>
                 <MenuItem onClick={this.addToFlow}>Add more files</MenuItem>
                 <MenuItem onClick={this.deleteFlow}>Delete this flow</MenuItem>
               </Menu>

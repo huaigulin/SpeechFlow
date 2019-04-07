@@ -48,9 +48,74 @@ class PageFlows extends Component {
         }
       })
       .then(response => {
-        console.dir(response.data);
+        const data = response.data;
+        var flowData = {
+          cards: {},
+          flows: {},
+          flowOrder: []
+        };
+        var cardIndex = 0;
+        for (var i = 0; i < data.length; i++) {
+          const flowIndex = i + 1;
+          flowData.flowOrder.push('flow-' + flowIndex);
+          flowData.flows['flow-' + flowIndex] = {
+            id: 'flow-' + flowIndex,
+            title: 'New Flow',
+            cardIds: []
+          };
+          flowData.flows['flow-' + flowIndex + '-1'] = {
+            id: 'flow-' + flowIndex + '-1',
+            title: 'Video',
+            cardIds: []
+          };
+          flowData.flows['flow-' + flowIndex + '-2'] = {
+            id: 'flow-' + flowIndex + '-2',
+            title: 'Image',
+            cardIds: []
+          };
+
+          const pdfs = data[i].pdfs;
+          for (var j = 0; j < pdfs.length; j++) {
+            cardIndex++;
+            flowData.cards['card-' + cardIndex] = {
+              id: 'card-' + cardIndex,
+              content: pdfs[j],
+              type: 'pdf'
+            };
+            flowData.flows['flow-' + flowIndex].cardIds.push(
+              'card-' + cardIndex
+            );
+          }
+
+          const videos = data[i].videos;
+          for (var k = 0; k < videos.length; k++) {
+            cardIndex++;
+            flowData.cards['card-' + cardIndex] = {
+              id: 'card-' + cardIndex,
+              content: videos[k],
+              type: 'video'
+            };
+            flowData.flows['flow-' + flowIndex + '-1'].cardIds.push(
+              'card-' + cardIndex
+            );
+          }
+
+          const images = data[i].images;
+          for (var l = 0; l < images.length; l++) {
+            cardIndex++;
+            flowData.cards['card-' + cardIndex] = {
+              id: 'card-' + cardIndex,
+              content: images[l],
+              type: 'image'
+            };
+            flowData.flows['flow-' + flowIndex + '-2'].cardIds.push(
+              'card-' + cardIndex
+            );
+          }
+        }
+
+        this.setState(flowData);
       });
-    this.state = initialData;
   }
 
   // onDragStart = () => {
@@ -148,27 +213,38 @@ class PageFlows extends Component {
   };
 
   render() {
+    var stateHasLoaded = this.state !== null;
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="all-flows" direction="horizontal" type="flow">
-          {provided => (
-            <Container {...provided.droppableProps} ref={provided.innerRef}>
-              {this.state.flowOrder.map((flowId, index) => {
-                return (
-                  <InnerList
-                    key={flowId}
-                    flows={this.state.flows}
-                    mainFlowId={flowId}
-                    cardMap={this.state.cards}
-                    index={index}
-                  />
-                );
-              })}
-              {provided.placeholder}
-            </Container>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <div>
+        {stateHasLoaded ? (
+          <DragDropContext onDragEnd={this.onDragEnd}>
+            <Droppable
+              droppableId="all-flows"
+              direction="horizontal"
+              type="flow"
+            >
+              {provided => (
+                <Container {...provided.droppableProps} ref={provided.innerRef}>
+                  {this.state.flowOrder.map((flowId, index) => {
+                    return (
+                      <InnerList
+                        key={flowId}
+                        flows={this.state.flows}
+                        mainFlowId={flowId}
+                        cardMap={this.state.cards}
+                        index={index}
+                      />
+                    );
+                  })}
+                  {provided.placeholder}
+                </Container>
+              )}
+            </Droppable>
+          </DragDropContext>
+        ) : (
+          <div />
+        )}
+      </div>
     );
   }
 }
