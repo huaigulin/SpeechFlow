@@ -17,8 +17,9 @@ const MainContainer = styled.div`
   border-radius: 2px;
   width: 300px;
 
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
+  overflow-y: auto;
 `;
 
 const SubContainer = styled.div`
@@ -26,8 +27,6 @@ const SubContainer = styled.div`
   border: 1px solid lightgrey;
   background-color: white;
   border-radius: 2px;
-  width: 280px;
-
   display: flex;
   flex-direction: column;
 `;

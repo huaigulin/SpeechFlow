@@ -9,6 +9,7 @@ import Navbar from './Navbar';
 
 const Container = styled.div`
   display: flex;
+  height: 90vh;
 `;
 
 class InnerList extends PureComponent {
