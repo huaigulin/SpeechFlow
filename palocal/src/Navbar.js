@@ -65,6 +65,11 @@ class Navbar extends Component {
     this.props.history.push('/PageMaterials');
   };
 
+  goToFlows = event => {
+    event.preventDefault();
+    this.props.history.push('/PageFlows');
+  };
+
   render() {
     const isLoggedIn = this.props.userName != null;
     const { classes } = this.props;
@@ -98,6 +103,13 @@ class Navbar extends Component {
                     color="inherit"
                   >
                     Presentation
+                  </IconButton>
+                  <IconButton
+                    className={classes.beegButton}
+                    onClick={this.goToFlows}
+                    color="inherit"
+                  >
+                    Flows
                   </IconButton>
                 </div>
                 <Fab

@@ -58,7 +58,12 @@ const SubCardList = styled.div`
 class InnerList extends PureComponent {
   render() {
     return this.props.cards.map((card, index) => (
-      <Card key={card.id} card={card} index={index} />
+      <Card
+        key={card.id}
+        card={card}
+        index={index}
+        isVideo={this.props.isVideo}
+      />
     ));
   }
 }
@@ -142,7 +147,7 @@ class Flow extends Component {
                   {...provided.droppableProps}
                   isDraggingOver={snapshot.isDraggingOver}
                 >
-                  <InnerList cards={this.props.pdfCards} />
+                  <InnerList cards={this.props.pdfCards} isVideo={false} />
                   {provided.placeholder}
                 </MainCardList>
               )}
@@ -156,7 +161,7 @@ class Flow extends Component {
                     {...provided.droppableProps}
                     isDraggingOver={snapshot.isDraggingOver}
                   >
-                    <InnerList cards={this.props.videoCards} />
+                    <InnerList cards={this.props.videoCards} isVideo={true} />
                     {provided.placeholder}
                   </SubCardList>
                 )}
@@ -171,7 +176,7 @@ class Flow extends Component {
                     {...provided.droppableProps}
                     isDraggingOver={snapshot.isDraggingOver}
                   >
-                    <InnerList cards={this.props.imageCards} />
+                    <InnerList cards={this.props.imageCards} isVideo={false} />
                     {provided.placeholder}
                   </SubCardList>
                 )}

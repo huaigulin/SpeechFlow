@@ -200,6 +200,7 @@ class App extends Component {
                 <PageFlows
                   {...props}
                   userName={this.state.userName}
+                  profileImageUrl={this.state.profileImageUrl}
                   s3={this.state.s3}
                   selectedFiles={this.state.selectedFiles}
                   selectedVideos={this.state.selectedVideos}

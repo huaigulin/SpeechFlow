@@ -1,10 +1,11 @@
 import React, { Component, PureComponent } from 'react';
 import axios from 'axios';
-import initialData from './initial-data';
+// import initialData from './initial-data';
 import '@atlaskit/css-reset';
 import styled from 'styled-components';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Flow from './Flow';
+import Navbar from './Navbar';
 
 const Container = styled.div`
   display: flex;
@@ -213,9 +214,20 @@ class PageFlows extends Component {
   };
 
   render() {
-    var stateHasLoaded = this.state !== null;
+    const isLoggedIn = this.props.userName != null;
+    const stateHasLoaded = this.state !== null;
     return (
       <div>
+        <Navbar
+          history={this.props.history}
+          userName={this.props.userName}
+          profileImageUrl={this.props.profileImageUrl}
+        />
+        {isLoggedIn ? (
+          <div />
+        ) : (
+          <h3>You have not logged in. Please go to Home to sign in.</h3>
+        )}
         {stateHasLoaded ? (
           <DragDropContext onDragEnd={this.onDragEnd}>
             <Droppable

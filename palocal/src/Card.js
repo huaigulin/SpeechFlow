@@ -23,6 +23,7 @@ class Card extends Component {
     console.log(event);
   };
   render() {
+    const isVideo = this.props.isVideo;
     return (
       <Draggable draggableId={this.props.card.id} index={this.props.index}>
         {(provided, snapshot) => (
@@ -38,7 +39,21 @@ class Card extends Component {
               justify="space-between"
               alignItems="center"
             >
-              <TextBox>{this.props.card.content}</TextBox>
+              <div>
+                {isVideo ? (
+                  <img
+                    className="thumbnailImage"
+                    src={
+                      'https://i1.ytimg.com/vi/' +
+                      this.props.card.content +
+                      '/default.jpg'
+                    }
+                    alt="video thumbnail"
+                  />
+                ) : (
+                  <TextBox>{this.props.card.content}</TextBox>
+                )}
+              </div>
               <IconButton aria-label="Delete" onClick={this.handleDelete}>
                 <DeleteIcon fontSize="small" />
               </IconButton>
