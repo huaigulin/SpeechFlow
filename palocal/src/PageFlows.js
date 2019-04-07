@@ -13,7 +13,7 @@ const Container = styled.div`
 
 class InnerList extends PureComponent {
   render() {
-    const { flows, mainFlowId, cardMap, index } = this.props;
+    const { userName, flows, mainFlowId, cardMap, index } = this.props;
     const mainFlow = flows[mainFlowId];
     const pdfCards = mainFlow.cardIds.map(cardId => cardMap[cardId]);
 
@@ -26,6 +26,7 @@ class InnerList extends PureComponent {
     const imageCards = imageFlow.cardIds.map(cardId => cardMap[cardId]);
     return (
       <Flow
+        userName={userName}
         flow={mainFlow}
         pdfCards={pdfCards}
         videoCards={videoCards}
@@ -61,7 +62,7 @@ class PageFlows extends Component {
           flowData.flowOrder.push('flow-' + flowIndex);
           flowData.flows['flow-' + flowIndex] = {
             id: 'flow-' + flowIndex,
-            title: 'New Flow',
+            title: data[i].flowName,
             cardIds: []
           };
           flowData.flows['flow-' + flowIndex + '-1'] = {
@@ -240,6 +241,7 @@ class PageFlows extends Component {
                   {this.state.flowOrder.map((flowId, index) => {
                     return (
                       <InnerList
+                        userName={this.props.userName}
                         key={flowId}
                         flows={this.state.flows}
                         mainFlowId={flowId}

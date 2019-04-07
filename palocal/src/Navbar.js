@@ -95,7 +95,7 @@ class Navbar extends Component {
                     onClick={this.goToMaterials}
                     color="inherit"
                   >
-                    Upload Materials
+                    Materials
                   </IconButton>
                   <IconButton
                     className={classes.beegButton}

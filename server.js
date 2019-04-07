@@ -165,11 +165,11 @@ app.post('/upload-flow', (request, response) => {
             .save()
             .then(() => {
               if (fields.videos == null) {
-                console.log(fields.videos)
+                console.log(fields.videos);
                 response.send({ pdf: pdfs[0], video: '9j7ANRXsCwc' }); // TO CHANGE
               } else {
-                console.log(fields.videos)
-                response.send({ pdf: pdfs[0], video: fields.videos});
+                console.log(fields.videos);
+                response.send({ pdf: pdfs[0], video: fields.videos });
                 //response.send({ pdf: pdfs[0], video: fields.videos[0] }); // TO CHANGE
               }
             })
@@ -191,12 +191,12 @@ app.post('/upload-flow', (request, response) => {
           )
             .then(() => {
               if (fields.videos == null) {
-                console.log(fields.videos)
+                console.log(fields.videos);
                 //response.send({ pdf: pdfs[0], video: '9j7ANRXsCwc' }); // TO CHANGE
                 response.send({ pdf: pdfs[0], video: [] });
               } else {
-                console.log(fields.videos)
-                response.send({ pdf: pdfs[0], video: fields.videos});
+                console.log(fields.videos);
+                response.send({ pdf: pdfs[0], video: fields.videos });
                 //response.send({ pdf: pdfs[0], video: fields.videos[0] }); // TO CHANGE
               }
             })
@@ -278,6 +278,36 @@ app.post('/getFlows', (request, response) => {
       .then(databaseEntry => {
         var flowArray = databaseEntry[0].flows;
         response.send(flowArray);
+      });
+  });
+});
+
+app.post('/changeFlowTitle', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    var flowId = fields.flowId[0];
+    flowId = flowId.substr(-1);
+    flowId = parseInt(flowId);
+    flowId = flowId - 1;
+
+    FlowModel.find({
+      userName: fields.userName[0]
+    })
+      .exec()
+      .then(databaseEntry => {
+        var flowArray = databaseEntry[0].flows;
+        flowArray[flowId].flowName = fields.flowTitle[0];
+        FlowModel.updateMany(
+          { userName: fields.userName[0] },
+          { $set: { flows: flowArray } }
+        ).catch(error => {
+          console.log(
+            'ERROR in changeFlowTitle post request update(): ' + error
+          );
+        });
+        response.send('success');
       });
   });
 });

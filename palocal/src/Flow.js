@@ -1,6 +1,7 @@
 import React, { Component, PureComponent } from 'react';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import axios from 'axios';
 import InputBase from '@material-ui/core/InputBase';
 import Fab from '@material-ui/core/Fab';
 import MenuIcon from '@material-ui/icons/MoreVert';
@@ -80,7 +81,18 @@ class Flow extends Component {
   };
 
   handleTitleChange = event => {
-    console.log(event.target.value);
+    const formData = new FormData();
+    formData.append('userName', this.props.userName);
+    formData.append('flowId', this.props.flow.id);
+    formData.append('flowTitle', event.target.value);
+
+    axios
+      .post(`/changeFlowTitle`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(response => {});
   };
 
   startPresentation = event => {
@@ -106,7 +118,7 @@ class Flow extends Component {
             <MainTitle {...provided.dragHandleProps}>
               <InputBase
                 className="mainTitle"
-                defaultValue="New Flow"
+                defaultValue={this.props.flow.title}
                 multiline={true}
                 onChange={this.handleTitleChange}
               />
