@@ -8,8 +8,11 @@ import Flow from './Flow';
 import Navbar from './Navbar';
 
 const Container = styled.div`
-  display: flex;
-  height: 90vh;
+  // height: 90vh;
+  width: 100vw;
+  overflow-x: auto;
+  overflow-y: hidden
+  white-space: nowrap;
 `;
 
 class InnerList extends PureComponent {

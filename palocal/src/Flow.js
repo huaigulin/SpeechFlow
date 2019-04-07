@@ -11,6 +11,8 @@ import Card from './Card';
 import './Flow.css';
 
 const MainContainer = styled.div`
+  height: 85vh;
+  display: inline-block;
   margin: 8px;
   border: 1px solid lightgrey;
   background-color: white;

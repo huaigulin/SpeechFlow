@@ -14,8 +14,9 @@ const Container = styled.div`
 `;
 
 const TextBox = styled.div`
-  width: 180px;
-  word-wrap: break-word;
+  max-width: 180px;
+  word-break: break-all;
+  white-space: normal;
 `;
 
 class Card extends Component {
