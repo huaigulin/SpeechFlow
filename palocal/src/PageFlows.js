@@ -164,6 +164,19 @@ class PageFlows extends Component {
         flowOrder: newFlowOrder
       };
       this.setState(newState);
+      const formData = new FormData();
+      formData.append('userName', this.props.userName);
+      var details = JSON.stringify(newState);
+      formData.append('newState', details);
+      axios
+        .post(`/changeFlowOrder`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .catch(error => {
+          console.log('ERROR in react changeFlowOrder post request: ' + error);
+        });
       return;
     }
 
@@ -189,33 +202,58 @@ class PageFlows extends Component {
       };
 
       this.setState(newState);
-      return;
+      const formData = new FormData();
+      formData.append('userName', this.props.userName);
+      var details = JSON.stringify(newState);
+      formData.append('newState', details);
+      axios
+        .post(`/changeFlowOrder`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .catch(error => {
+          console.log('ERROR in react changeFlowOrder post request: ' + error);
+        });
+    } else {
+      // Moving from one list to another
+      const startCardIds = Array.from(start.cardIds);
+      startCardIds.splice(source.index, 1);
+      const newStart = {
+        ...start,
+        cardIds: startCardIds
+      };
+
+      const finishCardIds = Array.from(finish.cardIds);
+      finishCardIds.splice(destination.index, 0, draggableId);
+      const newFinish = {
+        ...finish,
+        cardIds: finishCardIds
+      };
+
+      const newState = {
+        ...this.state,
+        flows: {
+          ...this.state.flows,
+          [newStart.id]: newStart,
+          [newFinish.id]: newFinish
+        }
+      };
+      this.setState(newState);
+      const formData = new FormData();
+      formData.append('userName', this.props.userName);
+      var details = JSON.stringify(newState);
+      formData.append('newState', details);
+      axios
+        .post(`/changeFlowOrder`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .catch(error => {
+          console.log('ERROR in react changeFlowOrder post request: ' + error);
+        });
     }
-
-    // Moving from one list to another
-    const startCardIds = Array.from(start.cardIds);
-    startCardIds.splice(source.index, 1);
-    const newStart = {
-      ...start,
-      cardIds: startCardIds
-    };
-
-    const finishCardIds = Array.from(finish.cardIds);
-    finishCardIds.splice(destination.index, 0, draggableId);
-    const newFinish = {
-      ...finish,
-      cardIds: finishCardIds
-    };
-
-    const newState = {
-      ...this.state,
-      flows: {
-        ...this.state.flows,
-        [newStart.id]: newStart,
-        [newFinish.id]: newFinish
-      }
-    };
-    this.setState(newState);
   };
 
   render() {

@@ -343,6 +343,66 @@ app.post('/deleteFlow', (request, response) => {
   });
 });
 
+// Change the order of flows and cards in mongodb
+app.post('/changeFlowOrder', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    var newState = fields.newState[0];
+    newState = JSON.parse(newState);
+    const flowOrder = newState.flowOrder;
+
+    var flowArray = [];
+    for (var i = 0; i < flowOrder.length; i++) {
+      const mainFlow = newState.flows[flowOrder[i]];
+      const videoFlow = newState.flows[flowOrder[i] + '-1'];
+      const imageFlow = newState.flows[flowOrder[i] + '-2'];
+
+      const pdfCardIds = mainFlow.cardIds;
+      var pdfs = [];
+      for (var j = 0; j < pdfCardIds.length; j++) {
+        const pdf = newState.cards[pdfCardIds[j]].content;
+        pdfs.push(pdf);
+      }
+
+      const videoCardIds = videoFlow.cardIds;
+      var videos = [];
+      for (var k = 0; k < videoCardIds.length; k++) {
+        const video = newState.cards[videoCardIds[k]].content;
+        videos.push(video);
+      }
+
+      const imageCardIds = imageFlow.cardIds;
+      var images = [];
+      for (var l = 0; l < imageCardIds.length; l++) {
+        const image = newState.cards[imageCardIds[l]].content;
+        images.push(image);
+      }
+
+      var flow = {
+        id: i,
+        flowName: mainFlow.title,
+        pdfs: pdfs,
+        images: images,
+        videos: videos
+      };
+      flowArray.push(flow);
+    }
+
+    FlowModel.updateMany(
+      { userName: fields.userName[0] },
+      { $set: { flows: flowArray } }
+    )
+      .then(() => {
+        response.send('success');
+      })
+      .catch(error => {
+        console.log('ERROR in changeFlowOrder post request update(): ' + error);
+      });
+  });
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'palocal/build')));
 
