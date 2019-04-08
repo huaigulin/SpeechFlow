@@ -131,7 +131,7 @@ class PagePresentation extends Component {
                   videoLink={this.props.videoLink}
                   videos={this.props.videos}
                 />
-                <VideoList videos={this.props.videos} />
+                <VideoList videosList={this.props.videosList} />
               </div>
             ) : (
               <div />

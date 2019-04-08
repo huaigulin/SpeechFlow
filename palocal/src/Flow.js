@@ -100,7 +100,52 @@ class Flow extends Component {
   };
 
   startPresentation = event => {
-    console.log(event);
+    event.preventDefault();
+
+    const { flow, pdfCards, videoCards, imageCards } = this.props;
+
+    const docName = pdfCards[0].content.substring(
+      0,
+      pdfCards[0].content.length - 4
+    );
+    var pdfsList = [];
+    for (var i = 0; i < pdfCards.length; i++) {
+      pdfsList.push(pdfCards[i].content);
+    }
+
+    const videoID = videoCards[0].content;
+    var videosList = [];
+    for (var j = 0; j < videoCards.length; j++) {
+      videosList.push(videoCards[j].content);
+    }
+
+    const currentImage = imageCards[0].content;
+    var imagesList = [];
+    for (var k = 0; k < imageCards.length; k++) {
+      imagesList.push(imageCards[k].content);
+    }
+
+    this.props.setDocName(docName);
+    this.props.setPageNum(1);
+    this.props.setPdfsList(pdfsList);
+
+    this.props.setVideoLink(videoID);
+    this.props.setVideosList(videosList);
+
+    this.props.setCurrentImage(currentImage);
+    this.props.setImagesList(imagesList);
+
+    sessionStorage.setItem('docName', docName);
+    sessionStorage.setItem('pageNum', 1);
+    sessionStorage.setItem('pdfsList', pdfsList);
+
+    sessionStorage.setItem('videoID', videoID);
+    sessionStorage.setItem('videosList', videosList);
+
+    sessionStorage.setItem('currentImage', currentImage);
+    sessionStorage.setItem('imagesList', imagesList);
+
+    this.props.history.push('/PagePresentation');
   };
 
   addToFlow = event => {

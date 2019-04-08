@@ -37,21 +37,22 @@ class PageMaterials extends Component {
       })
       .then(response => {
         // Start presentation with the first pdf in the newest flow for now
-        var docName = response.data.pdf.substring(
-          0,
-          response.data.pdf.length - 4
-        );
-        var videoID = response.data.video[0];
-        var videos = response.data.video;
-        this.props.setDocName(docName);
-        this.props.setPageNum(1);
-        this.props.setVideoLink(videoID);
-        this.props.setVideos(videos);
-        sessionStorage.setItem('docName', docName);
-        sessionStorage.setItem('pageNum', 1);
-        sessionStorage.setItem('videos', videos);
-        sessionStorage.setItem('videoID', videoID);
-        this.props.history.push('/PagePresentation');
+        // var docName = response.data.pdf.substring(
+        //   0,
+        //   response.data.pdf.length - 4
+        // );
+        // var videoID = response.data.video[0];
+        // var videosList = response.data.video;
+        // this.props.setDocName(docName);
+        // this.props.setPageNum(1);
+        // this.props.setVideoLink(videoID);
+        // this.props.setVideosList(videosList);
+        // sessionStorage.setItem('docName', docName);
+        // sessionStorage.setItem('pageNum', 1);
+        // sessionStorage.setItem('videosList', videosList);
+        // sessionStorage.setItem('videoID', videoID);
+
+        this.props.history.push('/PageFlows');
       })
       .catch(error => {
         console.log('ERROR in react upload-flow post request: ' + error);

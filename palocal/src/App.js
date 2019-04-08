@@ -28,7 +28,10 @@ class App extends Component {
       pageNum: parseInt(sessionStorage.getItem('pageNum')),
       userType: sessionStorage.getItem('userType'),
       videoLink: sessionStorage.getItem('videoID'),
-      videos: sessionStorage.getItem('videos'),
+      currentImage: sessionStorage.getItem('currentImage'),
+      pdfsList: sessionStorage.getItem('pdfsList'),
+      videosList: sessionStorage.getItem('videosList'),
+      imagesList: sessionStorage.getItem('imagesList'),
       selectedFiles: [],
       selectedVideos: []
     };
@@ -39,7 +42,10 @@ class App extends Component {
     this.setPageNum = this.setPageNum.bind(this);
     this.setUserType = this.setUserType.bind(this);
     this.setVideoLink = this.setVideoLink.bind(this);
-    this.setVideos = this.setVideos.bind(this);
+    this.setCurrentImage = this.setCurrentImage.bind(this);
+    this.setPdfsList = this.setPdfsList.bind(this);
+    this.setVideosList = this.setVideosList.bind(this);
+    this.setImagesList = this.setImagesList.bind(this);
     this.setSelectedFiles = this.setSelectedFiles.bind(this);
     this.setSelectedVideos = this.setSelectedVideos.bind(this);
   }
@@ -80,9 +86,27 @@ class App extends Component {
     });
   }
 
-  setVideos(videos) {
+  setCurrentImage(currentImage) {
     this.setState({
-      videos: videos
+      currentImage: currentImage
+    });
+  }
+
+  setPdfsList(pdfsList) {
+    this.setState({
+      pdfsList: pdfsList
+    });
+  }
+
+  setVideosList(videosList) {
+    this.setState({
+      videosList: videosList
+    });
+  }
+
+  setImagesList(imagesList) {
+    this.setState({
+      imagesList: imagesList
     });
   }
 
@@ -170,8 +194,7 @@ class App extends Component {
                   userType={this.state.userType}
                   videoLink={this.state.videoLink}
                   setVideoLink={this.setVideoLink}
-                  setVideos={this.state.setVideos}
-                  videos={this.state.videos}
+                  videosList={this.state.videosList}
                 />
               )}
             />
@@ -190,7 +213,7 @@ class App extends Component {
                   setDocName={this.setDocName}
                   setPageNum={this.setPageNum}
                   setVideoLink={this.setVideoLink}
-                  setVideos={this.setVideos}
+                  setVideosList={this.setVideosList}
                 />
               )}
             />
@@ -202,8 +225,13 @@ class App extends Component {
                   userName={this.state.userName}
                   profileImageUrl={this.state.profileImageUrl}
                   s3={this.state.s3}
-                  selectedFiles={this.state.selectedFiles}
-                  selectedVideos={this.state.selectedVideos}
+                  setDocName={this.setDocName}
+                  setPageNum={this.setPageNum}
+                  setVideoLink={this.setVideoLink}
+                  setCurrentImage={this.setCurrentImage}
+                  setPdfsList={this.setPdfsList}
+                  setVideosList={this.setVideosList}
+                  setImagesList={this.setImagesList}
                 />
               )}
             />

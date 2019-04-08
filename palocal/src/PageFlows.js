@@ -36,6 +36,14 @@ class InnerList extends PureComponent {
         videoCards={videoCards}
         imageCards={imageCards}
         index={index}
+        history={this.props.history}
+        setDocName={this.props.setDocName}
+        setPageNum={this.props.setPageNum}
+        setVideoLink={this.props.setVideoLink}
+        setCurrentImage={this.props.setCurrentImage}
+        setPdfsList={this.props.setPdfsList}
+        setVideosList={this.props.setVideosList}
+        setImagesList={this.props.setImagesList}
       />
     );
   }
@@ -121,6 +129,9 @@ class PageFlows extends Component {
         }
 
         this.setState(flowData);
+      })
+      .catch(error => {
+        console.log('Error in PageFlow constructor ');
       });
   }
 
@@ -289,6 +300,14 @@ class PageFlows extends Component {
                         mainFlowId={flowId}
                         cardMap={this.state.cards}
                         index={index}
+                        history={this.props.history}
+                        setDocName={this.props.setDocName}
+                        setPageNum={this.props.setPageNum}
+                        setVideoLink={this.props.setVideoLink}
+                        setCurrentImage={this.props.setCurrentImage}
+                        setPdfsList={this.props.setPdfsList}
+                        setVideosList={this.props.setVideosList}
+                        setImagesList={this.props.setImagesList}
                       />
                     );
                   })}

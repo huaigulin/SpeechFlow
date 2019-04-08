@@ -274,8 +274,12 @@ app.post('/getFlows', (request, response) => {
     })
       .exec()
       .then(databaseEntry => {
-        var flowArray = databaseEntry[0].flows;
-        response.send(flowArray);
+        if (databaseEntry.length == 0) {
+          response.send('No flow yet');
+        } else {
+          var flowArray = databaseEntry[0].flows;
+          response.send(flowArray);
+        }
       });
   });
 });

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar';
 import GoogleLogin from 'react-google-login';
+import axios from 'axios';
 // import VideoPlayer from './VideoPlayer';
 
 class PageHome extends Component {
@@ -49,7 +50,21 @@ class PageHome extends Component {
       sessionStorage.setItem('userName', response.googleId);
       sessionStorage.setItem('userType', 'speaker');
       sessionStorage.setItem('profileImageUrl', response.profileObj.imageUrl);
-      this.props.history.push('/PageMaterials');
+      const formData = new FormData();
+      formData.append('userName', this.props.userName);
+      axios
+        .post(`/getFlows`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .then(response => {
+          if (response.data === 'No flow yet') {
+            this.props.history.push('/PageMaterials');
+          } else {
+            this.props.history.push('/PageFlows');
+          }
+        });
     };
     return (
       <div>
