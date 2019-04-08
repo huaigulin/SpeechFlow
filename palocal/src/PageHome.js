@@ -51,7 +51,7 @@ class PageHome extends Component {
       sessionStorage.setItem('userType', 'speaker');
       sessionStorage.setItem('profileImageUrl', response.profileObj.imageUrl);
       const formData = new FormData();
-      formData.append('userName', this.props.userName);
+      formData.append('userName', response.googleId);
       axios
         .post(`/getFlows`, formData, {
           headers: {
