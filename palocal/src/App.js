@@ -195,6 +195,8 @@ class App extends Component {
                   videoLink={this.state.videoLink}
                   setVideoLink={this.setVideoLink}
                   videosList={this.state.videosList}
+                  imagesList={this.state.imagesList}
+                  currentImage={this.state.currentImage}
                 />
               )}
             />

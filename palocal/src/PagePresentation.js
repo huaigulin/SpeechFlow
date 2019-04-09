@@ -157,6 +157,8 @@ class PagePresentation extends Component {
                   userName={this.props.userName}
                   userType={this.props.userType}
                   videoLink={this.props.videoLink}
+                  imagesList={this.props.imagesList}
+                  currentImage={this.props.currentImage}
                 />
               </div>
             ) : (

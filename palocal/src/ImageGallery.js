@@ -4,22 +4,29 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 
 class ImageGallery extends Component {
   render() {
-    const images = [
-      {
-        original: 'http://lorempixel.com/1000/600/nature/1/',
-        thumbnail: 'http://lorempixel.com/250/150/nature/1/'
-      },
-      {
-        original: 'http://lorempixel.com/1000/600/nature/2/',
-        thumbnail: 'http://lorempixel.com/250/150/nature/2/'
-      },
-      {
-        original: 'http://lorempixel.com/1000/600/nature/3/',
-        thumbnail: 'http://lorempixel.com/250/150/nature/3/'
-      }
-    ];
+    const images = []
+    for (var i=0; i<this.props.imagesList.length; i++){
+      images.push(
+        {
+          original:
+            'https://s3.us-east-2.amazonaws.com/speechflow/' +
+            this.props.userName +
+            '/' +
+            this.props.imagesList[i],
+          thumbnail:
+            'https://s3.us-east-2.amazonaws.com/speechflow/' +
+            this.props.userName +
+            '/' +
+            this.props.imagesList[i]
+        }
+      )
+    }
 
-    return <Gallery items={images} />;
+    return (
+      <div>
+        <Gallery items={images} />
+      </div>
+    );
   }
 }
 export default ImageGallery;
