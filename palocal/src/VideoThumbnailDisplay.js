@@ -31,7 +31,8 @@ const toolbarStyles = theme => ({
     color: theme.palette.text.secondary
   },
   title: {
-    flex: '0 0 auto'
+    flex: '0 0 auto',
+    textTransform: 'initial'
   }
 });
 

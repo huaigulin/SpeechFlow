@@ -160,6 +160,9 @@ const toolbarStyles = theme => ({
   },
   title: {
     flex: '0 0 auto'
+  },
+  text: {
+    textTransform: 'initial'
   }
 });
 
@@ -198,11 +201,15 @@ let EnhancedTableToolbar = props => {
     >
       <div className={classes.title}>
         {numSelected > 0 ? (
-          <Typography color="inherit" variant="subtitle1">
+          <Typography
+            className={classes.text}
+            color="inherit"
+            variant="subtitle1"
+          >
             {numSelected} selected
           </Typography>
         ) : (
-          <Typography variant="h6" id="tableTitle">
+          <Typography className={classes.text} variant="h6" id="tableTitle">
             Your PDF/Images:
           </Typography>
         )}
