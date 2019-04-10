@@ -60,6 +60,7 @@ class PagePresentation extends Component {
 
   render() {
     const isLoggedIn = this.props.userName != null;
+    var isDocNameValid = this.props.docName != null;
     const { classes } = this.props;
     var loadPDF = this.state.loadPDF;
     var loadVideo = this.state.loadVideo;
@@ -90,20 +91,26 @@ class PagePresentation extends Component {
                   pageNum={this.props.pageNum}
                   userType={this.props.userType}
                 />
-                <Button
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.goToVideo}
-                >
-                  Video Player
-                </Button>
-                <Button
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.goToGallery}
-                >
-                  ImageGallery
-                </Button>
+                {isDocNameValid ? (
+                  <div>
+                    <Button
+                      color="primary"
+                      className={classes.button}
+                      onClick={this.goToVideo}
+                    >
+                      Video Player
+                    </Button>
+                    <Button
+                      color="primary"
+                      className={classes.button}
+                      onClick={this.goToGallery}
+                    >
+                      ImageGallery
+                    </Button>
+                  </div>
+                ) : (
+                  <div />
+                )}
               </div>
             ) : (
               <div />

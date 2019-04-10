@@ -192,13 +192,16 @@ class PDFViewer extends Component {
           </div>
         ) : (
           <div>
-            <h5>Enter the name of your document: </h5>
+            {/* <h5>Enter the name of your document: </h5>
             <input
               type="text"
               value={this.state.value}
               onChange={this.handleDocNameChange}
             />
-            <button onClick={this.submitDocName}>Submit</button>
+            <button onClick={this.submitDocName}>Submit</button> */}
+            <h5>
+              No active presentation yet. Start a new one from your flows.
+            </h5>
           </div>
         )}
       </div>
