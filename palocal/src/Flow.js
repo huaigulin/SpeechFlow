@@ -155,7 +155,7 @@ class Flow extends Component {
   deleteFlow = event => {
     const formData = new FormData();
     formData.append('userName', this.props.userName);
-    formData.append('flowId', this.props.flow.id);
+    formData.append('flowId', this.props.index);
 
     axios
       .post(`/deleteFlow`, formData, {

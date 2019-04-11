@@ -131,7 +131,7 @@ class PageFlows extends Component {
         this.setState(flowData);
       })
       .catch(error => {
-        console.log('Error in PageFlow constructor ');
+        console.log('Error in PageFlow constructor: ' + error);
       });
   }
 

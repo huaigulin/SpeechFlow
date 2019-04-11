@@ -324,7 +324,6 @@ app.post('/deleteFlow', (request, response) => {
     var flowId = fields.flowId[0];
     flowId = flowId.substr(-1);
     flowId = parseInt(flowId);
-    flowId = flowId - 1;
 
     FlowModel.find({
       userName: fields.userName[0]
