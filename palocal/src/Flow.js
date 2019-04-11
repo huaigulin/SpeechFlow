@@ -84,7 +84,7 @@ class Flow extends Component {
   handleTitleChange = event => {
     const formData = new FormData();
     formData.append('userName', this.props.userName);
-    formData.append('flowId', this.props.flow.id);
+    formData.append('flowId', this.props.index);
     formData.append('flowTitle', event.target.value);
 
     axios
@@ -164,7 +164,8 @@ class Flow extends Component {
         }
       })
       .then(response => {
-        window.location.reload();
+        // window.location.reload();
+        this.props.deleteMyself(this.props.flow.id);
       })
       .catch(error => {
         console.log('ERROR in react deleteFlow post request: ' + error);

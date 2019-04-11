@@ -44,6 +44,7 @@ class InnerList extends PureComponent {
         setPdfsList={this.props.setPdfsList}
         setVideosList={this.props.setVideosList}
         setImagesList={this.props.setImagesList}
+        deleteMyself={this.props.deleteFlow}
       />
     );
   }
@@ -267,6 +268,45 @@ class PageFlows extends Component {
     }
   };
 
+  deleteFlow = flowId => {
+    const videoFlowId = flowId + '-1';
+    const imageFlowId = flowId + '-2';
+
+    var newState = this.state;
+    var cardsToDelete = [];
+
+    const pdfCardsToDelete = this.state.flows[flowId].cardIds;
+    for (var i = 0; i < pdfCardsToDelete.length; i++) {
+      cardsToDelete.push(pdfCardsToDelete[i]);
+    }
+
+    const videoCardsToDelete = this.state.flows[videoFlowId].cardIds;
+    for (var j = 0; j < videoCardsToDelete.length; j++) {
+      cardsToDelete.push(videoCardsToDelete[j]);
+    }
+
+    const imageCardsToDelete = this.state.flows[imageFlowId].cardIds;
+    for (var k = 0; k < imageCardsToDelete.length; k++) {
+      cardsToDelete.push(imageCardsToDelete[k]);
+    }
+
+    // delete cards
+    for (var l = 0; l < cardsToDelete.length; l++) {
+      delete newState.cards[cardsToDelete[l]];
+    }
+
+    // delete flows
+    delete newState.flows[flowId];
+    delete newState.flows[videoFlowId];
+    delete newState.flows[imageFlowId];
+
+    // delete from flowOrder
+    const index = newState.flowOrder.indexOf(flowId);
+    newState.flowOrder.splice(index, 1);
+
+    this.setState(newState);
+  };
+
   render() {
     const isLoggedIn = this.props.userName != null;
     const stateHasLoaded = this.state !== null;
@@ -308,6 +348,7 @@ class PageFlows extends Component {
                         setPdfsList={this.props.setPdfsList}
                         setVideosList={this.props.setVideosList}
                         setImagesList={this.props.setImagesList}
+                        deleteFlow={this.deleteFlow}
                       />
                     );
                   })}
