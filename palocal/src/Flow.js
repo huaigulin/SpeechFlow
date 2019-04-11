@@ -87,13 +87,17 @@ class Flow extends Component {
     formData.append('flowId', this.props.index);
     formData.append('flowTitle', event.target.value);
 
+    const newTitle = event.target.value;
+
     axios
       .post(`/changeFlowTitle`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
-      .then(response => {})
+      .then(response => {
+        this.props.changeMyTitle(this.props.flow.id, newTitle);
+      })
       .catch(error => {
         console.log('ERROR in react changeFlowTitle post request: ' + error);
       });

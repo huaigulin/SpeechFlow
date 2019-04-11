@@ -45,6 +45,7 @@ class InnerList extends PureComponent {
         setVideosList={this.props.setVideosList}
         setImagesList={this.props.setImagesList}
         deleteMyself={this.props.deleteFlow}
+        changeMyTitle={this.props.changeTitle}
       />
     );
   }
@@ -307,6 +308,12 @@ class PageFlows extends Component {
     this.setState(newState);
   };
 
+  changeTitle = (flowId, flowTitle) => {
+    var newState = this.state;
+    newState.flows[flowId].title = flowTitle;
+    this.setState(newState);
+  };
+
   render() {
     const isLoggedIn = this.props.userName != null;
     const stateHasLoaded = this.state !== null;
@@ -349,6 +356,7 @@ class PageFlows extends Component {
                         setVideosList={this.props.setVideosList}
                         setImagesList={this.props.setImagesList}
                         deleteFlow={this.deleteFlow}
+                        changeTitle={this.changeTitle}
                       />
                     );
                   })}
