@@ -405,6 +405,47 @@ app.post('/changeFlowOrder', (request, response) => {
   });
 });
 
+// Delete a card in mongodb
+app.post('/deleteCard', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    const userName = fields.userName[0];
+    const flowIndex = fields.flowIndex[0];
+    const cardIndex = fields.cardIndex[0];
+    const cardType = fields.cardType[0];
+
+    FlowModel.find({
+      userName: userName
+    })
+      .exec()
+      .then(databaseEntry => {
+        var flowArray = databaseEntry[0].flows;
+        switch (cardType) {
+          case 'pdf':
+            flowArray[flowIndex].pdfs.splice(cardIndex, 1);
+            break;
+          case 'video':
+            flowArray[flowIndex].videos.splice(cardIndex, 1);
+            break;
+          case 'image':
+            flowArray[flowIndex].images.splice(cardIndex, 1);
+            break;
+          default:
+            console.log('card type error in delete card');
+        }
+        FlowModel.updateMany(
+          { userName: userName },
+          { $set: { flows: flowArray } }
+        ).catch(error => {
+          console.log('ERROR in deleteFlow post request update(): ' + error);
+        });
+        response.send('success');
+      });
+  });
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'palocal/build')));
 

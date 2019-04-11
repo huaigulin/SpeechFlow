@@ -46,6 +46,7 @@ class InnerList extends PureComponent {
         setImagesList={this.props.setImagesList}
         deleteMyself={this.props.deleteFlow}
         changeMyTitle={this.props.changeTitle}
+        deleteCard={this.props.deleteCard}
       />
     );
   }
@@ -273,7 +274,7 @@ class PageFlows extends Component {
     const videoFlowId = flowId + '-1';
     const imageFlowId = flowId + '-2';
 
-    var newState = this.state;
+    var newState = JSON.parse(JSON.stringify(this.state));
     var cardsToDelete = [];
 
     const pdfCardsToDelete = this.state.flows[flowId].cardIds;
@@ -309,9 +310,41 @@ class PageFlows extends Component {
   };
 
   changeTitle = (flowId, flowTitle) => {
-    var newState = this.state;
+    var newState = JSON.parse(JSON.stringify(this.state));
     newState.flows[flowId].title = flowTitle;
     this.setState(newState);
+  };
+
+  deleteCard = (cardId, flowIndex, cardIndex, flowId) => {
+    const formData = new FormData();
+    formData.append('userName', this.props.userName);
+    formData.append('flowIndex', flowIndex);
+    formData.append('cardIndex', cardIndex);
+    formData.append('cardType', this.state.cards[cardId].type);
+
+    axios
+      .post(`/deleteCard`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(response => {
+        const newState = JSON.parse(JSON.stringify(this.state));
+
+        // delete card from flow
+        var newCardIds = newState.flows[flowId].cardIds;
+        const index = newCardIds.indexOf(cardId);
+        newCardIds.splice(index, 1);
+        newState.flows[flowId].cardIds = newCardIds;
+
+        // delete card from cards
+        delete newState.cards[cardId];
+
+        this.setState(newState);
+      })
+      .catch(error => {
+        console.log('ERROR in react deleteCard post request: ' + error);
+      });
   };
 
   render() {
@@ -357,6 +390,7 @@ class PageFlows extends Component {
                         setImagesList={this.props.setImagesList}
                         deleteFlow={this.deleteFlow}
                         changeTitle={this.changeTitle}
+                        deleteCard={this.deleteCard}
                       />
                     );
                   })}

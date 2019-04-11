@@ -65,6 +65,9 @@ class InnerList extends PureComponent {
         card={card}
         index={index}
         isVideo={this.props.isVideo}
+        deleteMyself={this.props.deleteCard}
+        flowIndex={this.props.flowIndex}
+        flowId={this.props.flowId}
       />
     ));
   }
@@ -228,7 +231,13 @@ class Flow extends Component {
                   {...provided.droppableProps}
                   isDraggingOver={snapshot.isDraggingOver}
                 >
-                  <InnerList cards={this.props.pdfCards} isVideo={false} />
+                  <InnerList
+                    cards={this.props.pdfCards}
+                    isVideo={false}
+                    deleteCard={this.props.deleteCard}
+                    flowIndex={this.props.index}
+                    flowId={this.props.flow.id}
+                  />
                   {provided.placeholder}
                 </MainCardList>
               )}
@@ -242,7 +251,13 @@ class Flow extends Component {
                     {...provided.droppableProps}
                     isDraggingOver={snapshot.isDraggingOver}
                   >
-                    <InnerList cards={this.props.videoCards} isVideo={true} />
+                    <InnerList
+                      cards={this.props.videoCards}
+                      isVideo={true}
+                      deleteCard={this.props.deleteCard}
+                      flowIndex={this.props.index}
+                      flowId={this.props.flow.id + '-1'}
+                    />
                     {provided.placeholder}
                   </SubCardList>
                 )}
@@ -257,7 +272,13 @@ class Flow extends Component {
                     {...provided.droppableProps}
                     isDraggingOver={snapshot.isDraggingOver}
                   >
-                    <InnerList cards={this.props.imageCards} isVideo={false} />
+                    <InnerList
+                      cards={this.props.imageCards}
+                      isVideo={false}
+                      deleteCard={this.props.deleteCard}
+                      flowIndex={this.props.index}
+                      flowId={this.props.flow.id + '-2'}
+                    />
                     {provided.placeholder}
                   </SubCardList>
                 )}

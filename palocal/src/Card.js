@@ -21,8 +21,14 @@ const TextBox = styled.div`
 
 class Card extends Component {
   handleDelete = event => {
-    console.log(event);
+    this.props.deleteMyself(
+      this.props.card.id,
+      this.props.flowIndex,
+      this.props.index,
+      this.props.flowId
+    );
   };
+
   render() {
     const isVideo = this.props.isVideo;
     return (
