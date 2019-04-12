@@ -109,48 +109,54 @@ class Flow extends Component {
   startPresentation = event => {
     event.preventDefault();
 
-    const { flow, pdfCards, videoCards, imageCards } = this.props;
+    const { pdfCards, videoCards, imageCards } = this.props;
 
-    const docName = pdfCards[0].content.substring(
-      0,
-      pdfCards[0].content.length - 4
-    );
-    var pdfsList = [];
-    for (var i = 0; i < pdfCards.length; i++) {
-      pdfsList.push(pdfCards[i].content);
+    if (pdfCards.length > 0) {
+      const docName = pdfCards[0].content.substring(
+        0,
+        pdfCards[0].content.length - 4
+      );
+      var pdfsList = [];
+      for (var i = 0; i < pdfCards.length; i++) {
+        pdfsList.push(pdfCards[i].content);
+      }
+
+      this.props.setDocName(docName);
+      this.props.setPageNum(1);
+      this.props.setPdfsList(pdfsList);
+
+      sessionStorage.setItem('docName', docName);
+      sessionStorage.setItem('pageNum', 1);
+      sessionStorage.setItem('pdfsList', JSON.stringify(pdfsList)); // sessionStorage only supports string
     }
 
-    const videoID = videoCards[0].content;
-    var videosList = [];
-    for (var j = 0; j < videoCards.length; j++) {
-      videosList.push(videoCards[j].content);
+    if (videoCards.length > 0) {
+      const videoID = videoCards[0].content;
+      var videosList = [];
+      for (var j = 0; j < videoCards.length; j++) {
+        videosList.push(videoCards[j].content);
+      }
+
+      this.props.setVideoLink(videoID);
+      this.props.setVideosList(videosList);
+
+      sessionStorage.setItem('videoID', videoID);
+      sessionStorage.setItem('videosList', JSON.stringify(videosList));
     }
 
-    const currentImage = imageCards[0].content;
-    var imagesList = [];
-    for (var k = 0; k < imageCards.length; k++) {
-      imagesList.push(imageCards[k].content);
+    if (imageCards.length > 0) {
+      const currentImage = imageCards[0].content;
+      var imagesList = [];
+      for (var k = 0; k < imageCards.length; k++) {
+        imagesList.push(imageCards[k].content);
+      }
+
+      this.props.setCurrentImage(currentImage);
+      this.props.setImagesList(imagesList);
+
+      sessionStorage.setItem('currentImage', currentImage);
+      sessionStorage.setItem('imagesList', JSON.stringify(imagesList));
     }
-
-    this.props.setDocName(docName);
-    this.props.setPageNum(1);
-    this.props.setPdfsList(pdfsList);
-
-    this.props.setVideoLink(videoID);
-    this.props.setVideosList(videosList);
-
-    this.props.setCurrentImage(currentImage);
-    this.props.setImagesList(imagesList);
-
-    sessionStorage.setItem('docName', docName);
-    sessionStorage.setItem('pageNum', 1);
-    sessionStorage.setItem('pdfsList', JSON.stringify(pdfsList)); // sessionStorage only supports string
-
-    sessionStorage.setItem('videoID', videoID);
-    sessionStorage.setItem('videosList', JSON.stringify(videosList));
-
-    sessionStorage.setItem('currentImage', currentImage);
-    sessionStorage.setItem('imagesList', JSON.stringify(imagesList));
 
     this.props.history.push('/PagePresentation');
   };
@@ -182,6 +188,11 @@ class Flow extends Component {
   render() {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
+    const { pdfCards, videoCards, imageCards } = this.props;
+    const emptyFlow =
+      pdfCards.length === 0 &&
+      videoCards.length === 0 &&
+      imageCards.length === 0;
 
     return (
       <Draggable draggableId={this.props.flow.id} index={this.props.index}>
@@ -219,7 +230,13 @@ class Flow extends Component {
                 open={open}
                 onClose={this.handleMenuClose}
               >
-                <MenuItem onClick={this.startPresentation}>Present</MenuItem>
+                {emptyFlow ? (
+                  <MenuItem onClick={this.startPresentation} disabled>
+                    Present
+                  </MenuItem>
+                ) : (
+                  <MenuItem onClick={this.startPresentation}>Present</MenuItem>
+                )}
                 <MenuItem onClick={this.addToFlow}>Add more files</MenuItem>
                 <MenuItem onClick={this.deleteFlow}>Delete this flow</MenuItem>
               </Menu>
