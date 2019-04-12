@@ -144,13 +144,13 @@ class Flow extends Component {
 
     sessionStorage.setItem('docName', docName);
     sessionStorage.setItem('pageNum', 1);
-    sessionStorage.setItem('pdfsList', pdfsList);
+    sessionStorage.setItem('pdfsList', JSON.stringify(pdfsList)); // sessionStorage only supports string
 
     sessionStorage.setItem('videoID', videoID);
-    sessionStorage.setItem('videosList', videosList);
+    sessionStorage.setItem('videosList', JSON.stringify(videosList));
 
     sessionStorage.setItem('currentImage', currentImage);
-    sessionStorage.setItem('imagesList', imagesList);
+    sessionStorage.setItem('imagesList', JSON.stringify(imagesList));
 
     this.props.history.push('/PagePresentation');
   };

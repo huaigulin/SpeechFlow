@@ -136,7 +136,6 @@ class PagePresentation extends Component {
                   userName={this.props.userName}
                   userType={this.props.userType}
                   videoLink={this.props.videoLink}
-                  videos={this.props.videos}
                 />
                 <VideoList videosList={this.props.videosList} />
               </div>

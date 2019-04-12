@@ -180,7 +180,7 @@ class PageFlows extends Component {
       this.setState(newState);
       const formData = new FormData();
       formData.append('userName', this.props.userName);
-      var details = JSON.stringify(newState);
+      const details = JSON.stringify(newState);
       formData.append('newState', details);
       axios
         .post(`/changeFlowOrder`, formData, {
@@ -218,7 +218,7 @@ class PageFlows extends Component {
       this.setState(newState);
       const formData = new FormData();
       formData.append('userName', this.props.userName);
-      var details = JSON.stringify(newState);
+      const details = JSON.stringify(newState);
       formData.append('newState', details);
       axios
         .post(`/changeFlowOrder`, formData, {
@@ -256,7 +256,7 @@ class PageFlows extends Component {
       this.setState(newState);
       const formData = new FormData();
       formData.append('userName', this.props.userName);
-      var details = JSON.stringify(newState);
+      const details = JSON.stringify(newState);
       formData.append('newState', details);
       axios
         .post(`/changeFlowOrder`, formData, {
