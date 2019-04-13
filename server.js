@@ -579,6 +579,30 @@ app.post('/changePresentationSlide', (request, response) => {
   });
 });
 
+app.post('/changePresentationDocAndSlide', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    const userName = fields.userName[0];
+    const docName = fields.docName[0];
+    const slideNumber = parseInt(fields.slideNumber[0]);
+    PresentationModel.updateMany(
+      { userName: userName },
+      { $set: { docName: docName, pageNum: slideNumber } }
+    )
+      .then(() => {
+        response.send('success');
+      })
+      .catch(error => {
+        console.log(
+          'ERROR in changePresentationDocAndSlide post request update(): ' +
+            error
+        );
+      });
+  });
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'palocal/build')));
 
@@ -623,12 +647,22 @@ io.on('connection', socket => {
     io.sockets.to(socket.room).emit('forward', time);
   });
 
-  socket.on('next slide', (docName, pageNum) => {
-    io.sockets.to(socket.room).emit('SOMEONE HIT NEXT', pageNum + 1);
+  socket.on('next slide', pageNum => {
+    io.sockets.to(socket.room).emit('SOMEONE HIT NEXT', pageNum);
   });
 
-  socket.on('back slide', (docName, pageNum) => {
-    io.sockets.to(socket.room).emit('SOMEONE HIT BACK', pageNum - 1);
+  socket.on('back slide', pageNum => {
+    io.sockets.to(socket.room).emit('SOMEONE HIT BACK', pageNum);
+  });
+
+  socket.on('next pdf', docName => {
+    io.sockets.to(socket.room).emit('SOMEONE GOES TO NEXT PDF', docName);
+  });
+
+  socket.on('back pdf', (docName, pageNum) => {
+    io.sockets
+      .to(socket.room)
+      .emit('SOMEONE GOES TO PREVIOUS PDF', docName, pageNum);
   });
 
   // socket.on('what is doc name and page num?', () => {

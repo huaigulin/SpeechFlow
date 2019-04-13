@@ -115,10 +115,7 @@ class Flow extends Component {
     formData.append('userName', userName);
 
     if (pdfCards.length > 0) {
-      const docName = pdfCards[0].content.substring(
-        0,
-        pdfCards[0].content.length - 4
-      );
+      const docName = pdfCards[0].content;
       var pdfsList = [];
       for (var i = 0; i < pdfCards.length; i++) {
         pdfsList.push(pdfCards[i].content);

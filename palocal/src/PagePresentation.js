@@ -189,6 +189,7 @@ class PagePresentation extends Component {
                   docName={this.props.docName}
                   pageNum={this.props.pageNum}
                   userType={this.props.userType}
+                  pdfsList={this.props.pdfsList}
                 />
                 {isDocNameValid ? (
                   <div>

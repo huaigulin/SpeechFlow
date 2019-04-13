@@ -5,6 +5,7 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 // import speechflow from './speechflow.pdf';
 import MediaQuery from 'react-responsive';
 import './PDFViewer.css';
+import pdfjsLib from 'pdfjs-dist';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${
   pdfjs.version
 }/pdf.worker.js`;
@@ -38,16 +39,27 @@ class PDFViewer extends Component {
     this.props.socket.on('SOMEONE HIT NEXT', pageNum => {
       this.props.setPageNum(pageNum);
       sessionStorage.setItem('pageNum', pageNum);
-
-      // this.props.setDocName(this.state.docName);
-      // sessionStorage.setItem('docName', this.state.docName);
     });
 
     this.props.socket.on('SOMEONE HIT BACK', pageNum => {
       this.props.setPageNum(pageNum);
       sessionStorage.setItem('pageNum', pageNum);
-      // this.props.setDocName(this.state.docName);
-      // sessionStorage.setItem('docName', this.state.docName);
+    });
+
+    this.props.socket.on('SOMEONE GOES TO NEXT PDF', docName => {
+      this.props.setDocName(docName);
+      sessionStorage.setItem('docName', docName);
+
+      this.props.setPageNum(null);
+      sessionStorage.setItem('pageNum', null);
+    });
+
+    this.props.socket.on('SOMEONE GOES TO PREVIOUS PDF', (docName, pageNum) => {
+      this.props.setDocName(docName);
+      sessionStorage.setItem('docName', docName);
+
+      this.props.setPageNum(pageNum);
+      sessionStorage.setItem('pageNum', pageNum);
     });
 
     if (this.props.userType === 'speaker') {
@@ -73,6 +85,8 @@ class PDFViewer extends Component {
   componentWillUnmount() {
     this.props.socket.removeListener('SOMEONE HIT NEXT');
     this.props.socket.removeListener('SOMEONE HIT BACK');
+    this.props.socket.removeListener('SOMEONE GOES TO NEXT PDF');
+    this.props.socket.removeListener('SOMEONE GOES TO PREVIOUS PDF');
 
     document.removeEventListener('keydown', this._handleKeyDown);
   }
@@ -100,16 +114,16 @@ class PDFViewer extends Component {
   };
 
   previousSlide = event => {
-    if (this.props.pageNum > 1) {
-      this.props.socket.emit(
-        'back slide',
-        this.props.docName,
-        this.props.pageNum
-      );
+    const pageNum = this.props.pageNum;
+    const userName = this.props.userName;
+    const docName = this.props.docName;
+    if (pageNum > 1) {
+      // change slide within same pdf
+      this.props.socket.emit('back slide', pageNum - 1);
 
       const formData = new FormData();
-      formData.append('userName', this.props.userName);
-      formData.append('slideNumber', this.props.pageNum - 1);
+      formData.append('userName', userName);
+      formData.append('slideNumber', pageNum - 1);
 
       axios
         .post(`/changePresentationSlide`, formData, {
@@ -120,20 +134,54 @@ class PDFViewer extends Component {
         .catch(error => {
           console.log('ERROR in PDFViewer change slides: ' + error);
         });
+    } else {
+      // switch to another pdf
+      const pdfsList = this.props.pdfsList;
+      const index = pdfsList.indexOf(docName);
+      if (index > 0) {
+        // not the first pdf
+        const lastPdf = pdfsList[index - 1];
+        const pdfPath =
+          'https://s3.us-east-2.amazonaws.com/speechflow/' +
+          userName +
+          '/' +
+          lastPdf;
+        var self = this;
+        pdfjsLib.getDocument(pdfPath).then(function(doc) {
+          var numPages = doc.numPages;
+          self.props.socket.emit('back pdf', lastPdf, numPages);
+
+          const formData = new FormData();
+          formData.append('userName', userName);
+          formData.append('docName', lastPdf);
+          formData.append('slideNumber', numPages);
+
+          axios
+            .post(`/changePresentationDocAndSlide`, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+            .catch(error => {
+              console.log('ERROR in PDFViewer change doc and slides: ' + error);
+            });
+        });
+      }
     }
   };
 
   nextSlide = event => {
-    if (this.props.pageNum < this.state.numPages) {
-      this.props.socket.emit(
-        'next slide',
-        this.props.docName,
-        this.props.pageNum
-      );
+    const pageNum = this.props.pageNum;
+    const numPages = this.state.numPages;
+    const userName = this.props.userName;
+    const docName = this.props.docName;
+    if (pageNum < numPages) {
+      // change slide within same pdf
+      this.props.socket.emit('next slide', pageNum + 1);
 
       const formData = new FormData();
-      formData.append('userName', this.props.userName);
-      formData.append('slideNumber', this.props.pageNum + 1);
+      formData.append('userName', userName);
+      formData.append('slideNumber', pageNum + 1);
 
       axios
         .post(`/changePresentationSlide`, formData, {
@@ -144,6 +192,29 @@ class PDFViewer extends Component {
         .catch(error => {
           console.log('ERROR in PDFViewer change slides: ' + error);
         });
+    } else {
+      // switch to another pdf
+      const pdfsList = this.props.pdfsList;
+      const index = pdfsList.indexOf(docName);
+      if (index < pdfsList.length - 1) {
+        // not the last pdf
+        this.props.socket.emit('next pdf', pdfsList[index + 1]);
+
+        const formData = new FormData();
+        formData.append('userName', userName);
+        formData.append('docName', pdfsList[index + 1]);
+        formData.append('slideNumber', 1);
+
+        axios
+          .post(`/changePresentationDocAndSlide`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+          .catch(error => {
+            console.log('ERROR in PDFViewer change doc and slides: ' + error);
+          });
+      }
     }
   };
 
@@ -151,6 +222,7 @@ class PDFViewer extends Component {
     const userType = this.props.userType === 'speaker';
     var isDocNameValid = this.props.docName != null;
     const { numPages } = this.state;
+
     return (
       <div>
         {isDocNameValid ? (
@@ -167,8 +239,7 @@ class PDFViewer extends Component {
                     'https://s3.us-east-2.amazonaws.com/speechflow/' +
                     this.props.userName +
                     '/' +
-                    this.props.docName +
-                    '.pdf'
+                    this.props.docName
                   }
                   onLoadSuccess={this.onDocumentLoadSuccess}
                 >
@@ -183,8 +254,7 @@ class PDFViewer extends Component {
                     'https://s3.us-east-2.amazonaws.com/speechflow/' +
                     this.props.userName +
                     '/' +
-                    this.props.docName +
-                    '.pdf'
+                    this.props.docName
                   }
                   onLoadSuccess={this.onDocumentLoadSuccess}
                 >
