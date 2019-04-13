@@ -278,7 +278,9 @@ class PDFViewer extends Component {
               )}
             </MediaQuery>
             <p className="textCenter">
-              Page {this.props.pageNum} of {numPages}
+              Page {this.props.pageNum} of {numPages}, Doc{' '}
+              {this.props.pdfsList.indexOf(this.props.docName) + 1} of{' '}
+              {this.props.pdfsList.length}
             </p>
           </div>
         ) : (

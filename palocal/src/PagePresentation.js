@@ -85,21 +85,15 @@ class PagePresentation extends Component {
 
   componentDidMount() {
     this.props.socket.on('video', () => {
-      this.setState({ loadPDF: false });
-      this.setState({ loadVideo: true });
-      this.setState({ loadGallery: false });
+      this.props.setCurrentMedia('video');
     });
 
     this.props.socket.on('pdf', () => {
-      this.setState({ loadPDF: true });
-      this.setState({ loadVideo: false });
-      this.setState({ loadGallery: false });
+      this.props.setCurrentMedia('pdf');
     });
 
     this.props.socket.on('gallery', () => {
-      this.setState({ loadPDF: false });
-      this.setState({ loadVideo: false });
-      this.setState({ loadGallery: true });
+      this.props.setCurrentMedia('gallery');
     });
   }
 
@@ -132,8 +126,8 @@ class PagePresentation extends Component {
             case 'video':
               this.props.setCurrentMedia('video');
               break;
-            case 'image':
-              this.props.setCurrentMedia('image');
+            case 'gallery':
+              this.props.setCurrentMedia('gallery');
               break;
             default:
               console.log('illegal media');
@@ -143,7 +137,7 @@ class PagePresentation extends Component {
           console.log('Error in PagePresentation post request: ' + error);
         });
     } else {
-      // started from a flow
+      // started from a flow, or is switching media
       switch (this.props.currentMedia) {
         case 'pdf':
           loadPDF = true;
@@ -155,7 +149,7 @@ class PagePresentation extends Component {
           loadVideo = true;
           loadGallery = false;
           break;
-        case 'image':
+        case 'gallery':
           loadPDF = false;
           loadVideo = false;
           loadGallery = true;

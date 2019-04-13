@@ -481,7 +481,7 @@ app.post('/updatePresentation', (request, response) => {
       currentImage = fields.currentImage[0];
       imagesList = fields.imagesList;
       if (currentMedia === null) {
-        currentMedia = 'image';
+        currentMedia = 'gallery';
       }
     }
     PresentationModel.find({

@@ -174,7 +174,7 @@ class Flow extends Component {
       formData.append('currentImage', currentImage);
 
       if (currentMedia === null) {
-        currentMedia = 'image';
+        currentMedia = 'gallery';
       }
     }
 
