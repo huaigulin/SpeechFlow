@@ -17,7 +17,7 @@ class VideoPlayer extends Component {
       loop: false
     };
 
-    this.props.socket.emit('what is video link?');
+    // this.props.socket.emit('what is video link?');
   }
 
   componentDidMount() {

@@ -4,12 +4,12 @@ const mongoose = require('mongoose');
 var presentationSchema = mongoose.Schema({
   userName: String,
   docName: String,
-  pageNum: { type: Number, min: 0 },
-  pdfList: [String],
-  video: String,
-  videoList: [String],
-  image: String,
-  imageList: [String],
+  pageNum: { type: Number, min: 1 },
+  pdfsList: [String],
+  videoID: String,
+  videosList: [String],
+  currentImage: String,
+  imagesList: [String],
   currentMedia: String
 });
 

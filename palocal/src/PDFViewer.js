@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
+import axios from 'axios';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 // import speechflow from './speechflow.pdf';
 import MediaQuery from 'react-responsive';
@@ -22,8 +23,8 @@ class PDFViewer extends Component {
       numPages: null
     };
 
-    this.props.socket.emit('what is doc name and page num?');
-    this.props.socket.emit('login', this.props.userName);
+    // this.props.socket.emit('what is doc name and page num?');
+    // this.props.socket.emit('login', this.props.userName);
   }
 
   onDocumentLoadSuccess = ({ numPages }) => {
@@ -105,6 +106,20 @@ class PDFViewer extends Component {
         this.props.docName,
         this.props.pageNum
       );
+
+      const formData = new FormData();
+      formData.append('userName', this.props.userName);
+      formData.append('slideNumber', this.props.pageNum - 1);
+
+      axios
+        .post(`/changePresentationSlide`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .catch(error => {
+          console.log('ERROR in PDFViewer change slides: ' + error);
+        });
     }
   };
 
@@ -115,15 +130,21 @@ class PDFViewer extends Component {
         this.props.docName,
         this.props.pageNum
       );
+
+      const formData = new FormData();
+      formData.append('userName', this.props.userName);
+      formData.append('slideNumber', this.props.pageNum + 1);
+
+      axios
+        .post(`/changePresentationSlide`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .catch(error => {
+          console.log('ERROR in PDFViewer change slides: ' + error);
+        });
     }
-  };
-
-  handleDocNameChange = event => {
-    this.setState({ docNameTemp: event.target.value });
-  };
-
-  submitDocName = event => {
-    this.props.setDocName(this.state.docNameTemp);
   };
 
   render() {
@@ -192,16 +213,7 @@ class PDFViewer extends Component {
           </div>
         ) : (
           <div>
-            {/* <h5>Enter the name of your document: </h5>
-            <input
-              type="text"
-              value={this.state.value}
-              onChange={this.handleDocNameChange}
-            />
-            <button onClick={this.submitDocName}>Submit</button> */}
-            <h5>
-              No active presentation yet. Start a new one from your flows.
-            </h5>
+            <h5>You don't have PDFs in your flow.</h5>
           </div>
         )}
       </div>

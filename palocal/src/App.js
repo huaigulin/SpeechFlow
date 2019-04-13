@@ -32,6 +32,7 @@ class App extends Component {
       pdfsList: sessionStorage.getItem('pdfsList'),
       videosList: sessionStorage.getItem('videosList'),
       imagesList: sessionStorage.getItem('imagesList'),
+      currentMedia: sessionStorage.getItem('currentMedia'),
       selectedFiles: [],
       selectedVideos: []
     };
@@ -46,6 +47,7 @@ class App extends Component {
     this.setPdfsList = this.setPdfsList.bind(this);
     this.setVideosList = this.setVideosList.bind(this);
     this.setImagesList = this.setImagesList.bind(this);
+    this.setCurrentMedia = this.setCurrentMedia.bind(this);
     this.setSelectedFiles = this.setSelectedFiles.bind(this);
     this.setSelectedVideos = this.setSelectedVideos.bind(this);
   }
@@ -110,6 +112,12 @@ class App extends Component {
     });
   }
 
+  setCurrentMedia(currentMedia) {
+    this.setState({
+      currentMedia: currentMedia
+    });
+  }
+
   setSelectedFiles(selectedFiles) {
     this.setState({
       selectedFiles: selectedFiles
@@ -125,38 +133,38 @@ class App extends Component {
   componentDidMount() {
     document.title = 'SpeechFlow';
 
-    this.state.socket.on('update doc name and page num', (docName, pageNum) => {
-      if (docName != null) {
-        this.setDocName(docName);
-      }
-      if (pageNum != null) {
-        this.setPageNum(pageNum);
-      }
-    });
+    // this.state.socket.on('update doc name and page num', (docName, pageNum) => {
+    //   if (docName != null) {
+    //     this.setDocName(docName);
+    //   }
+    //   if (pageNum != null) {
+    //     this.setPageNum(pageNum);
+    //   }
+    // });
 
-    this.state.socket.on('update video link', videoLink => {
-      if (videoLink != null) {
-        this.setVideoLink(videoLink);
-      }
-    });
+    // this.state.socket.on('update video link', videoLink => {
+    //   if (videoLink != null) {
+    //     this.setVideoLink(videoLink);
+    //   }
+    // });
 
-    this.state.socket.on('do you have doc name and page num?', () => {
-      if (this.state.docName != null && !this.state.pageNum.isNaN) {
-        // console.log(this.state.docName);
-        // console.log(this.state.pageNum);
-        this.state.socket.emit(
-          'yes i have them',
-          this.state.docName,
-          this.state.pageNum
-        );
-      }
-    });
+    // this.state.socket.on('do you have doc name and page num?', () => {
+    //   if (this.state.docName != null && !this.state.pageNum.isNaN) {
+    //     // console.log(this.state.docName);
+    //     // console.log(this.state.pageNum);
+    //     this.state.socket.emit(
+    //       'yes i have them',
+    //       this.state.docName,
+    //       this.state.pageNum
+    //     );
+    //   }
+    // });
 
-    this.state.socket.on('do you have video link?', () => {
-      if (this.state.videoLink != null) {
-        this.state.socket.emit('yes i have video link', this.state.videoLink);
-      }
-    });
+    // this.state.socket.on('do you have video link?', () => {
+    //   if (this.state.videoLink != null) {
+    //     this.state.socket.emit('yes i have video link', this.state.videoLink);
+    //   }
+    // });
   }
 
   render() {
@@ -186,17 +194,24 @@ class App extends Component {
                   {...props}
                   socket={this.state.socket}
                   userName={this.state.userName}
+                  userType={this.state.userType}
                   profileImageUrl={this.state.profileImageUrl}
-                  setDocName={this.setDocName}
-                  setPageNum={this.setPageNum}
                   docName={this.state.docName}
                   pageNum={this.state.pageNum}
-                  userType={this.state.userType}
+                  pdfsList={this.state.pdfsList}
                   videoLink={this.state.videoLink}
-                  setVideoLink={this.setVideoLink}
                   videosList={this.state.videosList}
-                  imagesList={this.state.imagesList}
                   currentImage={this.state.currentImage}
+                  imagesList={this.state.imagesList}
+                  setDocName={this.setDocName}
+                  setPageNum={this.setPageNum}
+                  setPdfsList={this.setPdfsList}
+                  setVideoLink={this.setVideoLink}
+                  setVideosList={this.setVideosList}
+                  setCurrentImage={this.setCurrentImage}
+                  setImagesList={this.setImagesList}
+                  setCurrentMedia={this.setCurrentMedia}
+                  currentMedia={this.state.currentMedia}
                 />
               )}
             />
@@ -212,10 +227,6 @@ class App extends Component {
                   setSelectedVideos={this.setSelectedVideos}
                   selectedFiles={this.state.selectedFiles}
                   selectedVideos={this.state.selectedVideos}
-                  setDocName={this.setDocName}
-                  setPageNum={this.setPageNum}
-                  setVideoLink={this.setVideoLink}
-                  setVideosList={this.setVideosList}
                 />
               )}
             />
@@ -234,6 +245,7 @@ class App extends Component {
                   setPdfsList={this.setPdfsList}
                   setVideosList={this.setVideosList}
                   setImagesList={this.setImagesList}
+                  setCurrentMedia={this.setCurrentMedia}
                 />
               )}
             />

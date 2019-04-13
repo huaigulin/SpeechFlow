@@ -47,6 +47,7 @@ class InnerList extends PureComponent {
         deleteMyself={this.props.deleteFlow}
         changeMyTitle={this.props.changeTitle}
         deleteCard={this.props.deleteCard}
+        setCurrentMedia={this.props.setCurrentMedia}
       />
     );
   }
@@ -391,6 +392,7 @@ class PageFlows extends Component {
                         deleteFlow={this.deleteFlow}
                         changeTitle={this.changeTitle}
                         deleteCard={this.deleteCard}
+                        setCurrentMedia={this.props.setCurrentMedia}
                       />
                     );
                   })}

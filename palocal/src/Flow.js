@@ -109,7 +109,10 @@ class Flow extends Component {
   startPresentation = event => {
     event.preventDefault();
 
-    const { pdfCards, videoCards, imageCards } = this.props;
+    const { userName, pdfCards, videoCards, imageCards } = this.props;
+    const formData = new FormData();
+    var currentMedia = null;
+    formData.append('userName', userName);
 
     if (pdfCards.length > 0) {
       const docName = pdfCards[0].content.substring(
@@ -119,6 +122,7 @@ class Flow extends Component {
       var pdfsList = [];
       for (var i = 0; i < pdfCards.length; i++) {
         pdfsList.push(pdfCards[i].content);
+        formData.append('pdfsList', pdfCards[i].content);
       }
 
       this.props.setDocName(docName);
@@ -128,6 +132,11 @@ class Flow extends Component {
       sessionStorage.setItem('docName', docName);
       sessionStorage.setItem('pageNum', 1);
       sessionStorage.setItem('pdfsList', JSON.stringify(pdfsList)); // sessionStorage only supports string
+
+      formData.append('docName', docName);
+      formData.append('pageNum', 1);
+
+      currentMedia = 'pdf';
     }
 
     if (videoCards.length > 0) {
@@ -135,6 +144,7 @@ class Flow extends Component {
       var videosList = [];
       for (var j = 0; j < videoCards.length; j++) {
         videosList.push(videoCards[j].content);
+        formData.append('videosList', videoCards[j].content);
       }
 
       this.props.setVideoLink(videoID);
@@ -142,6 +152,12 @@ class Flow extends Component {
 
       sessionStorage.setItem('videoID', videoID);
       sessionStorage.setItem('videosList', JSON.stringify(videosList));
+
+      formData.append('videoID', videoID);
+
+      if (currentMedia === null) {
+        currentMedia = 'video';
+      }
     }
 
     if (imageCards.length > 0) {
@@ -149,6 +165,7 @@ class Flow extends Component {
       var imagesList = [];
       for (var k = 0; k < imageCards.length; k++) {
         imagesList.push(imageCards[k].content);
+        formData.append('imagesList', imageCards[k].content);
       }
 
       this.props.setCurrentImage(currentImage);
@@ -156,7 +173,26 @@ class Flow extends Component {
 
       sessionStorage.setItem('currentImage', currentImage);
       sessionStorage.setItem('imagesList', JSON.stringify(imagesList));
+
+      formData.append('currentImage', currentImage);
+
+      if (currentMedia === null) {
+        currentMedia = 'image';
+      }
     }
+
+    this.props.setCurrentMedia(currentMedia);
+
+    axios
+      .post(`/updatePresentation`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then()
+      .catch(error => {
+        console.log('ERROR in react startPresentation post request: ' + error);
+      });
 
     this.props.history.push('/PagePresentation');
   };

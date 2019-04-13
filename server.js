@@ -447,7 +447,137 @@ app.post('/deleteCard', (request, response) => {
 });
 
 const PresentationModel = require('./models/presentation');
-app.post('/updatePresentation', (request, response) => {});
+// Update current presentation info in Mongodb
+app.post('/updatePresentation', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    const userName = fields.userName[0];
+    var docName = null;
+    var pageNum = null;
+    var pdfsList = null;
+    var videoID = null;
+    var videosList = null;
+    var currentImage = null;
+    var imagesList = null;
+    var currentMedia = null;
+    if (fields.docName !== undefined) {
+      docName = fields.docName[0];
+      pageNum = parseInt(fields.pageNum[0]);
+      pdfsList = fields.pdfsList;
+      if (currentMedia === null) {
+        currentMedia = 'pdf';
+      }
+    }
+    if (fields.videoID !== undefined) {
+      videoID = fields.videoID[0];
+      videosList = fields.videosList;
+      if (currentMedia === null) {
+        currentMedia = 'video';
+      }
+    }
+    if (fields.currentImage !== undefined) {
+      currentImage = fields.currentImage[0];
+      imagesList = fields.imagesList;
+      if (currentMedia === null) {
+        currentMedia = 'image';
+      }
+    }
+    PresentationModel.find({
+      userName: userName
+    })
+      .exec()
+      .then(databaseEntry => {
+        if (databaseEntry.length == 0) {
+          let newPresentationModel = new PresentationModel({
+            userName: userName,
+            docName: docName,
+            pageNum: pageNum,
+            pdfsList: pdfsList,
+            videoID: videoID,
+            videosList: videosList,
+            currentImage: currentImage,
+            imagesList: imagesList,
+            currentMedia: currentMedia
+          });
+          newPresentationModel
+            .save()
+            .then(() => response.send('success'))
+            .catch(error => {
+              console.log(
+                'ERROR in updatePresentation post request save(): ' + error
+              );
+            });
+        } else {
+          PresentationModel.updateMany(
+            { userName: userName },
+            {
+              $set: {
+                docName: docName,
+                pageNum: pageNum,
+                pdfsList: pdfsList,
+                videoID: videoID,
+                videosList: videosList,
+                currentImage: currentImage,
+                imagesList: imagesList,
+                currentMedia: currentMedia
+              }
+            }
+          )
+            .then(() => {
+              response.send('success');
+            })
+            .catch(error => {
+              console.log(
+                'ERROR in updatePresentation post request update(): ' + error
+              );
+            });
+        }
+      });
+  });
+});
+
+app.post('/getPresentation', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    const userName = fields.userName[0];
+    PresentationModel.find({
+      userName: userName
+    })
+      .exec()
+      .then(databaseEntry => {
+        response.send(databaseEntry[0]);
+      })
+      .catch(error => {
+        console.log('ERROR in getPresentation post request find(): ' + error);
+      });
+  });
+});
+
+app.post('/changePresentationSlide', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    const userName = fields.userName[0];
+    const slideNumber = parseInt(fields.slideNumber[0]);
+    PresentationModel.updateMany(
+      { userName: userName },
+      { $set: { pageNum: slideNumber } }
+    )
+      .then(() => {
+        response.send('success');
+      })
+      .catch(error => {
+        console.log(
+          'ERROR in changePresentationSlide post request update(): ' + error
+        );
+      });
+  });
+});
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'palocal/build')));
@@ -501,23 +631,23 @@ io.on('connection', socket => {
     io.sockets.to(socket.room).emit('SOMEONE HIT BACK', pageNum - 1);
   });
 
-  socket.on('what is doc name and page num?', () => {
-    io.sockets.to(socket.room).emit('do you have doc name and page num?');
-  });
+  // socket.on('what is doc name and page num?', () => {
+  //   io.sockets.to(socket.room).emit('do you have doc name and page num?');
+  // });
 
-  socket.on('what is video link?', () => {
-    io.sockets.to(socket.room).emit('do you have video link?');
-  });
+  // socket.on('what is video link?', () => {
+  //   io.sockets.to(socket.room).emit('do you have video link?');
+  // });
 
-  socket.on('yes i have them', (docName, pageNum) => {
-    io.sockets
-      .to(socket.room)
-      .emit('update doc name and page num', docName, pageNum);
-  });
+  // socket.on('yes i have them', (docName, pageNum) => {
+  //   io.sockets
+  //     .to(socket.room)
+  //     .emit('update doc name and page num', docName, pageNum);
+  // });
 
-  socket.on('yes i have video link', videoLink => {
-    io.sockets.to(socket.room).emit('update video link', videoLink);
-  });
+  // socket.on('yes i have video link', videoLink => {
+  //   io.sockets.to(socket.room).emit('update video link', videoLink);
+  // });
 
   socket.on('login', username => {
     socket.leave(socket.id);
