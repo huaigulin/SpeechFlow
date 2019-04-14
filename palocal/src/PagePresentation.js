@@ -73,7 +73,7 @@ class PagePresentation extends Component {
           sessionStorage.setItem('imagesList', JSON.stringify(data.imagesList));
         })
         .catch(error => {
-          console.log('Error in PagePresentation post request: ' + error);
+          console.log('Error in react PagePresentation post request: ' + error);
         });
     }
   }
@@ -93,14 +93,65 @@ class PagePresentation extends Component {
   componentDidMount() {
     this.props.socket.on('video', () => {
       this.props.setCurrentMedia('video');
+      sessionStorage.setItem('currentMedia', 'video');
+
+      const formData = new FormData();
+      formData.append('userName', this.props.userName);
+      formData.append('currentMedia', 'video');
+
+      axios
+        .post(`/changePresentationMedia`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .catch(error => {
+          console.log(
+            'Error in react changePresentationMeida post request: ' + error
+          );
+        });
     });
 
     this.props.socket.on('pdf', () => {
       this.props.setCurrentMedia('pdf');
+      sessionStorage.setItem('currentMedia', 'pdf');
+
+      const formData = new FormData();
+      formData.append('userName', this.props.userName);
+      formData.append('currentMedia', 'pdf');
+
+      axios
+        .post(`/changePresentationMedia`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .catch(error => {
+          console.log(
+            'Error in react changePresentationMeida post request: ' + error
+          );
+        });
     });
 
     this.props.socket.on('gallery', () => {
       this.props.setCurrentMedia('gallery');
+      sessionStorage.setItem('currentMedia', 'gallery');
+
+      const formData = new FormData();
+      formData.append('userName', this.props.userName);
+      formData.append('currentMedia', 'gallery');
+
+      axios
+        .post(`/changePresentationMedia`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .catch(error => {
+          console.log(
+            'Error in react changePresentationMeida post request: ' + error
+          );
+        });
     });
   }
 
@@ -142,12 +193,15 @@ class PagePresentation extends Component {
           switch (data.currentMedia) {
             case 'pdf':
               this.props.setCurrentMedia('pdf');
+              sessionStorage.setItem('currentMedia', 'pdf');
               break;
             case 'video':
               this.props.setCurrentMedia('video');
+              sessionStorage.setItem('currentMedia', 'video');
               break;
             case 'gallery':
               this.props.setCurrentMedia('gallery');
+              sessionStorage.setItem('currentMedia', 'gallery');
               break;
             default:
               console.log('illegal media');

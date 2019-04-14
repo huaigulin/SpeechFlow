@@ -603,6 +603,28 @@ app.post('/changePresentationDocAndSlide', (request, response) => {
   });
 });
 
+app.post('/changePresentationMedia', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    const userName = fields.userName[0];
+    const currentMedia = fields.currentMedia[0];
+    PresentationModel.updateMany(
+      { userName: userName },
+      { $set: { currentMedia: currentMedia } }
+    )
+      .then(() => {
+        response.send('success');
+      })
+      .catch(error => {
+        console.log(
+          'ERROR in changePresentationMedia post request update(): ' + error
+        );
+      });
+  });
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'palocal/build')));
 
