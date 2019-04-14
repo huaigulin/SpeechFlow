@@ -58,12 +58,19 @@ class PagePresentation extends Component {
         .then(response => {
           const data = response.data;
           setDocName(data.docName);
+          sessionStorage.setItem('docName', data.docName);
           setPageNum(data.pageNum);
+          sessionStorage.setItem('pageNum', data.pageNum);
           setPdfsList(data.pdfsList);
+          sessionStorage.setItem('pdfsList', JSON.stringify(data.pdfsList));
           setVideoLink(data.videoID);
+          sessionStorage.setItem('videoLink', data.videoID);
           setVideosList(data.videosList);
+          sessionStorage.setItem('videosList', JSON.stringify(data.videosList));
           setCurrentImage(data.currentImage);
+          sessionStorage.setItem('currentImage', data.currentImage);
           setImagesList(data.imagesList);
+          sessionStorage.setItem('imagesList', JSON.stringify(data.imagesList));
         })
         .catch(error => {
           console.log('Error in PagePresentation post request: ' + error);
@@ -101,6 +108,19 @@ class PagePresentation extends Component {
     const isLoggedIn = this.props.userName != null;
     var isDocNameValid = this.props.docName != null;
     const { classes } = this.props;
+
+    var pdfsList = this.props.pdfsList;
+    if (typeof pdfsList === 'string') {
+      pdfsList = JSON.parse(pdfsList);
+    }
+    var videosList = this.props.videosList;
+    if (typeof videosList === 'string') {
+      videosList = JSON.parse(videosList);
+    }
+    var imagesList = this.props.imagesList;
+    if (typeof imagesList === 'string') {
+      imagesList = JSON.parse(imagesList);
+    }
 
     var loadPDF = false;
     var loadVideo = false;
@@ -183,7 +203,7 @@ class PagePresentation extends Component {
                   docName={this.props.docName}
                   pageNum={this.props.pageNum}
                   userType={this.props.userType}
-                  pdfsList={this.props.pdfsList}
+                  pdfsList={pdfsList}
                 />
                 {isDocNameValid ? (
                   <div>
@@ -231,7 +251,7 @@ class PagePresentation extends Component {
                   userType={this.props.userType}
                   videoLink={this.props.videoLink}
                 />
-                <VideoList videosList={this.props.videosList} />
+                <VideoList videosList={videosList} />
               </div>
             ) : (
               <div />
@@ -257,7 +277,7 @@ class PagePresentation extends Component {
                   userName={this.props.userName}
                   userType={this.props.userType}
                   videoLink={this.props.videoLink}
-                  imagesList={this.props.imagesList}
+                  imagesList={imagesList}
                   currentImage={this.props.currentImage}
                 />
               </div>
