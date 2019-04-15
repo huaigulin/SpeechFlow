@@ -667,6 +667,10 @@ io.on('connection', socket => {
     console.log('Client disconnected');
   });
 
+  socket.on('changeImage', (image) => {
+    io.sockets.to(socket.room).emit('changeImage', image)
+  });
+
   socket.on('video', () => {
     io.sockets.to(socket.room).emit('video');
   });

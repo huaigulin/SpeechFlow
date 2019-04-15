@@ -5,6 +5,17 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 class ImageGallery extends Component {
   constructor(props) {
     super(props);
+    this.onThumbnailClick = this.onThumbnailClick.bind(this);
+  }
+  componentDidMount() {
+    this.props.socket.on('changeImage', image => {
+      console.log('changing image to: ' + image);
+    })
+  }
+
+  onThumbnailClick(event){
+    console.dir(event.target);
+    this.props.socket.emit('changeImage', event.target.value);
   }
 
   render() {
@@ -30,7 +41,7 @@ class ImageGallery extends Component {
 
     return (
       <div>
-        <Gallery items={images} />
+        <Gallery items={images} onThumbnailClick={this.onThumbnailClick}/>
       </div>
     );
   }
