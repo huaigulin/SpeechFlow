@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactPlayer from 'react-player';
+import MediaQuery from 'react-responsive';
 
 class VideoPlayer extends Component {
   constructor(props) {
@@ -81,15 +82,17 @@ class VideoPlayer extends Component {
     const url = 'https://www.youtube.com/watch?v=' + this.props.videoLink;
     return (
       <div>
-        <ReactPlayer
-          url={url}
-          ref={this.ref}
-          playing={this.state.playing}
-          controls={true}
-          width="1280px"
-          height="600px"
-          onDuration={this.onDuration}
-        />
+        <MediaQuery query="(min-device-width: 1024px)">
+          <ReactPlayer
+            url={url}
+            ref={this.ref}
+            playing={this.state.playing}
+            controls={true}
+            width="1280px"
+            height="600px"
+            onDuration={this.onDuration}
+          />
+        </MediaQuery>
         <button
           onClick={() => {
             this.handlePlay(this.props.socket, this.player.getCurrentTime());
