@@ -80,78 +80,78 @@ class PagePresentation extends Component {
 
   goToVideo = event => {
     this.props.socket.emit('video');
+
+    const formData = new FormData();
+    formData.append('userName', this.props.userName);
+    formData.append('currentMedia', 'video');
+
+    axios
+      .post(`/changePresentationMedia`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .catch(error => {
+        console.log(
+          'Error in react changePresentationMeida post request: ' + error
+        );
+      });
   };
 
   goToPdf = event => {
     this.props.socket.emit('pdf');
+
+    const formData = new FormData();
+    formData.append('userName', this.props.userName);
+    formData.append('currentMedia', 'pdf');
+
+    axios
+      .post(`/changePresentationMedia`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .catch(error => {
+        console.log(
+          'Error in react changePresentationMeida post request: ' + error
+        );
+      });
   };
 
   goToGallery = event => {
     this.props.socket.emit('gallery');
+
+    const formData = new FormData();
+    formData.append('userName', this.props.userName);
+    formData.append('currentMedia', 'gallery');
+
+    axios
+      .post(`/changePresentationMedia`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .catch(error => {
+        console.log(
+          'Error in react changePresentationMeida post request: ' + error
+        );
+      });
   };
 
   componentDidMount() {
     this.props.socket.on('video', () => {
       this.props.setCurrentMedia('video');
       sessionStorage.setItem('currentMedia', 'video');
-
-      const formData = new FormData();
-      formData.append('userName', this.props.userName);
-      formData.append('currentMedia', 'video');
-
-      axios
-        .post(`/changePresentationMedia`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        .catch(error => {
-          console.log(
-            'Error in react changePresentationMeida post request: ' + error
-          );
-        });
     });
 
     this.props.socket.on('pdf', () => {
       this.props.setCurrentMedia('pdf');
       sessionStorage.setItem('currentMedia', 'pdf');
-
-      const formData = new FormData();
-      formData.append('userName', this.props.userName);
-      formData.append('currentMedia', 'pdf');
-
-      axios
-        .post(`/changePresentationMedia`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        .catch(error => {
-          console.log(
-            'Error in react changePresentationMeida post request: ' + error
-          );
-        });
     });
 
     this.props.socket.on('gallery', () => {
       this.props.setCurrentMedia('gallery');
       sessionStorage.setItem('currentMedia', 'gallery');
-
-      const formData = new FormData();
-      formData.append('userName', this.props.userName);
-      formData.append('currentMedia', 'gallery');
-
-      axios
-        .post(`/changePresentationMedia`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        .catch(error => {
-          console.log(
-            'Error in react changePresentationMeida post request: ' + error
-          );
-        });
     });
   }
 
@@ -305,7 +305,12 @@ class PagePresentation extends Component {
                   userType={this.props.userType}
                   videoLink={this.props.videoLink}
                 />
-                <VideoList videosList={videosList} />
+                <VideoList
+                  userName={this.props.userName}
+                  videosList={videosList}
+                  socket={this.props.socket}
+                  setVideoLink={this.props.setVideoLink}
+                />
               </div>
             ) : (
               <div />

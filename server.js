@@ -625,6 +625,28 @@ app.post('/changePresentationMedia', (request, response) => {
   });
 });
 
+app.post('/changePresentationVideoID', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    const userName = fields.userName[0];
+    const videoID = fields.videoID[0];
+    PresentationModel.updateMany(
+      { userName: userName },
+      { $set: { videoID: videoID } }
+    )
+      .then(() => {
+        response.send('success');
+      })
+      .catch(error => {
+        console.log(
+          'ERROR in changePresentationVideoID post request update(): ' + error
+        );
+      });
+  });
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'palocal/build')));
 
@@ -687,23 +709,9 @@ io.on('connection', socket => {
       .emit('SOMEONE GOES TO PREVIOUS PDF', docName, pageNum);
   });
 
-  // socket.on('what is doc name and page num?', () => {
-  //   io.sockets.to(socket.room).emit('do you have doc name and page num?');
-  // });
-
-  // socket.on('what is video link?', () => {
-  //   io.sockets.to(socket.room).emit('do you have video link?');
-  // });
-
-  // socket.on('yes i have them', (docName, pageNum) => {
-  //   io.sockets
-  //     .to(socket.room)
-  //     .emit('update doc name and page num', docName, pageNum);
-  // });
-
-  // socket.on('yes i have video link', videoLink => {
-  //   io.sockets.to(socket.room).emit('update video link', videoLink);
-  // });
+  socket.on('play video', videoID => {
+    io.sockets.to(socket.room).emit('play video', videoID);
+  });
 
   socket.on('login', username => {
     socket.leave(socket.id);
