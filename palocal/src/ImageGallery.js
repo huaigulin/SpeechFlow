@@ -1,22 +1,44 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Gallery from 'react-image-gallery';
-import 'react-image-gallery/styles/css/image-gallery.css';
+// import 'react-image-gallery/styles/css/image-gallery.css';
+import './ImageGallery.css';
 
 class ImageGallery extends Component {
-  constructor(props) {
-    super(props);
-    this.onThumbnailClick = this.onThumbnailClick.bind(this);
-  }
   componentDidMount() {
-    this.props.socket.on('changeImage', image => {
-      console.log('changing image to: ' + image);
-    })
+    this.props.socket.on('change image', (image, index) => {
+      this.props.setCurrentImage(image);
+      sessionStorage.setItem('currentImage', image);
+      if (this.gallery !== null) {
+        this.gallery.slideToIndex(index);
+      }
+    });
   }
 
-  onThumbnailClick(event){
-    console.dir(event.target);
-    this.props.socket.emit('changeImage', event.target.value);
-  }
+  onSlide = event => {
+    const index = event;
+    var imagesList = this.props.imagesList;
+    if (typeof imagesList === 'string') {
+      imagesList = JSON.parse(imagesList);
+    }
+    this.props.socket.emit('change image', imagesList[index], index);
+
+    const formData = new FormData();
+    formData.append('userName', this.props.userName);
+    formData.append('currentImage', imagesList[index]);
+
+    axios
+      .post(`/changePresentationImage`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .catch(error => {
+        console.log(
+          'Error in react changePresentationImage post request: ' + error
+        );
+      });
+  };
 
   render() {
     const images = [];
@@ -39,9 +61,19 @@ class ImageGallery extends Component {
       });
     }
 
+    const startIndex = imagesList.indexOf(this.props.currentImage);
+
     return (
       <div>
-        <Gallery items={images} onThumbnailClick={this.onThumbnailClick}/>
+        <Gallery
+          className="gallery"
+          ref={ref => (this.gallery = ref)}
+          items={images}
+          startIndex={startIndex}
+          onThumbnailClick={this.onThumbnailClick}
+          onSlide={this.onSlide}
+          slideDuration={0}
+        />
       </div>
     );
   }

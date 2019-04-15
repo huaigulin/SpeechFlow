@@ -647,6 +647,28 @@ app.post('/changePresentationVideoID', (request, response) => {
   });
 });
 
+app.post('/changePresentationImage', (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields) => {
+    if (error) throw new Error(error);
+
+    const userName = fields.userName[0];
+    const currentImage = fields.currentImage[0];
+    PresentationModel.updateMany(
+      { userName: userName },
+      { $set: { currentImage: currentImage } }
+    )
+      .then(() => {
+        response.send('success');
+      })
+      .catch(error => {
+        console.log(
+          'ERROR in changePresentationImage post request update(): ' + error
+        );
+      });
+  });
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'palocal/build')));
 
@@ -665,10 +687,6 @@ io.on('connection', socket => {
   // Disconnect event
   socket.on('disconnect', () => {
     console.log('Client disconnected');
-  });
-
-  socket.on('changeImage', (image) => {
-    io.sockets.to(socket.room).emit('changeImage', image)
   });
 
   socket.on('video', () => {
@@ -715,6 +733,10 @@ io.on('connection', socket => {
 
   socket.on('play video', videoID => {
     io.sockets.to(socket.room).emit('play video', videoID);
+  });
+
+  socket.on('change image', (image, index) => {
+    io.sockets.to(socket.room).emit('change image', image, index);
   });
 
   socket.on('login', username => {

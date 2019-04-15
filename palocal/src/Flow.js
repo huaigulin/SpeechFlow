@@ -179,6 +179,7 @@ class Flow extends Component {
     }
 
     this.props.setCurrentMedia(currentMedia);
+    sessionStorage.setItem('currentMedia', currentMedia);
 
     axios
       .post(`/updatePresentation`, formData, {

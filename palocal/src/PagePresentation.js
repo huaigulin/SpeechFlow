@@ -156,8 +156,12 @@ class PagePresentation extends Component {
   }
 
   render() {
-    const isLoggedIn = this.props.userName != null;
-    var isDocNameValid = this.props.docName != null;
+    const isLoggedIn = this.props.userName !== null;
+    const hasPdf = this.props.docName !== null && this.props.docName !== 'null';
+    const hasVideo =
+      this.props.videoLink !== null && this.props.docName !== 'null';
+    const hasImage =
+      this.props.currentImage !== null && this.props.docName !== 'null';
     const { classes } = this.props;
 
     var pdfsList = this.props.pdfsList;
@@ -259,23 +263,25 @@ class PagePresentation extends Component {
                   userType={this.props.userType}
                   pdfsList={pdfsList}
                 />
-                {isDocNameValid ? (
-                  <div>
-                    <Button
-                      color="primary"
-                      className={classes.button}
-                      onClick={this.goToVideo}
-                    >
-                      Video Player
-                    </Button>
-                    <Button
-                      color="primary"
-                      className={classes.button}
-                      onClick={this.goToGallery}
-                    >
-                      ImageGallery
-                    </Button>
-                  </div>
+                {hasVideo ? (
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.goToVideo}
+                  >
+                    Video Player
+                  </Button>
+                ) : (
+                  <div />
+                )}
+                {hasImage ? (
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.goToGallery}
+                  >
+                    ImageGallery
+                  </Button>
                 ) : (
                   <div />
                 )}
@@ -285,20 +291,28 @@ class PagePresentation extends Component {
             )}
             {loadVideo ? (
               <div>
-                <Button
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.goToPdf}
-                >
-                  PDF Viewer
-                </Button>
-                <Button
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.goToGallery}
-                >
-                  ImageGallery
-                </Button>
+                {hasPdf ? (
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.goToPdf}
+                  >
+                    PDF Viewer
+                  </Button>
+                ) : (
+                  <div />
+                )}
+                {hasImage ? (
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.goToGallery}
+                  >
+                    ImageGallery
+                  </Button>
+                ) : (
+                  <div />
+                )}
                 <VideoPlayer
                   socket={this.props.socket}
                   userName={this.props.userName}
@@ -317,20 +331,28 @@ class PagePresentation extends Component {
             )}
             {loadGallery ? (
               <div>
-                <Button
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.goToPdf}
-                >
-                  PDF Viewer
-                </Button>
-                <Button
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.goToVideo}
-                >
-                  Video Player
-                </Button>
+                {hasPdf ? (
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.goToPdf}
+                  >
+                    PDF Viewer
+                  </Button>
+                ) : (
+                  <div />
+                )}
+                {hasVideo ? (
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.goToVideo}
+                  >
+                    Video Player
+                  </Button>
+                ) : (
+                  <div />
+                )}
                 <ImageGallery
                   socket={this.props.socket}
                   userName={this.props.userName}
@@ -338,6 +360,7 @@ class PagePresentation extends Component {
                   videoLink={this.props.videoLink}
                   imagesList={imagesList}
                   currentImage={this.props.currentImage}
+                  setCurrentImage={this.props.setCurrentImage}
                 />
               </div>
             ) : (
