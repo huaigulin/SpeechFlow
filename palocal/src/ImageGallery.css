@@ -31,7 +31,6 @@
 .image-gallery-right-nav::before {
   display: inline-block;
   font-family: 'Ionicons';
-  speak: none;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -52,12 +51,12 @@
 }
 .image-gallery.fullscreen-modal {
   background: #000;
-  bottom: 0;
-  height: 100%;
-  left: 0;
   position: fixed;
-  right: 0;
   top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
   width: 100%;
   z-index: 5;
 }
