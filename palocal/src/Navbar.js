@@ -2,16 +2,29 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import Button from '@material-ui/core/Button';
+// import MenuIcon from '@material-ui/icons/Menu';
 import Avatar from '@material-ui/core/Avatar';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import grey from '@material-ui/core/colors/grey';
+import blue from '@material-ui/core/colors/blue';
 
 const styles = {
+  appBar: {
+    backgroundColor: grey[50]
+  },
+  brand: {
+    width: 30,
+    marginBottom: -10,
+    marginRight: 10
+  },
+  brandText: {
+    width: 150,
+    marginBottom: -10
+  },
   fab: {
     backgroundColor: grey[200],
     marginRight: 25
@@ -33,8 +46,12 @@ const styles = {
     marginRight: 20
   },
   beegButton: {
-    marginLeft: -12,
-    marginRight: 20
+    textTransform: 'initial',
+    fontSize: 20,
+    marginLeft: 20,
+    // marginRight: 20,
+    backgroundColor: grey[50],
+    color: blue[500]
   }
 };
 
@@ -78,39 +95,49 @@ class Navbar extends Component {
 
     return (
       <div>
-        <AppBar position="static">
+        <AppBar className={classes.appBar} position="static">
           <Toolbar>
             {isLoggedIn ? (
               <Grid container justify="space-between" alignItems="center">
                 <div>
-                  <IconButton
+                  {/* <Button
                     className={classes.menuButton}
                     color="inherit"
                     aria-label="Menu"
                   >
                     <MenuIcon />
-                  </IconButton>
-                  <IconButton
+                  </Button> */}
+                  <img
+                    className={classes.brand}
+                    src={require('./SpeechFlow_favicon.png')}
+                    alt="logo"
+                  />
+                  <img
+                    className={classes.brandText}
+                    src={require('./SpeechFlow_text.png')}
+                    alt="Speech Flow"
+                  />
+                  <Button
                     className={classes.beegButton}
                     onClick={this.goToMaterials}
-                    color="inherit"
+                    color="primary"
                   >
                     Materials
-                  </IconButton>
-                  <IconButton
+                  </Button>
+                  <Button
                     className={classes.beegButton}
                     onClick={this.goToPresentation}
-                    color="inherit"
+                    color="primary"
                   >
                     Presentation
-                  </IconButton>
-                  <IconButton
+                  </Button>
+                  <Button
                     className={classes.beegButton}
                     onClick={this.goToFlows}
-                    color="inherit"
+                    color="primary"
                   >
                     Flows
-                  </IconButton>
+                  </Button>
                 </div>
                 <Fab
                   aria-owns={open ? 'menu-appbar' : undefined}
@@ -144,9 +171,21 @@ class Navbar extends Component {
                 </Menu>
               </Grid>
             ) : (
-              <IconButton color="inherit" href="/">
-                Home
-              </IconButton>
+              <div>
+                <img
+                  className={classes.brand}
+                  src={require('./SpeechFlow_favicon.png')}
+                  alt="logo"
+                />
+                <img
+                  className={classes.brandText}
+                  src={require('./SpeechFlow_text.png')}
+                  alt="Speech Flow"
+                />
+                <Button className={classes.beegButton} color="primary" href="/">
+                  Home
+                </Button>
+              </div>
             )}
           </Toolbar>
         </AppBar>
