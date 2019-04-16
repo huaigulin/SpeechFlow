@@ -157,11 +157,23 @@ class PagePresentation extends Component {
 
   render() {
     const isLoggedIn = this.props.userName !== null;
-    const hasPdf = this.props.docName !== null && this.props.docName !== 'null';
+    const hasPdf =
+      this.props.docName !== null &&
+      this.props.docName !== 'null' &&
+      this.props.pageNum !== null &&
+      this.props.pageNum !== 'null' &&
+      this.props.pdfsList !== null &&
+      this.props.pdfsList !== 'null';
     const hasVideo =
-      this.props.videoLink !== null && this.props.videoLink !== 'null';
+      this.props.videoLink !== null &&
+      this.props.videoLink !== 'null' &&
+      this.props.videosList !== null &&
+      this.props.videosList !== 'null';
     const hasImage =
-      this.props.currentImage !== null && this.props.currentImage !== 'null';
+      this.props.currentImage !== null &&
+      this.props.currentImage !== 'null' &&
+      this.props.imagesList !== null &&
+      this.props.imagesList !== 'null';
     const { classes } = this.props;
 
     var pdfsList = this.props.pdfsList;

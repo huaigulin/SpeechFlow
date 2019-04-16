@@ -17,6 +17,9 @@ const LEFT_KEY = 37;
 const SPACE_KEY = 32;
 
 class PDFViewer extends Component {
+  _pageNum = 1;
+  _switchingPDF = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,8 +33,8 @@ class PDFViewer extends Component {
 
   onDocumentLoadSuccess = ({ numPages }) => {
     this.setState({ numPages });
-    if (this.props.pageNum == null) {
-      this.props.setPageNum(1);
+    if (this._switchingPDF) {
+      this.props.setPageNum(this._pageNum);
     }
   };
 
@@ -50,16 +53,22 @@ class PDFViewer extends Component {
       this.props.setDocName(docName);
       sessionStorage.setItem('docName', docName);
 
-      this.props.setPageNum(null);
-      sessionStorage.setItem('pageNum', null);
+      this._switchingPDF = true;
+      this._pageNum = 1;
+
+      // this.props.setPageNum(null);
+      // sessionStorage.setItem('pageNum', null);
     });
 
     this.props.socket.on('SOMEONE GOES TO PREVIOUS PDF', (docName, pageNum) => {
       this.props.setDocName(docName);
       sessionStorage.setItem('docName', docName);
 
-      this.props.setPageNum(pageNum);
-      sessionStorage.setItem('pageNum', pageNum);
+      this._switchingPDF = true;
+      this._pageNum = pageNum;
+
+      // this.props.setPageNum(pageNum);
+      // sessionStorage.setItem('pageNum', pageNum);
     });
 
     if (this.props.userType === 'speaker') {
