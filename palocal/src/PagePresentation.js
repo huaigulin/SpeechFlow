@@ -243,6 +243,16 @@ class PagePresentation extends Component {
           history={this.props.history}
           userName={this.props.userName}
           profileImageUrl={this.props.profileImageUrl}
+          setUserName={this.props.setUserName}
+          setProfileImageUrl={this.props.setProfileImageUrl}
+          setDocName={this.props.setDocName}
+          setPageNum={this.props.setPageNum}
+          setPdfsList={this.props.setPdfsList}
+          setVideoLink={this.props.setVideoLink}
+          setVideosList={this.props.setVideosList}
+          setCurrentImage={this.props.setCurrentImage}
+          setImagesList={this.props.setImagesList}
+          setCurrentMedia={this.props.setCurrentMedia}
         />
         {isLoggedIn ? (
           <div />
