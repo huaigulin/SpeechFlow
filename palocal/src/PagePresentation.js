@@ -159,9 +159,9 @@ class PagePresentation extends Component {
     const isLoggedIn = this.props.userName !== null;
     const hasPdf = this.props.docName !== null && this.props.docName !== 'null';
     const hasVideo =
-      this.props.videoLink !== null && this.props.docName !== 'null';
+      this.props.videoLink !== null && this.props.videoLink !== 'null';
     const hasImage =
-      this.props.currentImage !== null && this.props.docName !== 'null';
+      this.props.currentImage !== null && this.props.currentImage !== 'null';
     const { classes } = this.props;
 
     var pdfsList = this.props.pdfsList;
