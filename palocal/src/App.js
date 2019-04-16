@@ -203,6 +203,8 @@ class App extends Component {
                   videosList={this.state.videosList}
                   currentImage={this.state.currentImage}
                   imagesList={this.state.imagesList}
+                  setUserName={this.setUserName}
+                  setProfileImageUrl={this.setProfileImageUrl}
                   setDocName={this.setDocName}
                   setPageNum={this.setPageNum}
                   setPdfsList={this.setPdfsList}
@@ -227,6 +229,16 @@ class App extends Component {
                   setSelectedVideos={this.setSelectedVideos}
                   selectedFiles={this.state.selectedFiles}
                   selectedVideos={this.state.selectedVideos}
+                  setUserName={this.setUserName}
+                  setProfileImageUrl={this.setProfileImageUrl}
+                  setDocName={this.setDocName}
+                  setPageNum={this.setPageNum}
+                  setPdfsList={this.setPdfsList}
+                  setVideoLink={this.setVideoLink}
+                  setVideosList={this.setVideosList}
+                  setCurrentImage={this.setCurrentImage}
+                  setImagesList={this.setImagesList}
+                  setCurrentMedia={this.setCurrentMedia}
                 />
               )}
             />

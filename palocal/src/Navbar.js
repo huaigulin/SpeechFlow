@@ -69,6 +69,39 @@ class Navbar extends Component {
   };
 
   handleSignOut = () => {
+    const {
+      setUserName,
+      setProfileImageUrl,
+      setDocName,
+      setPageNum,
+      setPdfsList,
+      setVideoLink,
+      setVideosList,
+      setCurrentImage,
+      setImagesList,
+      setCurrentMedia
+    } = this.props;
+
+    setUserName(null);
+    sessionStorage.removeItem('userName');
+    setProfileImageUrl(null);
+    sessionStorage.removeItem('profileImageUrl');
+    setDocName(null);
+    sessionStorage.removeItem('userName');
+    setPageNum(null);
+    sessionStorage.removeItem('pageNum');
+    setPdfsList(null);
+    sessionStorage.removeItem('pdfsList');
+    setVideoLink(null);
+    sessionStorage.removeItem('videoID');
+    setVideosList(null);
+    sessionStorage.removeItem('videosList');
+    setCurrentImage(null);
+    sessionStorage.removeItem('currentImage');
+    setImagesList(null);
+    sessionStorage.removeItem('imagesList');
+    setCurrentMedia(null);
+    sessionStorage.removeItem('currentMedia');
     this.props.history.push('/');
   };
 
