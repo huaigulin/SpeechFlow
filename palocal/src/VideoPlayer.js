@@ -107,7 +107,7 @@ class VideoPlayer extends Component {
         >
           PAUSE
         </button>
-        <button
+        {/* <button
           onClick={() => {
             this.handleForward(this.props.socket, this.player.getCurrentTime());
           }}
@@ -123,7 +123,7 @@ class VideoPlayer extends Component {
           }}
         >
           BACKWARD
-        </button>
+        </button> */}
       </div>
     );
   }

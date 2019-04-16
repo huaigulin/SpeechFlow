@@ -271,7 +271,9 @@ class Flow extends Component {
                 ) : (
                   <MenuItem onClick={this.startPresentation}>Present</MenuItem>
                 )}
-                <MenuItem onClick={this.addToFlow}>Add more files</MenuItem>
+                <MenuItem disabled onClick={this.addToFlow}>
+                  Add more files
+                </MenuItem>
                 <MenuItem onClick={this.deleteFlow}>Delete this flow</MenuItem>
               </Menu>
             </MainTitle>
