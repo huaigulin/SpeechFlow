@@ -701,12 +701,12 @@ io.on('connection', socket => {
     io.sockets.to(socket.room).emit('gallery');
   });
 
-  socket.on('play', time => {
-    io.sockets.to(socket.room).emit('play', time);
+  socket.on('play', () => {
+    io.sockets.to(socket.room).emit('play');
   });
 
-  socket.on('pause', time => {
-    io.sockets.to(socket.room).emit('pause', time);
+  socket.on('pause', () => {
+    io.sockets.to(socket.room).emit('pause');
   });
 
   socket.on('forward', time => {

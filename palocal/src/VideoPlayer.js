@@ -22,50 +22,48 @@ class VideoPlayer extends Component {
   }
 
   componentDidMount() {
-    this.props.socket.on('play', time => {
+    this.props.socket.on('play', () => {
       console.log('recieved play');
-      console.log('time: ' + time);
-      console.dir(this.player);
-      this.setState({ playing: true, played: time });
+      this.setState({ playing: true});
       //this.player.seekTo(parseFloat(time));
     });
 
-    this.props.socket.on('pause', time => {
+    this.props.socket.on('pause', () => {
       console.log('recieved pause');
-      this.setState({ playing: false, played: time });
+      this.setState({ playing: false});
       //this.player.seekTo(parseFloat(time));
     });
 
-    this.props.socket.on('forward', time => {
-      console.log('recieved forward');
-      this.setState({ played: time + 5 });
-    });
+    // this.props.socket.on('forward', time => {
+    //   console.log('recieved forward');
+    //   this.setState({ played: time + 5 });
+    // });
+    //
+    // this.props.socket.on('backward', time => {
+    //   console.log('recieved backward');
+    //   this.setState({ played: time - 5 });
+    // });
   }
 
-  componentWillUnmount() {
-    this.props.socket.removeListener('play');
-    this.props.socket.removeListener('pause');
-  }
-
-  handlePlay(socket, time) {
+  handlePlay() {
     console.log('hit play');
-    socket.emit('play', time);
+    this.props.socket.emit('play');
   }
 
-  handlePause(socket, time) {
+  handlePause() {
     console.log('hit pause');
-    socket.emit('pause', time);
+    this.props.socket.emit('pause');
   }
 
-  handleForward(socket, time) {
-    console.log('hit forward');
-    socket.emit('forward', time);
-  }
-
-  handleBackward(socket, username) {
-    console.log('hit backward');
-    socket.emit('backward');
-  }
+  // handleForward(socket, time) {
+  //   console.log('hit forward');
+  //   socket.emit('forward', time);
+  // }
+  //
+  // handleBackward(socket, time) {
+  //   console.log('hit backward');
+  //   socket.emit('backward', time);
+  // }
 
   onSeekChange = e => {
     this.setState({ played: parseFloat(e.target.value) });
@@ -95,35 +93,18 @@ class VideoPlayer extends Component {
         </MediaQuery>
         <button
           onClick={() => {
-            this.handlePlay(this.props.socket, this.player.getCurrentTime());
+            this.handlePlay();
           }}
         >
           PLAY
         </button>
         <button
           onClick={() => {
-            this.handlePause(this.props.socket, this.player.getCurrentTime());
+            this.handlePause();
           }}
         >
           PAUSE
         </button>
-        {/* <button
-          onClick={() => {
-            this.handleForward(this.props.socket, this.player.getCurrentTime());
-          }}
-        >
-          FORWARD
-        </button>
-        <button
-          onClick={() => {
-            this.handleBackward(
-              this.props.socket,
-              this.player.getCurrentTime()
-            );
-          }}
-        >
-          BACKWARD
-        </button> */}
       </div>
     );
   }
