@@ -21,9 +21,14 @@ class PagePresentation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loadPDF: false,
-      loadVideo: false,
-      loadGallery: false
+      docName: null,
+      pageNum: null,
+      pdfsList: null,
+      videoLink: null,
+      videosList: null,
+      currentImage: null,
+      imagesList: null,
+      currentMedia: null
     };
 
     this.props.socket.emit('login', this.props.userName);
@@ -42,7 +47,8 @@ class PagePresentation extends Component {
       setVideoLink,
       setVideosList,
       setCurrentImage,
-      setImagesList
+      setImagesList,
+      setCurrentMedia
     } = props;
 
     if (docName === null && videoLink === null && currentImage === null) {
@@ -64,18 +70,67 @@ class PagePresentation extends Component {
           setPdfsList(data.pdfsList);
           sessionStorage.setItem('pdfsList', JSON.stringify(data.pdfsList));
           setVideoLink(data.videoID);
-          sessionStorage.setItem('videoLink', data.videoID);
+          sessionStorage.setItem('videoID', data.videoID);
           setVideosList(data.videosList);
           sessionStorage.setItem('videosList', JSON.stringify(data.videosList));
           setCurrentImage(data.currentImage);
           sessionStorage.setItem('currentImage', data.currentImage);
           setImagesList(data.imagesList);
           sessionStorage.setItem('imagesList', JSON.stringify(data.imagesList));
+          setCurrentMedia(data.currentMedia);
+          sessionStorage.setItem('currentMedia', data.currentMedia);
         })
         .catch(error => {
           console.log('Error in react PagePresentation post request: ' + error);
         });
     }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    var {
+      docName,
+      pageNum,
+      pdfsList,
+      videoLink,
+      videosList,
+      currentImage,
+      imagesList,
+      currentMedia
+    } = state;
+    if (props.docName !== docName) {
+      docName = props.docName;
+    }
+    if (props.pageNum !== pageNum) {
+      pageNum = props.pageNum;
+    }
+    if (props.pdfsList !== pdfsList) {
+      pdfsList = props.pdfsList;
+    }
+    if (props.videoLink !== videoLink) {
+      videoLink = props.videoLink;
+    }
+    if (props.videosList !== videosList) {
+      videosList = props.videosList;
+    }
+    if (props.currentImage !== currentImage) {
+      currentImage = props.currentImage;
+    }
+    if (props.imagesList !== imagesList) {
+      imagesList = props.imagesList;
+    }
+    if (props.currentMedia !== currentMedia) {
+      currentMedia = props.currentMedia;
+    }
+    return {
+      docName: docName,
+      pageNum: pageNum,
+      pdfsList: pdfsList,
+      videoLink: videoLink,
+      videosList: videosList,
+      currentImage: currentImage,
+      imagesList: imagesList,
+      currentMedia: currentMedia
+    };
   }
 
   goToVideo = event => {
@@ -157,34 +212,17 @@ class PagePresentation extends Component {
 
   render() {
     const isLoggedIn = this.props.userName !== null;
-    const hasPdf =
-      this.props.docName !== null &&
-      this.props.docName !== 'null' &&
-      this.props.pageNum !== null &&
-      this.props.pageNum !== 'null' &&
-      this.props.pdfsList !== null &&
-      this.props.pdfsList !== 'null';
-    const hasVideo =
-      this.props.videoLink !== null &&
-      this.props.videoLink !== 'null' &&
-      this.props.videosList !== null &&
-      this.props.videosList !== 'null';
-    const hasImage =
-      this.props.currentImage !== null &&
-      this.props.currentImage !== 'null' &&
-      this.props.imagesList !== null &&
-      this.props.imagesList !== 'null';
     const { classes } = this.props;
 
-    var pdfsList = this.props.pdfsList;
+    var pdfsList = this.state.pdfsList;
     if (typeof pdfsList === 'string') {
       pdfsList = JSON.parse(pdfsList);
     }
-    var videosList = this.props.videosList;
+    var videosList = this.state.videosList;
     if (typeof videosList === 'string') {
       videosList = JSON.parse(videosList);
     }
-    var imagesList = this.props.imagesList;
+    var imagesList = this.state.imagesList;
     if (typeof imagesList === 'string') {
       imagesList = JSON.parse(imagesList);
     }
@@ -194,41 +232,9 @@ class PagePresentation extends Component {
     var loadGallery = false;
 
     // update current media
-    if (this.props.currentMedia === null) {
-      // new client
-      const formData = new FormData();
-      formData.append('userName', this.props.userName);
-      axios
-        .post(`/getPresentation`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        .then(response => {
-          const data = response.data;
-          switch (data.currentMedia) {
-            case 'pdf':
-              this.props.setCurrentMedia('pdf');
-              sessionStorage.setItem('currentMedia', 'pdf');
-              break;
-            case 'video':
-              this.props.setCurrentMedia('video');
-              sessionStorage.setItem('currentMedia', 'video');
-              break;
-            case 'gallery':
-              this.props.setCurrentMedia('gallery');
-              sessionStorage.setItem('currentMedia', 'gallery');
-              break;
-            default:
-              console.log('illegal media');
-          }
-        })
-        .catch(error => {
-          console.log('Error in PagePresentation post request: ' + error);
-        });
-    } else {
+    if (this.state.currentMedia !== null) {
       // started from a flow, or is switching media
-      switch (this.props.currentMedia) {
+      switch (this.state.currentMedia) {
         case 'pdf':
           loadPDF = true;
           loadVideo = false;
@@ -248,6 +254,11 @@ class PagePresentation extends Component {
           console.log('illegal media');
       }
     }
+
+    const hasPdf =
+      this.state.docName && this.state.pageNum && this.state.pdfsList;
+    const hasVideo = this.state.videoLink && this.state.videosList;
+    const hasImage = this.state.currentImage && this.state.imagesList;
 
     return (
       <div>
@@ -281,8 +292,8 @@ class PagePresentation extends Component {
                     userName={this.props.userName}
                     setDocName={this.props.setDocName}
                     setPageNum={this.props.setPageNum}
-                    docName={this.props.docName}
-                    pageNum={this.props.pageNum}
+                    docName={this.state.docName}
+                    pageNum={this.state.pageNum}
                     userType={this.props.userType}
                     pdfsList={pdfsList}
                   />
@@ -345,7 +356,7 @@ class PagePresentation extends Component {
                       socket={this.props.socket}
                       userName={this.props.userName}
                       userType={this.props.userType}
-                      videoLink={this.props.videoLink}
+                      videoLink={this.state.videoLink}
                     />
                     <VideoList
                       userName={this.props.userName}
@@ -390,9 +401,8 @@ class PagePresentation extends Component {
                     socket={this.props.socket}
                     userName={this.props.userName}
                     userType={this.props.userType}
-                    videoLink={this.props.videoLink}
                     imagesList={imagesList}
-                    currentImage={this.props.currentImage}
+                    currentImage={this.state.currentImage}
                     setCurrentImage={this.props.setCurrentImage}
                   />
                 ) : (
