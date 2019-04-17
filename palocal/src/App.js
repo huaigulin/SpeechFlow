@@ -251,6 +251,7 @@ class App extends Component {
                   profileImageUrl={this.state.profileImageUrl}
                   s3={this.state.s3}
                   setUserName={this.setUserName}
+                  setProfileImageUrl={this.setProfileImageUrl}
                   setDocName={this.setDocName}
                   setPageNum={this.setPageNum}
                   setVideoLink={this.setVideoLink}
