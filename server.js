@@ -135,11 +135,13 @@ app.post('/upload-flow', (request, response) => {
     var pdfAndImages = fields.pdfAndImages;
     var pdfs = [];
     var images = [];
-    for (var i = 0; i < pdfAndImages.length; i++) {
-      if (pdfAndImages[i].substr(pdfAndImages[i].length - 3) === 'pdf') {
-        pdfs.push(pdfAndImages[i]);
-      } else {
-        images.push(pdfAndImages[i]);
+    if (pdfAndImages !== undefined) {
+      for (var i = 0; i < pdfAndImages.length; i++) {
+        if (pdfAndImages[i].substr(pdfAndImages[i].length - 3) === 'pdf') {
+          pdfs.push(pdfAndImages[i]);
+        } else {
+          images.push(pdfAndImages[i]);
+        }
       }
     }
 
