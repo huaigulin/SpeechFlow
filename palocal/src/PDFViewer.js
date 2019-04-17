@@ -240,7 +240,9 @@ class PDFViewer extends Component {
               <div
                 style={{
                   display: 'flex',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  marginTop: 8,
+                  zoom: 1
                 }}
               >
                 <Document
