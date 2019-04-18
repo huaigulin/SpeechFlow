@@ -69,51 +69,20 @@ class PageHome extends Component {
     return (
       <div>
         <Navbar />
-        <h1>Welcome to SpeechFlow!</h1>
-        To start a new presentation or control your own presentation:
-        <br />
-        <GoogleLogin
-          clientId="205354448545-sc5rs1bo1q8tcdg0crsfr8aiflgf54tp.apps.googleusercontent.com"
-          buttonText="Please sign in with Google"
-          onSuccess={successCallback}
-          onFailure={responseGoogle}
-        />
-        <br />
-        <br />
-        To view/control other people's presentation, enter your code below:
-        {/* <form onSubmit={this.handleRadioSubmit}>
-          <label>
-            User name:
-            <input
-              type="text"
-              value={this.state.value}
-              onChange={this.handleChange}
-            />
-          </label>
-          <div className="radio">
-            <label>
-              <input
-                type="radio"
-                value="speaker"
-                checked={this.state.selectedOption === 'speaker'}
-                onChange={this.handleRadioChange}
-              />
-              Speaker
-            </label>
-          </div>
-          <div className="radio">
-            <label>
-              <input
-                type="radio"
-                value="listener"
-                checked={this.state.selectedOption === 'listener'}
-                onChange={this.handleRadioChange}
-              />
-              Listener
-            </label>
-          </div>
-          <input type="submit" value="Submit" />
-        </form> */}
+        <div style={{ marginLeft: 25, marginTop: 40 }}>
+          <h1>Welcome to SpeechFlow!</h1>
+          To start a new presentation or control your own presentation:
+          <br />
+          <GoogleLogin
+            clientId="205354448545-sc5rs1bo1q8tcdg0crsfr8aiflgf54tp.apps.googleusercontent.com"
+            buttonText="Please sign in with Google"
+            onSuccess={successCallback}
+            onFailure={responseGoogle}
+          />
+          <br />
+          <br />
+          To view/control other people's presentation, enter your code below:
+        </div>
       </div>
     );
   }

@@ -1,15 +1,15 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "SpeechFlow",
+  "name": "SpeechFlow App",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "SpeechFlow_favicon.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#0491dd",
   "background_color": "#ffffff"
 }
