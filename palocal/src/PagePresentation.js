@@ -308,7 +308,7 @@ class PagePresentation extends Component {
                   className={classes.button}
                   onClick={this.goToGallery}
                 >
-                  ImageGallery
+                  Image Gallery
                 </Button>
               </div>
             ) : (
@@ -328,7 +328,7 @@ class PagePresentation extends Component {
                   className={classes.button}
                   onClick={this.goToGallery}
                 >
-                  ImageGallery
+                  Image Gallery
                 </Button>
                 <div>
                   <VideoPlayer
