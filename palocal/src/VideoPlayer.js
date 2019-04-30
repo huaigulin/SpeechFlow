@@ -24,13 +24,13 @@ class VideoPlayer extends Component {
   componentDidMount() {
     this.props.socket.on('play', () => {
       console.log('recieved play');
-      this.setState({ playing: true});
+      this.setState({ playing: true });
       //this.player.seekTo(parseFloat(time));
     });
 
     this.props.socket.on('pause', () => {
       console.log('recieved pause');
-      this.setState({ playing: false});
+      this.setState({ playing: false });
       //this.player.seekTo(parseFloat(time));
     });
 
@@ -77,7 +77,7 @@ class VideoPlayer extends Component {
     this.player = player;
   };
   render() {
-    const url = 'https://www.youtube.com/watch?v=' + this.props.videoLink;
+    const url = 'https://www.youtube.com/watch?v=9j7ANRXsCwc';
     return (
       <div>
         <MediaQuery query="(min-device-width: 1024px)">

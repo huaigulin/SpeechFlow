@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Gallery from 'react-image-gallery';
 // import 'react-image-gallery/styles/css/image-gallery.css';
+import nytimes from './nytimes.gif';
 import './ImageGallery.css';
 
 class ImageGallery extends Component {
@@ -48,16 +49,8 @@ class ImageGallery extends Component {
     }
     for (var i = 0; i < imagesList.length; i++) {
       images.push({
-        original:
-          'https://s3.us-east-2.amazonaws.com/speechflow/' +
-          this.props.userName +
-          '/' +
-          imagesList[i],
-        thumbnail:
-          'https://s3.us-east-2.amazonaws.com/speechflow/' +
-          this.props.userName +
-          '/' +
-          imagesList[i]
+        original: nytimes,
+        thumbnail: nytimes
       });
     }
 
