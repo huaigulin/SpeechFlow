@@ -286,128 +286,92 @@ class PagePresentation extends Component {
           <div>
             {loadPDF ? (
               <div>
-                {hasPdf ? (
-                  <PDFViewer
-                    socket={this.props.socket}
-                    userName={this.props.userName}
-                    setDocName={this.props.setDocName}
-                    setPageNum={this.props.setPageNum}
-                    docName={this.state.docName}
-                    pageNum={this.state.pageNum}
-                    userType={this.props.userType}
-                    pdfsList={pdfsList}
-                  />
-                ) : (
-                  <div />
-                )}
-                {hasVideo ? (
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.goToVideo}
-                  >
-                    Video Player
-                  </Button>
-                ) : (
-                  <div />
-                )}
-                {hasImage ? (
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.goToGallery}
-                  >
-                    ImageGallery
-                  </Button>
-                ) : (
-                  <div />
-                )}
+                <PDFViewer
+                  socket={this.props.socket}
+                  userName={this.props.userName}
+                  setDocName={this.props.setDocName}
+                  setPageNum={this.props.setPageNum}
+                  docName={this.state.docName}
+                  pageNum={this.state.pageNum}
+                  userType={this.props.userType}
+                  pdfsList={pdfsList}
+                />
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToVideo}
+                >
+                  Video Player
+                </Button>
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToGallery}
+                >
+                  ImageGallery
+                </Button>
               </div>
             ) : (
               <div />
             )}
             {loadVideo ? (
               <div>
-                {hasPdf ? (
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.goToPdf}
-                  >
-                    PDF Viewer
-                  </Button>
-                ) : (
-                  <div />
-                )}
-                {hasImage ? (
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.goToGallery}
-                  >
-                    ImageGallery
-                  </Button>
-                ) : (
-                  <div />
-                )}
-                {hasVideo ? (
-                  <div>
-                    <VideoPlayer
-                      socket={this.props.socket}
-                      userName={this.props.userName}
-                      userType={this.props.userType}
-                      videoLink={this.state.videoLink}
-                    />
-                    <VideoList
-                      userName={this.props.userName}
-                      videosList={videosList}
-                      socket={this.props.socket}
-                      setVideoLink={this.props.setVideoLink}
-                    />
-                  </div>
-                ) : (
-                  <div />
-                )}
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToPdf}
+                >
+                  PDF Viewer
+                </Button>
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToGallery}
+                >
+                  ImageGallery
+                </Button>
+                <div>
+                  <VideoPlayer
+                    socket={this.props.socket}
+                    userName={this.props.userName}
+                    userType={this.props.userType}
+                    videoLink={this.state.videoLink}
+                  />
+                  <VideoList
+                    userName={this.props.userName}
+                    videosList={videosList}
+                    socket={this.props.socket}
+                    setVideoLink={this.props.setVideoLink}
+                  />
+                </div>
               </div>
             ) : (
               <div />
             )}
             {loadGallery ? (
               <div>
-                {hasPdf ? (
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.goToPdf}
-                  >
-                    PDF Viewer
-                  </Button>
-                ) : (
-                  <div />
-                )}
-                {hasVideo ? (
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.goToVideo}
-                  >
-                    Video Player
-                  </Button>
-                ) : (
-                  <div />
-                )}
-                {hasImage ? (
-                  <ImageGallery
-                    socket={this.props.socket}
-                    userName={this.props.userName}
-                    userType={this.props.userType}
-                    imagesList={imagesList}
-                    currentImage={this.state.currentImage}
-                    setCurrentImage={this.props.setCurrentImage}
-                  />
-                ) : (
-                  <div />
-                )}
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToPdf}
+                >
+                  PDF Viewer
+                </Button>
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToVideo}
+                >
+                  Video Player
+                </Button>
+                <ImageGallery
+                  socket={this.props.socket}
+                  userName={this.props.userName}
+                  userType={this.props.userType}
+                  imagesList={imagesList}
+                  currentImage={this.state.currentImage}
+                  setCurrentImage={this.props.setCurrentImage}
+                />
               </div>
             ) : (
               <div />
