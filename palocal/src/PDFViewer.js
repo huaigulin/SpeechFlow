@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import axios from 'axios';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
-import speechflow from './speechflow_second.pdf';
+// import speechflow from './speechflow_second.pdf';
 import MediaQuery from 'react-responsive';
 import './PDFViewer.css';
 import pdfjsLib from 'pdfjs-dist';
@@ -246,7 +246,12 @@ class PDFViewer extends Component {
                 }}
               >
                 <Document
-                  file={speechflow}
+                  file={
+                    'https://s3.us-east-2.amazonaws.com/speechflow/' +
+                    this.props.userName +
+                    '/' +
+                    this.props.docName
+                  }
                   onLoadSuccess={this.onDocumentLoadSuccess}
                 >
                   <Page pageNumber={this.props.pageNum} scale={0.8} />
@@ -256,7 +261,12 @@ class PDFViewer extends Component {
             <MediaQuery query="(max-device-width: 1023px)">
               <div>
                 <Document
-                  file={speechflow}
+                  file={
+                    'https://s3.us-east-2.amazonaws.com/speechflow/' +
+                    this.props.userName +
+                    '/' +
+                    this.props.docName
+                  }
                   onLoadSuccess={this.onDocumentLoadSuccess}
                   renderMode="svg"
                 >
