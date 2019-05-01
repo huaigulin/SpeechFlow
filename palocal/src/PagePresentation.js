@@ -135,6 +135,8 @@ class PagePresentation extends Component {
 
   goToVideo = event => {
     this.props.socket.emit('video');
+    this.props.setCurrentMedia('video');
+    sessionStorage.setItem('currentMedia', 'video');
 
     const formData = new FormData();
     formData.append('userName', this.props.userName);
@@ -155,6 +157,8 @@ class PagePresentation extends Component {
 
   goToPdf = event => {
     this.props.socket.emit('pdf');
+    this.props.setCurrentMedia('pdf');
+    sessionStorage.setItem('currentMedia', 'pdf');
 
     const formData = new FormData();
     formData.append('userName', this.props.userName);
@@ -175,6 +179,8 @@ class PagePresentation extends Component {
 
   goToGallery = event => {
     this.props.socket.emit('gallery');
+    this.props.setCurrentMedia('gallery');
+    sessionStorage.setItem('currentMedia', 'gallery');
 
     const formData = new FormData();
     formData.append('userName', this.props.userName);
