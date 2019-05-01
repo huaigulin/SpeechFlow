@@ -374,40 +374,28 @@ class PagePresentation extends Component {
             )}
             {loadGallery ? (
               <div>
-                {hasPdf ? (
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.goToPdf}
-                  >
-                    PDF Viewer
-                  </Button>
-                ) : (
-                  <div />
-                )}
-                {hasVideo ? (
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.goToVideo}
-                  >
-                    Video Player
-                  </Button>
-                ) : (
-                  <div />
-                )}
-                {hasImage ? (
-                  <ImageGallery
-                    socket={this.props.socket}
-                    userName={this.props.userName}
-                    userType={this.props.userType}
-                    imagesList={imagesList}
-                    currentImage={this.state.currentImage}
-                    setCurrentImage={this.props.setCurrentImage}
-                  />
-                ) : (
-                  <div />
-                )}
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToPdf}
+                >
+                  PDF Viewer
+                </Button>
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.goToVideo}
+                >
+                  Video Player
+                </Button>
+                <ImageGallery
+                  socket={this.props.socket}
+                  userName={this.props.userName}
+                  userType={this.props.userType}
+                  imagesList={imagesList}
+                  currentImage={this.state.currentImage}
+                  setCurrentImage={this.props.setCurrentImage}
+                />
               </div>
             ) : (
               <div />

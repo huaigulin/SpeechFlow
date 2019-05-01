@@ -55,7 +55,7 @@ class VideoList extends Component {
     }
     for (var i = 0; i < videosList.length; i++) {
       const videoID = videosList[i];
-      const url = 'https://i1.ytimg.com/vi/' + videoID + '/default.jpg';
+      const url = 'https://i1.ytimg.com/vi/' + '9j7ANRXsCwc' + '/default.jpg';
       images.push(
         <div className={classes.thumbnailDiv} key={i}>
           <Fab
