@@ -49,8 +49,16 @@ class ImageGallery extends Component {
     }
     for (var i = 0; i < imagesList.length; i++) {
       images.push({
-        original: nytimes,
-        thumbnail: nytimes
+        original:
+          'https://s3.us-east-2.amazonaws.com/speechflow/' +
+          this.props.userName +
+          '/' +
+          imagesList[i],
+        thumbnail:
+          'https://s3.us-east-2.amazonaws.com/speechflow/' +
+          this.props.userName +
+          '/' +
+          imagesList[i]
       });
     }
 
