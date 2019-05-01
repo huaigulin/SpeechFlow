@@ -268,6 +268,7 @@ class PDFViewer extends Component {
                     this.props.docName
                   }
                   onLoadSuccess={this.onDocumentLoadSuccess}
+                  renderMode="svg"
                 >
                   <Page pageNumber={this.props.pageNum} width={300} />
                 </Document>
