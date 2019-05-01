@@ -16,6 +16,13 @@ class ImageGallery extends Component {
     });
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.imagesList !== this.props.imagesList) {
+      return true;
+    }
+    return false;
+  }
+
   onSlide = event => {
     const index = event;
     var imagesList = this.props.imagesList;

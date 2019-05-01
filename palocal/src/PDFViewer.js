@@ -31,6 +31,17 @@ class PDFViewer extends Component {
     // this.props.socket.emit('login', this.props.userName);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      nextProps.docName !== this.props.docName ||
+      nextProps.pageNum !== this.props.pageNum ||
+      nextState.numPages !== this.state.numPages
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   onDocumentLoadSuccess = ({ numPages }) => {
     this.setState({ numPages });
     if (this._switchingPDF) {
@@ -268,7 +279,6 @@ class PDFViewer extends Component {
                     this.props.docName
                   }
                   onLoadSuccess={this.onDocumentLoadSuccess}
-                  renderMode="svg"
                 >
                   <Page pageNumber={this.props.pageNum} width={300} />
                 </Document>
