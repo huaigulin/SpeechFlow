@@ -286,64 +286,88 @@ class PagePresentation extends Component {
           <div>
             {loadPDF ? (
               <div>
-                <PDFViewer
-                  socket={this.props.socket}
-                  userName={this.props.userName}
-                  setDocName={this.props.setDocName}
-                  setPageNum={this.props.setPageNum}
-                  docName={this.state.docName}
-                  pageNum={this.state.pageNum}
-                  userType={this.props.userType}
-                  pdfsList={pdfsList}
-                />
-                <Button
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.goToVideo}
-                >
-                  Video Player
-                </Button>
-                <Button
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.goToGallery}
-                >
-                  Image Gallery
-                </Button>
+                {hasPdf ? (
+                  <PDFViewer
+                    socket={this.props.socket}
+                    userName={this.props.userName}
+                    setDocName={this.props.setDocName}
+                    setPageNum={this.props.setPageNum}
+                    docName={this.state.docName}
+                    pageNum={this.state.pageNum}
+                    userType={this.props.userType}
+                    pdfsList={pdfsList}
+                  />
+                ) : (
+                  <div />
+                )}
+                {hasVideo ? (
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.goToVideo}
+                  >
+                    Video Player
+                  </Button>
+                ) : (
+                  <div />
+                )}
+                {hasImage ? (
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.goToGallery}
+                  >
+                    Image Gallery
+                  </Button>
+                ) : (
+                  <div />
+                )}
               </div>
             ) : (
               <div />
             )}
             {loadVideo ? (
               <div>
-                <Button
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.goToPdf}
-                >
-                  PDF Viewer
-                </Button>
-                <Button
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.goToGallery}
-                >
-                  Image Gallery
-                </Button>
-                <div>
-                  <VideoPlayer
-                    socket={this.props.socket}
-                    userName={this.props.userName}
-                    userType={this.props.userType}
-                    videoLink={this.state.videoLink}
-                  />
-                  <VideoList
-                    userName={this.props.userName}
-                    videosList={videosList}
-                    socket={this.props.socket}
-                    setVideoLink={this.props.setVideoLink}
-                  />
-                </div>
+                {hasPdf ? (
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.goToPdf}
+                  >
+                    PDF Viewer
+                  </Button>
+                ) : (
+                  <div />
+                )}
+                {hasImage ? (
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.goToGallery}
+                  >
+                    Image Gallery
+                  </Button>
+                ) : (
+                  <div />
+                )}
+                {hasVideo ? (
+                  <div>
+                    <VideoPlayer
+                      socket={this.props.socket}
+                      userName={this.props.userName}
+                      userType={this.props.userType}
+                      videoLink={this.state.videoLink}
+                    />
+                    <VideoList
+                      userName={this.props.userName}
+                      videosList={videosList}
+                      socket={this.props.socket}
+                      setVideoLink={this.props.setVideoLink}
+                    />
+                  </div>
+                ) : (
+                  <div />
+                )}
               </div>
             ) : (
               <div />

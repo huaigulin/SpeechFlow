@@ -66,6 +66,7 @@ class ImageGallery extends Component {
           onThumbnailClick={this.onThumbnailClick}
           onSlide={this.onSlide}
           slideDuration={0}
+          lazyLoad={true}
         />
       </div>
     );

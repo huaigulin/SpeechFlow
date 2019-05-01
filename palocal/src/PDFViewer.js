@@ -258,6 +258,7 @@ class PDFViewer extends Component {
                 <Document
                   file={speechflow}
                   onLoadSuccess={this.onDocumentLoadSuccess}
+                  renderMode="svg"
                 >
                   <Page pageNumber={this.props.pageNum} width={300} />
                 </Document>
