@@ -77,7 +77,7 @@ class VideoPlayer extends Component {
     this.player = player;
   };
   render() {
-    const url = 'https://www.youtube.com/watch?v=9j7ANRXsCwc';
+    const url = 'https://www.youtube.com/watch?v=' + this.props.videoLink;
     return (
       <div>
         <MediaQuery query="(min-device-width: 1024px)">
