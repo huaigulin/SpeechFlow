@@ -22,7 +22,7 @@
     "react-dom": "^16.6.1",
     "react-google-login": "^5.0.2",
     "react-image-gallery": "^0.8.14",
-    "react-native": "^0.59.1",
+    "react-native": "^0.59.8",
     "react-native-responsive-screen": "^1.2.0",
     "react-pdf": "^4.0.2",
     "react-pdf-js": "^4.0.2",
