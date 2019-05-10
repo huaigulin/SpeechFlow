@@ -46,12 +46,10 @@ class VideoPlayer extends Component {
   }
 
   handlePlay() {
-    console.log('hit play');
     this.props.socket.emit('play');
   }
 
   handlePause() {
-    console.log('hit pause');
     this.props.socket.emit('pause');
   }
 
@@ -70,12 +68,13 @@ class VideoPlayer extends Component {
   };
 
   onDuration = duration => {
-    console.log('onDuration', duration);
     this.setState({ duration });
   };
+
   ref = player => {
     this.player = player;
   };
+
   render() {
     const url = 'https://www.youtube.com/watch?v=' + this.props.videoLink;
     return (
