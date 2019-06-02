@@ -8,7 +8,6 @@ import MenuIcon from '@material-ui/icons/MoreVert';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Card from './Card';
-import './Flow.css';
 
 const MainContainer = styled.div`
   height: 85vh;
@@ -228,13 +227,21 @@ class Flow extends Component {
       videoCards.length === 0 &&
       imageCards.length === 0;
 
+    const styleMainTitle = {
+      width: '180px'
+    };
+
+    const styleMenuIcon = {
+      float: 'right'
+    };
+
     return (
       <Draggable draggableId={this.props.flow.id} index={this.props.index}>
         {provided => (
           <MainContainer {...provided.draggableProps} ref={provided.innerRef}>
             <MainTitle {...provided.dragHandleProps}>
               <InputBase
-                className="mainTitle"
+                style={styleMainTitle}
                 defaultValue={this.props.flow.title}
                 multiline={true}
                 onChange={this.handleTitleChange}
@@ -245,7 +252,7 @@ class Flow extends Component {
                 onClick={this.handleMenuClick}
                 color="inherit"
                 aria-label="Add"
-                className="menuIcon"
+                style={styleMenuIcon}
                 size="small"
               >
                 <MenuIcon />

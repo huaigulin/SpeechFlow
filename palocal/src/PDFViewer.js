@@ -4,7 +4,6 @@ import axios from 'axios';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 // import speechflow from './speechflow_second.pdf';
 import MediaQuery from 'react-responsive';
-import './PDFViewer.css';
 import pdfjsLib from 'pdfjs-dist';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${
   pdfjs.version
@@ -243,19 +242,44 @@ class PDFViewer extends Component {
     var isDocNameValid = this.props.docName != null;
     const { numPages } = this.state;
 
+    const stylePhoneButton = {
+      backgroundColor: 'white',
+      border: '2px solid #ffa500',
+      borderRadius: '8px',
+      color: '#ff4500',
+      padding: '15px 32px',
+      textAlign: 'center',
+      textDecoration: 'none',
+      fontSize: '16px'
+    };
+
+    const stylePhoneBackButton = {
+      ...stylePhoneButton,
+      float: 'left'
+    };
+
+    const stylePhoneNextButton = {
+      ...stylePhoneButton,
+      float: 'right'
+    };
+
+    const styleTextCenter = {
+      textAlign: 'center'
+    };
+
+    const styleDocumentDiv = {
+      display: 'flex',
+      justifyContent: 'center',
+      marginTop: 8,
+      zoom: 1
+    };
+
     return (
       <div>
         {isDocNameValid ? (
           <div>
             <MediaQuery query="(min-device-width: 1024px)">
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  marginTop: 8,
-                  zoom: 1
-                }}
-              >
+              <div style={styleDocumentDiv}>
                 <Document
                   file={
                     'https://s3.us-east-2.amazonaws.com/speechflow/' +
@@ -286,12 +310,12 @@ class PDFViewer extends Component {
               {userType ? (
                 <div>
                   <button
-                    className="phoneBackButton"
+                    style={stylePhoneBackButton}
                     onClick={this.previousSlide}
                   >
                     Back
                   </button>
-                  <button className="phoneNextButton" onClick={this.nextSlide}>
+                  <button style={stylePhoneNextButton} onClick={this.nextSlide}>
                     Next
                   </button>
                 </div>
@@ -299,7 +323,7 @@ class PDFViewer extends Component {
                 <div />
               )}
             </MediaQuery>
-            <p className="textCenter">
+            <p style={styleTextCenter}>
               Page {this.props.pageNum} of {numPages}, Doc{' '}
               {this.props.pdfsList.indexOf(this.props.docName) + 1} of{' '}
               {this.props.pdfsList.length}

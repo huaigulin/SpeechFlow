@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
-import './VideoThumbnail.css';
 
 const styles = {
   root: {
@@ -28,19 +27,27 @@ class VideoThumbnail extends Component {
 
   render() {
     const { classes } = this.props;
+
+    const styleThumbnailDiv = {
+      position: 'relative',
+      display: 'inline-block'
+    };
+
+    const styleThumbnailCheckbox = {
+      position: 'absolute',
+      left: '135px',
+      bottom: '5px'
+    };
+
     return (
-      <div className="thumbnailDiv">
+      <div style={styleThumbnailDiv}>
         <Checkbox
-          className="thumbnailCheckbox"
+          style={styleThumbnailCheckbox}
           classes={{ root: classes.root, checked: classes.checked }}
           checked={this.state.checked}
           onChange={this.handleChange}
         />
-        <img
-          className="thumbnailImage"
-          src={this.props.src}
-          alt="video thumbnail"
-        />
+        <img src={this.props.src} alt="video thumbnail" />
       </div>
     );
   }
